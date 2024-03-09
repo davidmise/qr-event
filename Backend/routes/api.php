@@ -2,10 +2,20 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthRegisteredUserController;
 use App\Http\Controllers\QrCodeController;
 
 Route::post('/generate-qrcode', [QrCodeController::class, 'generateQrCode']);
+
+
+
+// register routes for user authentication
+Route::post('/register',[AuthRegisteredUserController::class, "create"]);
+Route::post('/login',[AuthRegisteredUserController::class, "login"]);
+
+Route::get('/users',[AuthRegisteredUserController::class, "index"]);
+Route::get('/user{id}',[AuthRegisteredUserController::class, "show"]);
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
