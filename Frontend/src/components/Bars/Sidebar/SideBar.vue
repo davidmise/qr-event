@@ -22,18 +22,26 @@
   
     
   
-      <!-- Received -->
+      <!-- Events -->
       <div class="collapse-container">
         <a class="btn text-uppercase" data-bs-toggle="collapse" href="#events" role="button" aria-expanded="false" aria-controls="Recieved">
           <i class="material-icons icon">event</i>
           <span v-if="!collapsed" class="ms-3">Events</span>
         </a>
         <div class="collapse" id="events">
-          <SideBarLink to="/events"  :text="collapsed ? '' : 'Events'" />
+          <SideBarLink to="/events/view"  :text="collapsed ? '' : 'Events'" />
+        </div>
+   
+        <div class="collapse" id="events">
+          <SideBarLink to="/events/new"  :text="collapsed ? '' : 'Create New Event'" />
+        </div>
+
+        <div class="collapse" id="events">
+          <SideBarLink to="/events/all"  :text="collapsed ? '' : 'All Events'" />
         </div>
       </div>
   
-      <!-- Expenses -->
+      <!-- Contacts -->
       <div class="collapse-container">
         <a class="btn text-uppercase" data-bs-toggle="collapse" href="#Contacts" role="button" aria-expanded="false" aria-controls="Expenses">
           <i class="material-icons icon">contacts</i>

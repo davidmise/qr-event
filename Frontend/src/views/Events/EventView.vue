@@ -14,7 +14,7 @@
             <main class="py-6 bg-surface-secondary">
               <div>
                 <input type="text" v-model="qrData">
-                <button class="btn btn-outline-success" @click="fetchQrCodeData">click</button>
+                <button class="btn btn-outline-success" @click="fetchQrCodeData">view</button>
               <img :src="qrCode" alt="QR Code" width="100px">
               <div class="car">
                 
@@ -45,7 +45,7 @@ export default {
     fetchQrCodeData() {
       var qrCodeData = this.qrData
       // Assuming you're using axios for HTTP requests
-      axios.post('http://127.0.0.1:8001/api/generate-qrcode', {
+      axios.post('http://127.0.0.1:8000/api/generate-qrcode', {
           data: qrCodeData
           // Adjust data as needed
       })
