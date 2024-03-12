@@ -2,7 +2,6 @@
   import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
   import { sidebarWidth } from '@/components/Bars/Sidebar/state';
   import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-  import EventsNav from '@/components/Events/EventsNav.vue';
 </script>
 
 <template>
@@ -13,14 +12,14 @@
       <main class="py-6 bg-surface-secondary">
         <div class="container-fluid">
             <main class="py-6 bg-surface-secondary">
-              <div class="container mb-5">
-                <h1>Event Name</h1>
-                <h6 class="text-secondary">Subtittle of the Event</h6>
-                <p>created at <span class="text-primary">date of creation</span></p>
-                <button class="btn  btn-outline-primary rounded rounded-5">valid/expired</button>
+              <div>
+                <input type="text" v-model="qrData">
+                <button class="btn btn-outline-success" @click="fetchQrCodeData">view</button>
+              <img :src="qrCode" alt="QR Code" width="100px">
+              <div class="car">
+                
               </div>
-              <!-- <hr> -->
-              <EventsNav/>
+            </div>
             </main>
           </div>
         </main>
@@ -29,8 +28,7 @@
 </template>
 
 <script>
-import axios from "axios";
-// import EventsNav from '../../components/Events/EventsNav.vue';
+import axios from "axios"
 export default {
   data() {
     return {
