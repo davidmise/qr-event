@@ -73,8 +73,6 @@ const router = createRouter({
       path: '/:catchAll(.*)', // Match all paths
       component: NotFound, // Render the NotFound component
     },
-
-
   ]
 })
 
