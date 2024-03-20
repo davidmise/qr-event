@@ -53,7 +53,7 @@
     methods: {
       async submit() {
         try {
-          const response = await axios.post("http://localhost:8000/api/login", this.LoginData);
+          const response = await axios.post("http://localhost:8003/api/login", this.LoginData);
           const user_id = response.data.data.id;
           localStorage.setItem("user_id", user_id);
           this.$router.push({name:'home'});
