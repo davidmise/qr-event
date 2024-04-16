@@ -45,7 +45,7 @@ export default {
     fetchQrCodeData() {
       var qrCodeData = this.qrData
       // Assuming you're using axios for HTTP requests
-      axios.post('http://127.0.0.1:8003/api/generate-qrcode', {
+      axios.post('http://127.0.0.1:8000/api/generate-qrcode', {
           data: qrCodeData
           // Adjust data as needed
       })

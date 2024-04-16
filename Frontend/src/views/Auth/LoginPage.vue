@@ -10,11 +10,11 @@
               <form @submit.prevent="submit">
                 <div class="form-group first">
                   <label for="username">Username</label>
-                  <input type="text" class="form-control" placeholder="your-email@gmail.com" id="username" v-model="LoginData.email">
+                  <input type="text" class="form-control" placeholder="demouser@example.com" value="demouser@example.com" id="username" v-model="LoginData.email">
                 </div>
                 <div class="form-group last mb-3">
                   <label for="password">Password</label>
-                  <input type="password" class="form-control" placeholder="Your Password" id="password" v-model="LoginData.password">
+                  <input type="password" class="form-control" placeholder="demouser@123" value="demouser@123" id="password" v-model="LoginData.password">
                 </div>
                 <div class="d-flex mb-5 align-items-center">
                   <label class="control control--checkbox mb-0">
@@ -53,7 +53,7 @@
     methods: {
       async submit() {
         try {
-          const response = await axios.post("http://localhost:8003/api/login", this.LoginData);
+          const response = await axios.post("http://localhost:8000/api/login", this.LoginData);
           const user_id = response.data.data.id;
           localStorage.setItem("user_id", user_id);
           this.$router.push({name:'home'});
