@@ -31,7 +31,7 @@ class EventInfoController extends Controller
     public function store(Request $request)
     {
         //
-        $rules =[
+        $rules = [
             'event_name' => 'required|string',
             'event_subtitle' => 'nullable|string',
             'start_date' => 'required|date',
@@ -39,7 +39,7 @@ class EventInfoController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'nullable|date_format:H:i|after:start_time', // Ensure end time is after start time
         ];
-        $messages =[
+        $messages = [
             // name
             'event_name.required' => 'Name is required',
             'event_name.string' => 'Name must be a string',
@@ -49,43 +49,42 @@ class EventInfoController extends Controller
             'event_subtitle.max' => 'Subtitle must be less than 255 characters',
             'event_subtitle.required' => 'Subtitle is Required',
             // start date
-           'start_date.required' => 'Start Date is required',
-           'start_date.date' => 'Start Date must be a date',
+            'start_date.required' => 'Start Date is required',
+            'start_date.date' => 'Start Date must be a date',
             // end date
             'end_date.date' => 'End Date must be a date',
             'end_date.after' => 'End Date must be after Start Date',
             // start time
-           'start_time.required' => 'Start Time is required',
-           'start_time.date_format' => 'Start Time must be a date',
+            'start_time.required' => 'Start Time is required',
+            'start_time.date_format' => 'Start Time must be a date',
             // end time
             'end_time.required' => 'End Time is Required',
             'end_time.after' => 'End Time must be after Start Time',
         ];
 
-        $validator = Validator::make($request -> all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator -> fails())
-        {
-            return response() -> json([
-               'status' => false,
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
                 'errors' => $validator->errors()
             ], 422);
         }
         $event_info = new EventInfo([
-            'event_name' => $request -> input('event_name'),
-            'event_subtitle' => $request -> input('event_subtitle'),
-            'start_date' => $request -> input('start_date'),
-            'end_date' => $request -> input('end_date'),
-            'start_time' => $request -> input('start_time'),
-            'end_time' => $request -> input('end_time'),
+            'event_name' => $request->input('event_name'),
+            'event_subtitle' => $request->input('event_subtitle'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'start_time' => $request->input('start_time'),
+            'end_time' => $request->input('end_time'),
         ]);
         $event_info->save();
 
         return response()->json([
-               'status' => true,
-               'message' => 'Event Info created successfully',
-                'data' => $event_info
-            ],201);
+            'status' => true,
+            'message' => 'Event Info created successfully',
+            'data' => $event_info
+        ], 201);
     }
 
     /**

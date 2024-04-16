@@ -16,7 +16,6 @@ class AuthRegisteredUserController extends Controller
         //display all users
         $users = User::get();
         return $users;
-
     }
 
     /**
@@ -25,14 +24,14 @@ class AuthRegisteredUserController extends Controller
     public function create(Request $request)
     {
         //create a new user
-        $rules =[
+        $rules = [
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
-            'email' =>'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
         ];
 
-        $messages =[
+        $messages = [
             // name
             'name.required' => 'Name is required',
             'name.string' => 'Name must be a string',
@@ -49,29 +48,27 @@ class AuthRegisteredUserController extends Controller
             'email.unique' => 'Email is already taken',
         ];
 
-        $validator = Validator::make($request -> all(), $rules, $messages);
-        if($validator -> fails())
-        {
-            return response() -> json([
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
             ], 422);
         }
 
         $user = new User([
-            'name' => $request -> input('name'),
-            'username' => $request -> input('username'),
-            'email' => $request -> input('email'),
+            'name' => $request->input('name'),
+            'username' => $request->input('username'),
+            'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')), //  hash the password
         ]);
         $user->save();
 
-        return response() -> json([
-         'status' => true,
-         'message' => 'User created successfully',
+        return response()->json([
+            'status' => true,
+            'message' => 'User created successfully',
             'data' => $user
         ], 201);
-
     }
 
     /**
@@ -80,29 +77,29 @@ class AuthRegisteredUserController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request -> all();
-         return response()->json(
+        $data = $request->all();
+        return response()->json(
             [
                 'message' => " from data captured  by api succesfully",
-            ]);
+            ]
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show( User $user,  string $id)
+    public function show(User $user,  string $id)
     {
         $user = User::find($id);
 
-           if(!$user){
-                return response()->json(
-               [
-                   "status" => false,
-                   'message' => "User not found",
-               ]
-               );
-           }
-           else{
+        if (!$user) {
+            return response()->json(
+                [
+                    "status" => false,
+                    'message' => "User not found",
+                ]
+            );
+        } else {
             return response()->json(
                 [
                     "status" => true,
@@ -111,32 +108,31 @@ class AuthRegisteredUserController extends Controller
                 ]
 
             );
-           }
-
+        }
     }
     public function login(Request $request)
     {
         $rules = [
-            'email' =>'required|string|email|max:255',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
         ];
 
-        $messages =[
-        'email.required' => 'Email is required',
-        'email.string' => 'Email must be a string',
+        $messages = [
+            'email.required' => 'Email is required',
+            'email.string' => 'Email must be a string',
         ];
 
-        $validator = Validator::make($request -> all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator -> fails()) {
-            return response() -> json([
-             'status' => false,
-             'errors' => $validator->errors()
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
             ], 422);
         }
         $credentials = $request->validate([
             'email' => 'required|email|max:225|string',
-            'password' =>'required|string|min:8',
+            'password' => 'required|string|min:8',
         ]);
 
         if (auth()->attempt($credentials)) {
@@ -148,17 +144,15 @@ class AuthRegisteredUserController extends Controller
             // $token->save();
 
             return response()->json([
-             'status' => true,
-             'message' => 'User logged in successfully',
-             'data' => $user,
+                'status' => true,
+                'message' => 'User logged in successfully',
+                'data' => $user,
                 // 'token' => $tokenResult->accessToken
             ], 200);
-        }
-
-        else {
+        } else {
             return response()->json([
-            'status' => false,
-            'message' => 'Invalid credentials, user login Failed.',
+                'status' => false,
+                'message' => 'Invalid credentials, user login Failed.',
             ], 401);
         }
     }

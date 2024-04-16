@@ -16,7 +16,6 @@ class LocationController extends Controller
         //
         $locations = Location::all();
         return response()->json($locations);
-
     }
 
     /**
@@ -33,15 +32,15 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         //
-        $rules =[
-            'city' =>'required|string',
-            'country' =>'required|string',
-            'street' =>'required|string',
-            'postal_code' =>'required|string',
+        $rules = [
+            'city' => 'required|string',
+            'country' => 'required|string',
+            'street' => 'required|string',
+            'postal_code' => 'required|string',
             'google_map_url' => 'nullable|string',
         ];
 
-        $messages =[
+        $messages = [
             // city
             'city.required' => 'city is required',
             'city.string' => 'city must be a string',
@@ -63,31 +62,30 @@ class LocationController extends Controller
             'google_map_url.string' => 'google_map_url must be a string',
             // 'google_map_url.unique' => 'google_map_url is already ',
         ];
-        $validator = Validator::make($request -> all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator -> fails())
-        {
-            return response() -> json([
-               'status' => false,
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
                 'errors' => $validator->errors()
             ], 422);
         }
 
         $location = new Location([
-            'city' => $request -> input('city'),
-            'country' => $request -> input('country'),
-            'street' => $request -> input('street'),
-            'postal_code' => $request -> input('postal_code'),
-            'google_map_url' => $request -> input('google_map_url'),
+            'city' => $request->input('city'),
+            'country' => $request->input('country'),
+            'street' => $request->input('street'),
+            'postal_code' => $request->input('postal_code'),
+            'google_map_url' => $request->input('google_map_url'),
         ]);
 
         $location->save();
 
         return response()->json([
-               'status' => true,
-               'message' => 'Location created successfully',
-                'data' => $location
-            ],201);
+            'status' => true,
+            'message' => 'Location created successfully',
+            'data' => $location
+        ], 201);
     }
     /**
      * Display the specified resource.

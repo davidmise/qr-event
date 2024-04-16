@@ -33,12 +33,12 @@ class OrganizerController extends Controller
     public function store(Request $request)
     {
         //
-        $rules =[
+        $rules = [
             'name' => 'required|string',
             'email' => 'required|string|email|unique:organizers,email', // Unique email validation
             'phone' => 'nullable|string',
         ];
-        $messages =[
+        $messages = [
             // name
             'name.required' => 'Name is required',
             'name.string' => 'Name must be a string',
@@ -53,26 +53,26 @@ class OrganizerController extends Controller
         ];
 
 
-        $validator = Validator::make($request -> all(), $rules, $messages);
-        if($validator -> fails()){
-            return response() -> json([
-               'status' => false,
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
                 'errors' => $validator->errors()
             ], 422);
         }
 
         $organizer = new Organizer([
-            'name' => $request -> input('name'),
-            'email' => $request -> input('email'),
-            'phone' => $request -> input('phone'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
         ]);
         $organizer->save();
 
         return response()->json([
-               'status' => true,
-               'message' => 'Organizer created successfully',
-                'data' => $organizer
-            ],201);
+            'status' => true,
+            'message' => 'Organizer created successfully',
+            'data' => $organizer
+        ], 201);
     }
 
     /**
