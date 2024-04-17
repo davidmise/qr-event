@@ -7,17 +7,19 @@ use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\EventInfoController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\SocialLinkController;
 
 Route::post('/generate-qrcode', [QrCodeController::class, 'generateQrCode']);
 
 
 
 // register routes for user authentication
-Route::post('/register',[AuthRegisteredUserController::class, "create"]);
-Route::post('/login',[AuthRegisteredUserController::class, "login"]);
+Route::post('/register', [AuthRegisteredUserController::class, "create"]);
+Route::post('/login', [AuthRegisteredUserController::class, "login"]);
 
-Route::get('/users',[AuthRegisteredUserController::class, "index"]);
-Route::get('/user{id}',[AuthRegisteredUserController::class, "show"]);
+Route::get('/users', [AuthRegisteredUserController::class, "index"]);
+Route::get('/user{id}', [AuthRegisteredUserController::class, "show"]);
 
 /*
 |--------------------------------------------------------------------------
@@ -34,16 +36,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-    // EventInfo
-    Route::get('/all-events', [EventInfoController::class, 'index']);
-    Route::post('/create-event', [EventInfoController::class, 'store']);
-    // location
-    Route::get('/all-locations', [LocationController::class, 'index']);
-    Route::post('/create-location', [LocationController::class, 'store']);
-    // organizer
-    Route::get('/all-organizers', [OrganizerController::class, 'index']);
-    Route::post('/create-organizer', [OrganizerController::class, 'store']);
+// EventInfo
+Route::get('/all-events', [EventInfoController::class, 'index']);
+Route::post('/create-event', [EventInfoController::class, 'store']);
+// location
+Route::get('/all-locations', [LocationController::class, 'index']);
+Route::post('/create-location', [LocationController::class, 'store']);
+// organizer
+Route::get('/all-organizers', [OrganizerController::class, 'index']);
+Route::post('/create-organizer', [OrganizerController::class, 'store']);
+// ticket
+Route::get('/all-tickets', [TicketController::class, 'index']);
+Route::post('/create-ticket', [TicketController::class, 'store']);
+// social link
+Route::post('/social-links', 'App\Http\Controllers\SocialLinkController@storeOrUpdate'); // Assuming namespace is App\Http\Controllers
+Route::get('/all-social-links', 'App\Http\Controllers\SocialLinkController@index'); // Assuming namespace is App\Http\Controllers
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
-    // ... Add routes for other CRUD operations
+
+//  Route::middleware('auth:sanctum')->get('/user', function (Request $request)
+
+    //  ... Add routes for other CRUD operations
