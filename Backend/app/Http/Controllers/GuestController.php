@@ -1,0 +1,114 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Guest;
+use Illuminate\Support\Facades\Validator;
+
+class GuestController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+        $guests = Guest::with([
+            'attendances'
+        ])->get();
+        return response()->json($guests); // Assuming you have an 'index.blade.php' view for guests
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+        $rules = [
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:guests,email', // Unique email validation
+            'phone_number' => 'nullable|numeric|integer',
+            'guest_attendance_id'=>'nullable|existing',
+        ];
+        $messages = [
+            // name
+            'name.required' => 'Name is required',
+            'name.string' => 'Name must be a string',
+            'name.max' => 'Name must be less than 255 characters',
+            // email
+            'email.required' => 'Email is required',
+            'email.email' => 'Invalid email address',
+            'email.unique' => 'Email is already taken',
+            // phone_number
+            'phone_number.numeric' => 'Phone must be a string',
+            'phone_number.max' => 'Phone must be less than 255 characters',
+            // guest_attendance_id
+            // 'guest_attendance_id.required' => 'guest_attendance_id is required',
+            'guest_attendance_id.exists' => 'guest_attendance_id does not exist',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        $guest = new Guest([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone_number' => $request->input('phone_number'),
+        ]);
+        $guest->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Guest created successfully',
+            'data' => $guest
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}

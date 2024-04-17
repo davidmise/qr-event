@@ -9,6 +9,8 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\GuestAttendanceController;
 
 
 Route::post('/generate-qrcode', [QrCodeController::class, 'generateQrCode']);
@@ -54,8 +56,15 @@ Route::post('/social-links', 'App\Http\Controllers\SocialLinkController@storeOrU
 Route::get('/all-social-links', 'App\Http\Controllers\SocialLinkController@index'); // Assuming namespace is App\Http\Controllers
 // media
 Route::post('/media', [MediaController::class, 'store']);
+Route::get('/all-media', [MediaController::class, 'index']);
+// guest
+Route::post('/guest', [GuestController::class, 'store']);
+Route::get('/all-guests', [GuestController::class, 'index']);
+// Route::get('/guest{id}', [GuestController::class,'show']);
+// Route::put('/guest{id}', [GuestController::class, 'update']);
+// Route::delete('/guest{id}', [GuestController::class, 'destroy']);
 
-
-//  Route::middleware('auth:sanctum')->get('/user', function (Request $request)
-
-    //  ... Add routes for other CRUD operations
+// guest attendance
+Route::post('/guest-attendance', [GuestAttendanceController::class, 'store']);
+Route::get('/all-guest-attendances', [GuestAttendanceController::class, 'index']);
+// Route::get('/guest-attendance{id}', [GuestAttendanceController::class,'show']);
