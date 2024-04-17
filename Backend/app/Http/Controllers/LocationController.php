@@ -38,6 +38,7 @@ class LocationController extends Controller
             'street' => 'required|string',
             'postal_code' => 'required|string',
             'google_map_url' => 'nullable|string',
+            'event_info_id'=>'nullable|string',
         ];
 
         $messages = [
@@ -61,6 +62,10 @@ class LocationController extends Controller
             // 'google_map_url.required' => 'google_map_url is required',
             'google_map_url.string' => 'google_map_url must be a string',
             // 'google_map_url.unique' => 'google_map_url is already ',
+            // event_info_id
+            'event_info_id.required' => 'event_info_id is required',
+            'event_info_id.unique' => 'event_info_id must be a unique',
+            // 'event_info_id.max' => 'event_info_id must be less than 255 characters',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -77,6 +82,7 @@ class LocationController extends Controller
             'street' => $request->input('street'),
             'postal_code' => $request->input('postal_code'),
             'google_map_url' => $request->input('google_map_url'),
+            'event_info_id' => $request->input('event_info_id'),
         ]);
 
         $location->save();

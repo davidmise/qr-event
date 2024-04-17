@@ -13,7 +13,13 @@ class EventInfoController extends Controller
      */
     public function index()
     {
-        $events = EventInfo::all();
+        $events = EventInfo::with([
+        'Location',
+        'Organizer',
+        'SocialLink',
+        'Ticket',
+        'media'
+        ])->get();
         return response()->json($events);
     }
 
@@ -38,6 +44,10 @@ class EventInfoController extends Controller
             'end_date' => 'nullable|date|after:start_date', // Ensure end date is after start date
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'nullable|date_format:H:i|after:start_time', // Ensure end time is after start time
+            'location_id' => 'required|exists:locations,id',
+            'organizer_id' => 'required|exists:users,id',
+            'ticket_id' => 'required|exists:tickets,id',
+           'media_id' => 'required|exists:medias,id',
         ];
         $messages = [
             // name
@@ -60,6 +70,18 @@ class EventInfoController extends Controller
             // end time
             'end_time.required' => 'End Time is Required',
             'end_time.after' => 'End Time must be after Start Time',
+            // location_id
+            'location_id.required' => 'Location is required',
+            'location_id.exists' => 'Location does not exist',
+            // organizer_id
+            'organizer_id.required' => 'Organizer is required',
+            'organizer_id.exists' => 'Organizer does not exist',
+            // ticket_id
+            'ticket_id.required' => 'Ticket is required',
+            'ticket_id.exists' => 'Ticket does not exist',
+            // media_id
+           'media_id.required' => 'Media is required',
+           'media_id.exists' => 'Media does not exist',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -77,6 +99,10 @@ class EventInfoController extends Controller
             'end_date' => $request->input('end_date'),
             'start_time' => $request->input('start_time'),
             'end_time' => $request->input('end_time'),
+            'location_id' => $request->input('location_id'),
+            'organizer_id' => $request->input('organizer_id'),
+            'ticket_id' => $request->input('ticket_id'),
+            'media_id' => $request->input('media_id'),
         ]);
         $event_info->save();
 

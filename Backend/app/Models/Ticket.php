@@ -11,6 +11,9 @@ class Ticket extends Model
     protected $fillable = [
         'price',
         'event_capacity',
+        'event_info_id'
     ];
-
+    public function event_info(){
+        return $this->hasOne(EventInfo::class);
+    }
 }

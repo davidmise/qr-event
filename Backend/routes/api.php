@@ -8,7 +8,8 @@ use App\Http\Controllers\EventInfoController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\TicketController;
-use App\Http\Controllers\SocialLinkController;
+use App\Http\Controllers\MediaController;
+
 
 Route::post('/generate-qrcode', [QrCodeController::class, 'generateQrCode']);
 
@@ -51,7 +52,8 @@ Route::post('/create-ticket', [TicketController::class, 'store']);
 // social link
 Route::post('/social-links', 'App\Http\Controllers\SocialLinkController@storeOrUpdate'); // Assuming namespace is App\Http\Controllers
 Route::get('/all-social-links', 'App\Http\Controllers\SocialLinkController@index'); // Assuming namespace is App\Http\Controllers
-
+// media
+Route::post('/media', [MediaController::class, 'store']);
 
 
 //  Route::middleware('auth:sanctum')->get('/user', function (Request $request)

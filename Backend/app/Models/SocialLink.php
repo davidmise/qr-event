@@ -14,7 +14,9 @@ class SocialLink extends Model
         'instagram',
         'facebook',
         'website',
+        'event_info_id'
     ];
-
-    // No need for explicit casting as fillable fields are assumed to be strings
+    public function event_info(){
+        return $this->hasOne(EventInfo::class);
+    }
 }

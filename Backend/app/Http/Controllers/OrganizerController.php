@@ -37,6 +37,7 @@ class OrganizerController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|email|unique:organizers,email', // Unique email validation
             'phone' => 'nullable|string',
+            'event_info_id'=>'nullable|string',
         ];
         $messages = [
             // name
@@ -50,6 +51,9 @@ class OrganizerController extends Controller
             // phone
             'phone.string' => 'Phone must be a string',
             'phone.max' => 'Phone must be less than 255 characters',
+            // event_info_id
+            'event_info_id.required' => 'event_info_id is required',
+            'event_info_id.unique' => 'event_info_id must be a unique',
         ];
 
 
@@ -65,6 +69,7 @@ class OrganizerController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
+            'event_info_id' => $request->input('event_info_id'),
         ]);
         $organizer->save();
 
