@@ -10,9 +10,10 @@
                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                                     alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
                                 <h5>Organizer</h5>
-                                <p>Web Designer</p>
+                                <p>{{ organizer.name }}</p>
+                                <p>{{ location.city }}</p>
                                 <i class="far fa-edit mb-5"></i>
-                                <div class="car">
+                                <div class="car" v-if="qrCodeVisible">
                                     <img :src="qrCode" alt="QR Code" width="100px">
                                 </div>
                             </div>
@@ -20,12 +21,14 @@
                                 <div class="card-body p-4">
                                     <h6>Information</h6>
                                     <hr class="mt-0 mb-4">
+
                                     <!-- pull evnet info -->
                                     <div class="row pt-2">
-
+                                        <p>{{ organizer.phone }}</p>
+                                        <!-- <p>{{ organizer.email }}</p> -->
                                     </div>
                                     <div class="row pt-1">
-                                        <div class="row gy-3 overflow-hidden">
+                                        <div class="row gy-2 overflow-hidden">
                                             <form @submit.prevent="fetchQrCodeData">
                                                 <div class="col-12">
                                                     <div class="form-floating mb-3">
@@ -48,7 +51,7 @@
                                                 <div class="col-12">
                                                     <div class="form-floating mb-3">
                                                         <input type="number"
-                                                            class="form-control border-0 border-bottom rounded-0"
+                                                            class="form-control border-0  border-bottom rounded-0"
                                                             name="number" id="number" value="" placeholder="0754323421"
                                                             v-model="qrData.Guest.phone_number" required>
                                                         <label for="number" class="form-label">Pone Number:</label>
@@ -84,6 +87,15 @@ import axios from "axios"
 export default {
     data() {
         return {
+            qrCodeVisible: false,
+
+            eventInfo: '',
+            location: '',
+            organizer: '',
+            media: '',
+            ticket: '',
+            social_Links: '',
+
             qrCode: '',
             qrData: {
                 Guest: {
@@ -94,6 +106,9 @@ export default {
             }
         }
     },
+    created() {
+        this.pullEventInfo();
+    },
     methods: {
         async fetchQrCodeData() {
             console.log('cliked');
@@ -101,15 +116,23 @@ export default {
             try {
                 const response = await axios.post('http://127.0.0.1:8000/api/generate-qrcode', this.qrData.Guest);
                 this.qrCode = 'data:image/svg+xml;base64,' + btoa(response.data.qr_code);
+                this.qrCodeVisible = true;
                 console.log(this.qrCode);
             } catch (error) {
                 console.error('Error fetching QR code:', error);
             }
         },
-        async pullEventInfo(){
+        async pullEventInfo() {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/pull-event-info{}');
-                console.log(response.data);
+                const response = await axios.get('http://127.0.0.1:8000/api/pull-event-info16');
+                this.eventInfo = response.data.data;
+                this.location = response.data.data.location;
+                this.organizer = response.data.data.organizer;
+                this.media = response.data.data.media;
+                this.ticket = response.data.data.ticket;
+                this.social_Links = response.data.data.social_Links;
+                console.log(this.eventInfo, this.location, this.organizer, this.media,);
+
             } catch (error) {
                 console.error('Error fetching QR code:', error);
             }
@@ -120,6 +143,12 @@ export default {
 </script>
 
 <style scoped>
+input:focus {
+    outline: none;
+    /* Remove the default focus ring */
+    /* Add any other styling you want for the focused state */
+}
+
 .gradient-custom {
     /* fallback for old browsers */
     background: #f6d365;
