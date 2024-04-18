@@ -67,6 +67,17 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/ContactsView.vue')
     },
+    
+    {
+      path: '/register-guest',
+      name: 'register-guest',
+      meta: { requiresAuth: true },
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/RegisterGuest.vue')
+    },
+
 
      // Catch-all route for 404 Not Found
      {

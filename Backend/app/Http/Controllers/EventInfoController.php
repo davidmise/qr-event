@@ -118,8 +118,41 @@ class EventInfoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|integer|exists:event_infos,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $event_info = EventInfo::with([
+            'Location',
+            'Organizer',
+            'SocialLink',
+            'Ticket',
+            'media'
+        ])->find($id);
+
+        if (!$event_info) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Event Info not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            // 'event_info' => "event info found",
+            'data' => $event_info
+        ], 200);
     }
+
+
+
 
     /**
      * Show the form for editing the specified resource.

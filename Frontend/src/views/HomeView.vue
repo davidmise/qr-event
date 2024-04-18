@@ -1,20 +1,20 @@
 <script setup>
-  import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
-  import { sidebarWidth } from '@/components/Bars/Sidebar/state';
-  import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-  import axios from "axios"
+import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
+import { sidebarWidth } from '@/components/Bars/Sidebar/state';
+import TopBar from '@/components/Bars/TopBar/TopBar.vue';
+import axios from "axios"
 </script>
 
 
 <template>
   <div>
-    <Sidebar/>
+    <Sidebar />
     <div :style="{ marginLeft: sidebarWidth, transition: 'margin 0.8s' }">
-      <TopBar/>
+      <TopBar />
       <main class="py-6 bg-surface-secondary">
         <div class="container-fluid">
-            <main class="py-6 bg-surface-secondary">
-              <div>
+          <main class="py-6 bg-surface-secondary">
+            <div>
               <label for="guestName">Name:</label>
               <input type="text" id="guestName" v-model="qrData.Guest.name">
               <br>
