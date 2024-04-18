@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // EventInfo
 Route::get('/all-events', [EventInfoController::class, 'index']);
 Route::post('/create-event', [EventInfoController::class, 'store']);
-Route::get('/event{id}', [EventInfoController::class,'show']);
+Route::get('/pull-event-info{id}', [EventInfoController::class,'show']);
 // location
 Route::get('/all-locations', [LocationController::class, 'index']);
 Route::post('/create-location', [LocationController::class, 'store']);

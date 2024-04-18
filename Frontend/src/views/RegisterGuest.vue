@@ -20,6 +20,10 @@
                                 <div class="card-body p-4">
                                     <h6>Information</h6>
                                     <hr class="mt-0 mb-4">
+                                    <!-- pull evnet info -->
+                                    <div class="row pt-2">
+
+                                    </div>
                                     <div class="row pt-1">
                                         <div class="row gy-3 overflow-hidden">
                                             <form @submit.prevent="fetchQrCodeData">
@@ -57,7 +61,7 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                           
+
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-start mt-3">
@@ -102,7 +106,14 @@ export default {
                 console.error('Error fetching QR code:', error);
             }
         },
-
+        async pullEventInfo(){
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/pull-event-info{}');
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching QR code:', error);
+            }
+        }
 
     }
 }
