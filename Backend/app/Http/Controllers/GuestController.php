@@ -40,6 +40,7 @@ class GuestController extends Controller
             'email' => 'required|string|email|unique:guests,email', // Unique email validation
             'phone_number' => 'nullable|numeric|integer',
             'guest_attendance_id'=>'nullable|existing',
+            'qr_code' => 'nullable|string',
         ];
         $messages = [
             // name
@@ -56,6 +57,9 @@ class GuestController extends Controller
             // guest_attendance_id
             // 'guest_attendance_id.required' => 'guest_attendance_id is required',
             'guest_attendance_id.exists' => 'guest_attendance_id does not exist',
+            // qr_code
+
+
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

@@ -51,6 +51,7 @@ Route::post('/create-organizer', [OrganizerController::class, 'store']);
 // ticket
 Route::get('/all-tickets', [TicketController::class, 'index']);
 Route::post('/create-ticket', [TicketController::class, 'store']);
+Route::put('/update-ticket/{id}', [TicketController::class, 'update']);
 // social link
 Route::post('/social-links', 'App\Http\Controllers\SocialLinkController@storeOrUpdate'); // Assuming namespace is App\Http\Controllers
 Route::get('/all-social-links', 'App\Http\Controllers\SocialLinkController@index'); // Assuming namespace is App\Http\Controllers
