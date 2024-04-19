@@ -22,14 +22,9 @@ class EventInfoController extends Controller
      */
     public function index()
     {
-        $events = EventInfo::with([
-            'Location',
-            'Organizer',
-            'SocialLink',
-            'Ticket',
-            'media'
-        ])->get();
-        return response()->json($events);
+        $events = EventInfo::with('Location')->with('Organizer')->with('SocialLink')->with('media')->with('ticket')->get();
+        return $events;
+
     }
 
     /**

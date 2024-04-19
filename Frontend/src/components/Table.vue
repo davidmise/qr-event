@@ -13,6 +13,7 @@
               <th scope="col">Event Info</th>
               <th scope="col">Start Date</th>
               <th scope="col">Pricing</th>
+              <th scope="col">Poster</th>
             </tr>
           </thead>
           <tbody>
@@ -20,13 +21,13 @@
               <td class="text-heading font-semibold" >{{ index + 1 }}</td>
               <td>{{ item.info }}</td>
               <td>{{ item.startDate}}</td>
-              <td><img :src="item.image" alt="Item Image"></td>
+              <td>${{ item.price }}</td>
+              <td><img :src="item.poster" alt="Item Image" ></td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-    
+    </div> 
   </template>
   
   <script>

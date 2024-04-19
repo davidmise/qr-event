@@ -1,111 +1,129 @@
 <template>
-  <div>
-    <Sidebar/>
-    <div :style="{ marginLeft: sidebarWidth, transition: 'margin 0.8s' }">
-      <TopBar/>
-      <main class="py-6 bg-surface-secondary">
+    <div>
+      <Sidebar />
+      <div :style="{ marginLeft: sidebarWidth, transition: 'margin 0.8s' }">
+        <TopBar />
+        <main class="py-6 bg-surface-secondary">
           <div class="container-fluid">
             <p>Events List</p>
             <main class="py-6 bg-surface-secondary">
               <div class="container-fluid">
                 <!-- Table -->
                 <h2 class="mb-5">All Events</h2>
-                <Tabled :displayedItems="displayedItems" />
-              </div>
-            </main>    
+                <div class="card shadow border-0 mb-7">
+                  <div class="card-header">
+                    <h5 class="mb-0">Applications</h5>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover table-nowrap">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col" class="fw-bold">#</th>
+                          <th scope="col" class="fw-bold">Event Name</th>
+                          <th scope="col" class="fw-bold">Event Subtitle</th>
+                          <th scope="col" class="fw-bold">Start Date</th>
+                          <th scope="col" class="fw-bold">Start Time</th>
+                          <th scope="col" class="fw-bold">Ticket Price</th>
+                          <th scope="col" class="fw-bold">Poster</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(event, index) in paginatedEvents" :key="event.id">
+                          <td class="text-heading font-semibold">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
+                          <td>{{ event.event_name }}</td>
+                          <td>{{ event.event_subtitle }}</td>
+                          <td>{{ event.start_date }}</td>
+                          <td>{{ event.start_time }}</td>
+                          <td>{{ event.ticket ? event.ticket.price : 'N/A' }}</td>
+                          <td><img v-if="event.media && event.media.poster" :src="event.media.poster" alt="Poster" style="max-width: 100px;">
+                            <span v-else>N/A</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+               <!-- Pagination Component -->
+              <Paginate :totalItems="events.length" :itemsPerPage="itemsPerPage" @page-changed="handlePageChange" />
+              <div class="mt-3">
+                <button class="btn btn-primary me-2" @click="previousPage" :disabled="currentPage === 1">Previous</button>
+                <button class="btn btn-primary" @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+              </div></div>  
+            </main>
           </div>
-          <div class="row">
-            <div class="container col-6 mt-5 px-5">
-              <label for="itemCount">Number of Items: </label>
-              <input type="number" v-model="itemCount" id="itemCount">
-              <label for="itemsPerPage">Items Per Page:</label>
-              <select v-model="itemsPerPage" @change="handleItemsPerPageChange">
-                <option v-for="option in itemsPerPageOptions" :key="option" :value="option">{{ option }}</option>
-              </select>
-            </div>
-            <div class="pagination-container container mt-5  col-6">
-              <Pagination :totalItems="totalItems" :itemsPerPage="itemsPerPage" @page-changed="handlePageChange" />
-            </div>
-          </div>
-          
-      </main>
-      <RouterView />
+        </main>
+        <RouterView />
+      </div>
     </div>
-  </div>
-  <!-- <FooterVue/> -->
-</template>
-
-<script>
-  // import FooterVue from '@/components/Footer.vue';
+  </template>
+  
+  <script>
   import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
   import { sidebarWidth } from '@/components/Bars/Sidebar/state';
   import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-  import Pagination from '@/components/Pagination.vue'
-  import Tabled from '@/components/Table.vue' // Import the Table component
-
+  import axios from "axios";
+  
   export default {
     components: {
       Sidebar,
       TopBar,
-      Pagination,
-      Tabled, // Add the Table component to your components,
-      // FooterVue
-  },
+    },
     data() {
       return {
-        itemCount: 20,
-        items: [],
-        displayedItems: [],
+        events: [],
         sidebarWidth,
-        
+        itemCount: 20,
         currentPage: 1,
-        totalItems: 0,
         itemsPerPage: 10,
-        itemsPerPageOptions: [5, 10, 20, 50]
       }
     },
-    watch: {
-      itemCount() {
-        this.totalItems = this.itemCount;
-        this.generateItems();
-      },
-      itemsPerPage() {
-        this.generateItems();
-      }
+    created() {
+      this.fetchEventInfo();
     },
     methods: {
-      generateItems() {
-        this.items = [];
-        for (let i = 0; i < this.itemCount; i++) {
-          this.items.push({
-            info: `Description for item ${i + 1}`,
-            startDate: `Start Date ${i + 1}`,
-            image: `https://via.placeholder.com/150?text=Item${i + 1}`
-          });
+      async fetchEventInfo() {
+        try {
+          const response = await axios.get('http://127.0.0.1:8000/api/all-events');
+          this.events = response.data;
+          console.log(this.events);
+        } catch (error) {
+          console.error('Error fetching Event Info:', error);
         }
-
-        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        const endIndex = startIndex + this.itemsPerPage;
-        this.displayedItems = this.items.slice(startIndex, endIndex);
       },
-      handlePageChange() {
-        this.generateItems();
-      },
-      handleItemsPerPageChange() {
-        this.currentPage = 1;
-        this.generateItems();
+      handlePageChange(page) {
+      this.currentPage = page;
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
       }
     },
-    mounted() {
-      this.totalItems = this.itemCount;
-      this.generateItems();
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+  },
+  computed: {
+    paginatedEvents() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.events.slice(startIndex, endIndex);
+    },
+    formattedEvents() {
+      return this.events.map(event => ({
+        ...event,
+        ticketPrice: event.ticket ? event.ticket.price : 'N/A', // Check for null ticket object
+      }));
+    },
+    totalPages() {
+      return Math.ceil(this.events.length / this.itemsPerPage);
     }
-  };
-</script>
-
-<style>
-  .pagination-container {
-    display: flex;
-    justify-content: center;
   }
-</style>
+};
+  </script>
+  
+  <style>
+    /* Your existing styles */
+  </style>
+  
