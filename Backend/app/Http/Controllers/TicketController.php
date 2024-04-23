@@ -35,7 +35,7 @@ class TicketController extends Controller
     {
         //
         $this->validate($request, [
-            'price' => 'required|numeric|min:0.01', // Minimum price of 0.01
+            'price' => 'required|integer|min:0.01', // Minimum price of 0.01
             'event_capacity' => 'required|integer|min:1', // Minimum capacity of 1
         ]);
 
@@ -58,26 +58,26 @@ class TicketController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-        $ticket = Ticket::find($id);
+    // public function edit(string $id)
+    // {
+    //     //
+    //     $ticket = Ticket::find($id);
 
-        // Check if ticket exists (optional)
-        if (!$ticket) {
-            return response()->json(['message' => 'Ticket not found'], 404);
-        }
+    //     // Check if ticket exists (optional)
+    //     if (!$ticket) {
+    //         return response()->json(['message' => 'Ticket not found'], 404);
+    //     }
 
-        return response()->json([
-            'message'=> 'Ticket updated successfully',
-            'data' => $ticket
-        ]);
-    }
+    //     return response()->json([
+    //         'message'=> 'Ticket updated successfully',
+    //         'data' => $ticket
+    //     ]);
+    // }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $ticket = Ticket::find($id);
 
@@ -88,12 +88,13 @@ class TicketController extends Controller
 
         // Validation rules (adjust as needed)
         $this->validate($request, [
-            'price' => 'nullable|numeric|min:0.01',
+            'price' => 'nullable|integer|min:0.01',
             'event_capacity' => 'nullable|integer|min:1',
         ]);
 
         // Update the ticket with request data
         $ticket->update($request->all());
+        $ticket->save();
 
         return response()->json([
             'status' => true,

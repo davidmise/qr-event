@@ -262,11 +262,12 @@ export default {
     async createEvent() {
       try {
         const response = await axios.post('http://localhost:8000/api/create-event', this.event_info);
-        const event_id = response.data.data.id;
+        const event_id = response.data.data.event_info.id;
         console.log(response.data.data);
         localStorage.setItem("event_id", event_id);
+        console.log('this event id is: ' + event_id);
         this.resetForm();
-        // this.$router.push('/events')
+        this.$router.push({name: 'AllEvents'});
       }
       catch (error) {
         console.log(error);

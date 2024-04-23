@@ -9,27 +9,82 @@
                 </time>
             </section>
             <section class="card-cont">
-                <h3>Title</h3>
-                <small>Description</small>
+                <h3>{{ eventName }}</h3>
+                <small>{{ eventSubtitle }}</small>
                 
                 <div class="even-date">
                     <i class="bi bi-calendar"></i>
                     <time>
-                        <span>2024-04-17</span>
-                        <span>08:55pm to 12:00 am</span>
+                        <span> {{ eventDate }} </span>
+                        <span>{{ eventStartTime}} to {{ eventEndTime }}</span>
                     </time>
                 </div>
                 <div class="even-info">
                     <i class="fa fa-map-marker"></i>
                     <p>
-                        nexen square for people australia, sydney
+                       {{street}}, {{city}}, {{country}}
                     </p>
                 </div>
-                <a href="#">1,599</a>
+                <a href="#">{{ eventPrice }}</a>
             </section>
         </article>
     </div>
 </template>
+
+<script>
+import axios from "axios";
+
+export default {
+  props: ['eventId'],
+
+  data() {
+    return {
+    //   sidebarWidth,
+      ticketId:null,
+      eventInfo: null,
+      eventName:'',
+      eventSubtitle:'',
+      eventDate:'',
+      eventStartTime:'',
+      eventEndTime:'',
+      city:'',
+      country:'',
+      street:'',
+      eventPrice:'',
+    };
+  },
+  created() {
+    const eventId = this.$route.params.eventId;
+    this.pullEventInfo(eventId);
+  },
+
+  methods: {
+    async pullEventInfo(eventId) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
+        this.eventInfo = response.data.data;
+        this.eventName = response.data.data.event_name;
+        this.eventSubtitle = response.data.data.event_subtitle;
+        this.eventDate = response.data.data.start_date;
+        this.eventStartTime = response.data.data.start_time;
+        this.eventEndTime = response.data.data.end_time;
+        this.city = response.data.data.location.city;
+        this.country = response.data.data.location.country;
+        this.street = response.data.data.location.street;
+        this.eventPrice = response.data.data.ticket.price;
+        this.ticketId = response.data.data.ticket.id;
+
+        console.log(response.data.data);
+        console.log(this.ticket)
+      } catch (error) {
+        console.error('Error fetching event info:', error);
+        // Optionally, display an error message to the user
+      }
+    },
+  },
+};
+
+</script>
 
 <!-- @import url('https://fonts.googleapis.com/css?family=Oswald');/ -->
 <style lang="css" scoped>

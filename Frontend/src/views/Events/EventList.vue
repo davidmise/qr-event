@@ -29,7 +29,9 @@
                       </thead>
                       <tbody>
                         <tr v-for="(event, index) in paginatedEvents" :key="event.id">
-                          <td class="text-heading font-semibold">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
+                          <td class="text-heading font-semibold">
+                            <router-link :to="{ name: 'viewEvent', params: { eventId: event.id } }">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</router-link>
+                          </td>
                           <td>{{ event.event_name }}</td>
                           <td>{{ event.event_subtitle }}</td>
                           <td>{{ event.start_date }}</td>
@@ -79,13 +81,15 @@
     },
     created() {
       this.fetchEventInfo();
+      console.log( 'current event id',localStorage.getItem("event_id"))
     },
     methods: {
       async fetchEventInfo() {
         try {
           const response = await axios.get('http://127.0.0.1:8000/api/all-events');
-          this.events = response.data;
-          console.log(this.events);
+          this.events = response.data; 
+          console.log( 'events',this.events)
+          // console.log( 'event id ', this.event.id)
         } catch (error) {
           console.error('Error fetching Event Info:', error);
         }

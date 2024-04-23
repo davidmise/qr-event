@@ -31,7 +31,7 @@ const router = createRouter({
     },
 
     {
-      path: '/events/view',
+      path: '/events/view:eventId',
       name: 'viewEvent',
       meta: { requiresAuth: true },
       // route level code-splitting

@@ -1,8 +1,9 @@
 <script setup>
-  import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
-  import { sidebarWidth } from '@/components/Bars/Sidebar/state';
-  import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-  import EventsNav from '@/components/Events/EventsNav.vue';
+import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
+import { sidebarWidth } from '@/components/Bars/Sidebar/state';
+import TopBar from '@/components/Bars/TopBar/TopBar.vue';
+import EventsNav from '@/components/Events/EventsNav.vue';
+import axios from "axios";
 </script>
 
 <template>
@@ -12,55 +13,48 @@
       <TopBar/>
       <main class="py-6 bg-surface-secondary">
         <div class="container-fluid">
-            <main class="py-6 bg-surface-secondary">
-              <div class="container mb-5">
-                <h1>Event Name</h1>
-                <h6 class="text-secondary">Subtittle of the Event</h6>
-                <p>created at <span class="text-primary">date of creation</span></p>
-                <button class="btn  btn-outline-primary rounded rounded-5">valid/expired</button>
-              </div>
-              <!-- <hr> -->
-              <EventsNav/>
-            </main>
-          </div>
-        </main>
+          <main class="py-6 bg-surface-secondary">
+            <div class="container mb-5" v-if="eventInfo">
+              <h1>{{ eventInfo.event_name }}</h1>
+              <h6 class="text-secondary">{{ eventInfo.event_subtitle }}</h6>
+              <p>Created at <span class="text-primary">{{ eventInfo.start_date }}</span></p>
+              <button class="btn btn-outline-primary rounded rounded-5">Valid/Expired</button>
+            </div>
+            <!-- <hr> -->
+            <EventsNav/>
+          </main>
+        </div>
+      </main>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-// import EventsNav from '../../components/Events/EventsNav.vue';
 export default {
+  props: ['eventId'],
   data() {
     return {
-      qrCode: '',
-      qrData: ''
+      sidebarWidth,
+      eventInfo: null,
     };
   },
-  mounted() {
-    // Assuming you have a method to fetch QR code data from the backend
-  //   this.fetchQrCodeData();
-  console.log(this.qrData)
+  created() {
+    const eventId = this.$route.params.eventId;
+
+      this.pullEventInfo(eventId);
+    
   },
   methods: {
-    fetchQrCodeData() {
-      var qrCodeData = this.qrData
-      // Assuming you're using axios for HTTP requests
-      axios.post('http://127.0.0.1:8000/api/generate-qrcode', {
-          data: qrCodeData
-          // Adjust data as needed
-      })
-      .then(response => {
-        // Assuming the response contains the SVG QR code
-        this.qrCode = 'data:image/svg+xml;base64,' + btoa(response.data.qr_code);
-        console.log(this.qrCode);
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching QR code:', error);
-      });
-    }
-  }
+    async pullEventInfo(eventId) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
+        this.eventInfo = response.data.data;
+        console.log(response.data.data);
+      } catch (error) {
+        console.error('Error fetching event info:', error);
+        // Optionally, display an error message to the user
+      }
+    },
+  },
 };
 </script>
