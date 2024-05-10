@@ -34,13 +34,14 @@
                 <Attendance class="slide-left"/>
             </div>
             <div v-else>
-                <BookingSettings class="slide-left"/>
+                <BookingSettings class="slide-left" :eventId="eventId"/>
             </div>
         </div>
     </div>
 </template>
 <script>
 export default {
+    props:['eventId'],
     data(){
         return{
             currentService: null

@@ -18,10 +18,10 @@ class EventInfo extends Model
         'end_date',
         'start_time',
         'end_time',
-        'location_id',
-        'organizer_id',
-        'ticket_id',
-        'media_id'
+        // 'location_id',
+        // 'organizer_id',
+        // 'ticket_id',
+        // 'media_id'
     ];
 
     public function location()
@@ -48,5 +48,13 @@ class EventInfo extends Model
         return $this->hasOne(Media::class);
     }
 
+    public function attendance()
+    {
+        return $this->hasOne(GuestAttendance::class);
+    }
+
+    public function guest(){
+        return $this->hasMany(Guest::class);
+    }
 
 }

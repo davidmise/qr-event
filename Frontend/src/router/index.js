@@ -42,7 +42,7 @@ const router = createRouter({
     {
       path: '/events/all',
       name: 'AllEvents',
-      meta: { requiresAuth: true },
+      // meta: { requiresAuth: true },
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -69,9 +69,10 @@ const router = createRouter({
     },
     
     {
-      path: '/register-guest',
+      path: '/register-guest/:eventId',
       name: 'register-guest',
       meta: { requiresAuth: true },
+      props:true,
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.

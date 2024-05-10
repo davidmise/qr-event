@@ -5,7 +5,6 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue';
 import EventsNav from '@/components/Events/EventsNav.vue';
 import axios from "axios";
 </script>
-
 <template>
   <div>
     <Sidebar/>
@@ -21,14 +20,13 @@ import axios from "axios";
               <button class="btn btn-outline-primary rounded rounded-5">Valid/Expired</button>
             </div>
             <!-- <hr> -->
-            <EventsNav/>
+            <EventsNav :eventId="eventId"/>
           </main>
         </div>
       </main>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   props: ['eventId'],
@@ -40,9 +38,7 @@ export default {
   },
   created() {
     const eventId = this.$route.params.eventId;
-
-      this.pullEventInfo(eventId);
-    
+      this.pullEventInfo(eventId);  
   },
   methods: {
     async pullEventInfo(eventId) {

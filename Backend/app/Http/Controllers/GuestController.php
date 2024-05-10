@@ -41,6 +41,7 @@ class GuestController extends Controller
             'phone_number' => 'nullable|numeric|integer',
             'guest_attendance_id'=>'nullable|existing',
             'qr_code' => 'nullable|string',
+            'event_info_id' => 'required'
         ];
         $messages = [
             // name
@@ -57,6 +58,13 @@ class GuestController extends Controller
             // guest_attendance_id
             // 'guest_attendance_id.required' => 'guest_attendance_id is required',
             'guest_attendance_id.exists' => 'guest_attendance_id does not exist',
+            // event_info_id
+            'event_info_id.required' => 'event_info_id is required',
+            // 'event_info_id.exists' => 'event_info_id does not exist',
+            // qr_code
+            // 'qr_code.string' => 'qr_code must be a string',
+            // 'qr_code.max' => 'qr_code must be less than 255 characters',
+            'qr_code.unique' => 'qr_code is already taken',
             // qr_code
 
 
@@ -74,6 +82,7 @@ class GuestController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'phone_number' => $request->input('phone_number'),
+            'event_info_id' => $request->input('event_info_id')
         ]);
         $guest->save();
 

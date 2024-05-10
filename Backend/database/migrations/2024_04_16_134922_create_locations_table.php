@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('street');
             $table->string('postal_code');
             $table->string('google_map_url')->nullable();
+            $table->unsignedBigInteger('event_info_id')->nullable();
+            $table->foreign('event_info_id')->references('id')->on('event_infos');
+            //
             $table->timestamps();
         });
     }

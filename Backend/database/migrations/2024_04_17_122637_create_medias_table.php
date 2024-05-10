@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medias', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('event_info_id')->nullable();
             $table->foreign('event_info_id')->references('id')->on('event_infos');
             $table->string('poster')->required();
             $table->string('banner')->nullable();
             $table->string('logo')->nullable();
+            //
             $table->timestamps();
         });
     }

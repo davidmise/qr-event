@@ -21,13 +21,16 @@
             <li>
                 <RouterLink class="dropdown-item" to="/profile"> <i class="material-icons">person</i> Profile</RouterLink>
             </li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
             <li><hr class="dropdown-divider"></li>
             <li>
               
-              <RouterLink @click="handleLogout" class="dropdown-item" to="/auth/login">
+              <p  @click="handleLogout" class="dropdown-item">
               <i class="material-icons">exit_to_app</i> 
-              log out</RouterLink></li>
+              logout
+              </p>
+              <!-- <LogoutButton />  -->
+            </li>
           </ul>
         </li>
         <li class="nav-item">
@@ -44,53 +47,51 @@
 <script >
   import Swal from 'sweetalert2'
   import Avatar from '@/components/AvatarImage.vue';
-  
-   
+  // import LogoutButton from '@/components/Buttons/LogoutButton.vue';
+  import useUserStore from "@/stores/users";
+import { mapActions, mapState} from "pinia";
+import { computed } from 'vue';
   export default {
       components:{
-          Avatar,      
+          Avatar     
       },
-      data(){
-        return{
-          userAvatarUrl:'src/assets/Images/Avatar/man.png'
+      setup() {
+    const userIsLoggedIn = computed(() => !!useUserStore.storedUser);
+
+        return{ 
+          userAvatarUrl:'src/assets/Images/Avatar/man.png',
+          userIsLoggedIn
         }
       },
       methods: {
-        logout() {
-          // Perform logout logic here, e.g., clear user data, tokens, etc.
-          // You can also remove the user_id from local storage here
-          localStorage.removeItem('user_id');
-          
+        ...mapActions(useUserStore, ['logoutUser']),
 
-          console.log('User id is:', localStorage.getItem('user_id'));
-
-          this.$router.push({ name: 'login' });
-          // Emit an event to notify the parent component that the user has logged out
+    handleLogout() {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You are about to log out",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Log out!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Session Expired!",
+            text: "You have been Logged out.",
+            icon: "success"
+          });
+          localStorage.removeItem('user');
+          this.logoutUser();
           this.$emit('logged-out');
-          
-        },
-
-        handleLogout() {
-            Swal.fire({
-              title: "Are you sure?",
-              text: "You are about to log out",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, Log out!"
-            }).then((result) => {
-              if (result.isConfirmed) {
-                Swal.fire({
-                  title: "Session Expired!",
-                  text: "You have been Logged out.",
-                  icon: "success"
-                });
-                this.logout();
-              }
-            });
-          },
+        }
+      });
+    },
       },
+      computed: {
+    ...mapState(useUserStore, ['storedUser'])
+  }
   }
 </script>
 

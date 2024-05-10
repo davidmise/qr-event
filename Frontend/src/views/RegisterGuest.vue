@@ -84,7 +84,9 @@
 
 <script>
 import axios from "axios"
+
 export default {
+    props: ['eventId'],
     data() {
         return {
             qrCodeVisible: false,
@@ -101,30 +103,20 @@ export default {
                 Guest: {
                     name: '',
                     email: '',
-                    phone_number: ''
+                    phone_number: '',
+                    event_info_id: null,
                 }
             }
         }
     },
     created() {
-        this.pullEventInfo();
+        const eventId = this.$route.params.eventId;
+        this.fetchEventInfo(eventId);
     },
-    methods: {
-        async fetchQrCodeData() {
-            console.log('cliked');
-            // this.$store.dispatch('fetchQrCodeData', this.qrData.value)
+    methods: {   
+        async fetchEventInfo(eventId) {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/generate-qrcode', this.qrData.Guest);
-                this.qrCode = 'data:image/svg+xml;base64,' + btoa(response.data.qr_code);
-                this.qrCodeVisible = true;
-                console.log(this.qrCode);
-            } catch (error) {
-                console.error('Error fetching QR code:', error);
-            }
-        },
-        async pullEventInfo() {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/pull-event-info16');
+                const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
                 this.eventInfo = response.data.data;
                 this.location = response.data.data.location;
                 this.organizer = response.data.data.organizer;
@@ -134,11 +126,29 @@ export default {
                 console.log(this.eventInfo, this.location, this.organizer, this.media,);
 
             } catch (error) {
+                console.error('Error fetching event info data:', error);
+            }
+        },
+        async fetchQrCodeData() {
+            console.log('cliked');
+            // this.$store.dispatch('fetchQrCodeData', this.qrData.value)
+            try {
+                 const eventId = this.$route.params.eventId;
+                this.qrData.Guest.event_info_id = eventId;
+                const response = await axios.post('http://127.0.0.1:8000/api/generate-qrcode', this.qrData.Guest);
+                this.qrCode = 'data:image/svg+xml;base64,' + btoa(response.data.qr_code);
+                this.qrCodeVisible = true;
+               
+                console.log("id is",this.qrData.Guest.event_info_id);
+                console.log(this.qrCode);
+            } catch (error) {
                 console.error('Error fetching QR code:', error);
             }
         }
 
-    }
+    },
+
+   
 }
 </script>
 

@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->decimal('price', 10, 2);
             $table->integer('event_capacity');
+            $table->unsignedBigInteger('event_info_id')->nullable();
+            $table->foreign('event_info_id')->references('id')->on('event_infos');
+            //
             $table->timestamps();
         });
     }

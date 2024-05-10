@@ -262,6 +262,7 @@ export default {
     async createEvent() {
       try {
         const response = await axios.post('http://localhost:8000/api/create-event', this.event_info);
+
         const event_id = response.data.data.event_info.id;
         console.log(response.data.data);
         localStorage.setItem("event_id", event_id);
@@ -270,7 +271,12 @@ export default {
         this.$router.push({name: 'AllEvents'});
       }
       catch (error) {
-        console.log(error);
+       if (error.response && error.response.status === 500) {
+          console.error('Internal server error:', error.response.data);
+          // Show user-friendly error message (optional)
+        } else {
+          console.error('Error creating event:', error);
+        }
       }
 
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)

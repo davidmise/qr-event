@@ -10,7 +10,7 @@ class GuestAttendance extends Model
     use HasFactory;
 
     protected $fillable = [
-        'guest_id',
+        // 'guest_id',
         'info',
         'created_on',
         'data_expires',

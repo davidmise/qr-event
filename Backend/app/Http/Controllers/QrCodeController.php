@@ -19,9 +19,10 @@ class QrCodeController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:guests', // Ensure unique email
             'phone_number' => 'required|numeric|integer',
+            'event_info_id' => 'required', // Ensure
         ]);
         // Retrieve guest data
-        $guestData = $request->only('name', 'email', 'phone_number');
+        $guestData = $request->only('name', 'email', 'phone_number', 'event_info_id');
         // Generate QR code data (can include guest info)
         $qrCodeData = json_encode($guestData); // Example: encode guest data
 
@@ -42,7 +43,9 @@ class QrCodeController extends Controller
             'name' => $guestData['name'],
             'email' => $guestData['email'],
             'phone_number' => $guestData['phone_number'],
-            'qr_code' => $svgImage->getString(), // Store SVG string
+            'event_info_id' => $guestData['event_info_id'], // Store event info ID
+            'qr_code' => $svgImage->getString() // Store SVG string
+
         ]);
 
         return response()->json([

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('guest_attendances', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('guest_id')->nullable();
-            $table->foreign('guest_id')->references('id')->on('guests');
-            $table->text('info')->nullable();
             $table->date('created_on')->nullable();
             $table->date('data_expires')->nullable();
             $table->enum('status', ['Attended', 'Registered']);
+            $table->unsignedBigInteger('event_info_id')->nullable();
+            $table->foreign('event_info_id')->references('id')->on('event_infos');
+            //
             $table->timestamps();
         });
     }

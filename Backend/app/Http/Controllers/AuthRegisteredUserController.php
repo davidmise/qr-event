@@ -146,7 +146,7 @@ class AuthRegisteredUserController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'User logged in successfully',
-                'data' => $user,
+                'user' => $user,
                 // 'token' => $tokenResult->accessToken
             ], 200);
         } else {
@@ -156,6 +156,7 @@ class AuthRegisteredUserController extends Controller
             ], 401);
         }
     }
+
     /**
      * Show the form for editing the specified resource.
      */

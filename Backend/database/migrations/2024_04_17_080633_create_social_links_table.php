@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('instagram')->nullable();
             $table->string('facebook')->nullable();
             $table->string('website')->nullable();
+            $table->unsignedBigInteger('event_info_id')->nullable();
+            $table->foreign('event_info_id')->references('id')->on('event_infos');
+            //
             $table->timestamps();
         });
     }

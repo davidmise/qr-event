@@ -21,12 +21,22 @@ class EventInfoController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $events = EventInfo::with('Location')->with('Organizer')->with('SocialLink')->with('media')->with('ticket')->get();
-        return $events;
+{
+    // Set default pagination values
+    // $perPage = $request->input('per_page', 10);
+    // $page = $request->input('page', 1);
 
-    }
+    // Query events with relationships
+    $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'media', 'ticket','guest', 'attendance.guest')
+        ->paginate(5);
 
+    return $events;
+    //  response()->json([
+    //     'status' => true,
+    //     'data' => $events,
+    //   'total' => $events->total()
+    // ], 200);
+}
     /**
      * Show the form for creating a new resource.
      */
@@ -45,13 +55,13 @@ class EventInfoController extends Controller
             'event_name' => 'required|string',
             'event_subtitle' => 'nullable|string',
             'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date', // Ensure end date is after start date
+            'end_date' => 'nullable|date', // Ensure end date is after start date
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'nullable|date_format:H:i|after:start_time', // Ensure end time is after start time
-            'location_id' => 'exists:locations,id',
-            'organizer_id' => 'exists:users,id',
-            'ticket_id' => 'exists:tickets,id',
-            'media_id' => 'exists:medias,id',
+            // 'location_id' => 'exists:locations,id',
+            // 'organizer_id' => 'exists:users,id',
+            // 'ticket_id' => 'exists:tickets,id',
+            // 'media_id' => 'exists:medias,id',
         ];
         $messages = [
             // name
@@ -74,18 +84,18 @@ class EventInfoController extends Controller
             // end time
             'end_time.required' => 'End Time is Required',
             'end_time.after' => 'End Time must be after Start Time',
-            // location_id
-            // 'location_id.required' => 'Location is required',
-            'location_id.exists' => 'Location does not exist',
-            // organizer_id
-            // 'organizer_id.required' => 'Organizer is required',
-            'organizer_id.exists' => 'Organizer does not exist',
-            // ticket_id
-            // 'ticket_id.required' => 'Ticket is required',
-            'ticket_id.exists' => 'Ticket does not exist',
-            // media_id
-            //    'media_id.required' => 'Media is required',
-            'media_id.exists' => 'Media does not exist',
+            // // location_id
+            // // 'location_id.required' => 'Location is required',
+            // 'location_id.exists' => 'Location does not exist',
+            // // organizer_id
+            // // 'organizer_id.required' => 'Organizer is required',
+            // 'organizer_id.exists' => 'Organizer does not exist',
+            // // ticket_id
+            // // 'ticket_id.required' => 'Ticket is required',
+            // 'ticket_id.exists' => 'Ticket does not exist',
+            // // media_id
+            // //    'media_id.required' => 'Media is required',
+            // 'media_id.exists' => 'Media does not exist',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -197,7 +207,9 @@ class EventInfoController extends Controller
             'Organizer',
             'SocialLink',
             'Ticket',
-            'media'
+            'media',
+            'guest',
+            'attendance.guest'
         ])->find($id);
 
         if (!$event_info) {
