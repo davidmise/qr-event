@@ -28,7 +28,7 @@ class EventInfoController extends Controller
 
     // Query events with relationships
     $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'media', 'ticket','guest', 'attendance.guest')
-        ->paginate(5);
+        ->paginate(10);
 
     return $events;
     //  response()->json([
@@ -178,7 +178,7 @@ class EventInfoController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Event Info created successfully',
-            'data' => [
+            'event' => [
                 'event_info' => $event_info,
                 'foreign_keys_data' => $foreignKeysData,
             ]
@@ -222,7 +222,7 @@ class EventInfoController extends Controller
         return response()->json([
             'status' => true,
             // 'event_info' => "event info found",
-            'data' => $event_info
+            'event' => $event_info
         ], 200);
     }
 

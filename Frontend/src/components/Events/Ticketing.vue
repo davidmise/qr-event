@@ -36,7 +36,11 @@
   
   <script >
   import TicketPreview from '@/components/Events/TicketPreview.vue';
+  import useGeneralStore from '@/stores/general';
+  // import useEventStore from '@/stores/event';
+  import {  mapState } from 'pinia';
   import axios from 'axios';
+import useUserStore from '@/stores/users';
   
   export default {
     props: ['eventId'],
@@ -59,10 +63,23 @@
     this.pullEventInfo(eventId);
   },
 
+  computed:{
+...mapState(useGeneralStore,[
+  'API_URL'
+]),
+
+...mapState(useUserStore,['token'])
+  },
   methods:{
       async updatePrice(){
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/api/update-ticket/${this.ticketId}`, { price: this.price });
+      const response = await axios.put(`${this.API_URL}update-ticket/${this.ticketId}`, { price: this.price },
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
       console.log(response.data);
       // Optionally, provide user feedback
     } catch (error) {
@@ -73,7 +90,14 @@
   
   async updateEventCapacity(){
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/api/update-ticket/${this.ticketId}`, { event_capacity: this.eventCapacity });
+      const response = await axios.put(`${this.API_URL}update-ticket/${this.ticketId}`, 
+      { event_capacity: this.eventCapacity },
+      {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+      );
       console.log(response.data);
       // Optionally, provide user feedback
     } catch (error) {
@@ -84,20 +108,26 @@
 
   async pullEventInfo(eventId) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
-        this.eventInfo = response.data.data;
-        this.eventName = response.data.data.event_name;
-        this.eventSubtitle = response.data.data.event_subtitle;
-        this.eventDate = response.data.data.start_date;
-        this.eventStartTime = response.data.data.start_time;
-        this.eventEndTime = response.data.data.end_time;
-        this.city = response.data.data.location.city;
-        this.country = response.data.data.location.country;
-        this.street = response.data.data.location.street;
-        this.eventPrice = response.data.data.ticket.price;
-        this.ticketId = response.data.data.ticket.id;
+        const response = await axios.get(`${this.API_URL}pull-event-info${eventId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+        this.eventInfo = response.data.event;
+        this.eventName = response.data.event.event_name;
+        this.eventSubtitle = response.data.event_subtitle;
+        this.eventDate = response.data.event.start_date;
+        this.eventStartTime = response.data.event.start_time;
+        this.eventEndTime = response.data.event.end_time;
+        this.city = response.data.event.location.city;
+        this.country = response.data.event.location.country;
+        this.street = response.data.event.location.street;
+        this.eventPrice = response.data.event.ticket.price;
+        this.ticketId = response.data.event.ticket.id;
 
-        console.log(response.data.data);
+        console.log(response.data.event);
         console.log('id is:', this.ticketId)
       } catch (error) {
         console.error('Error fetching event info:', error);

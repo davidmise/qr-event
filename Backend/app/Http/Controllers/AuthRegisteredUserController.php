@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+// use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+// use Laravel\Passport\HasApiTokens;
 
 class AuthRegisteredUserController extends Controller
 {
@@ -136,7 +142,11 @@ class AuthRegisteredUserController extends Controller
         ]);
 
         if (auth()->attempt($credentials)) {
+            /** @var  **/
             $user = auth()->user();
+            $token = $user->createToken('authToken')->plainTextToken; // Generate API token
+            // $token = $user->createToken('authToken')->plainTextToken; // Generate API token
+
             // $tokenResult = $user->createToken('Personal Access Token');
             // $token = $tokenResult->token;
             // if ($request->remember_me)
@@ -147,7 +157,7 @@ class AuthRegisteredUserController extends Controller
                 'status' => true,
                 'message' => 'User logged in successfully',
                 'user' => $user,
-                // 'token' => $tokenResult->accessToken
+                'token' => $token
             ], 200);
         } else {
             return response()->json([
@@ -155,6 +165,16 @@ class AuthRegisteredUserController extends Controller
                 'message' => 'Invalid credentials, user login Failed.',
             ], 401);
         }
+    }
+
+    public function logout()
+    {
+        /** @var \App\Models\User $user **/
+        auth()->user()->currentAccessToken()->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'User logged out successfully',
+        ], 200);
     }
 
     /**

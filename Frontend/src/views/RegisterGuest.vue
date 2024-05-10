@@ -83,7 +83,11 @@
 </template>
 
 <script>
-import axios from "axios"
+import useGeneralStore from '@/stores/general';
+  // import useEventStore from '@/stores/event';
+  import {  mapState } from 'pinia';
+  import axios from 'axios';
+import useUserStore from '@/stores/users';
 
 export default {
     props: ['eventId'],
@@ -113,16 +117,29 @@ export default {
         const eventId = this.$route.params.eventId;
         this.fetchEventInfo(eventId);
     },
+    computed:{
+...mapState(useGeneralStore,[
+  'API_URL'
+]),
+
+...mapState(useUserStore,['token'])
+  },
     methods: {   
         async fetchEventInfo(eventId) {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
-                this.eventInfo = response.data.data;
-                this.location = response.data.data.location;
-                this.organizer = response.data.data.organizer;
-                this.media = response.data.data.media;
-                this.ticket = response.data.data.ticket;
-                this.social_Links = response.data.data.social_Links;
+                const response = await axios.get(`${this.API_URL}pull-event-info${eventId}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`
+                        }
+                    }
+                );
+                this.eventInfo = response.data.event;
+                this.location = response.data.event.location;
+                this.organizer = response.data.event.organizer;
+                this.media = response.data.event.media;
+                this.ticket = response.data.event.ticket;
+                this.social_Links = response.data.event.social_Links;
                 console.log(this.eventInfo, this.location, this.organizer, this.media,);
 
             } catch (error) {
@@ -132,10 +149,16 @@ export default {
         async fetchQrCodeData() {
             console.log('cliked');
             // this.$store.dispatch('fetchQrCodeData', this.qrData.value)
-            try {
-                 const eventId = this.$route.params.eventId;
+            try { 
+                const eventId = this.$route.params.eventId;
                 this.qrData.Guest.event_info_id = eventId;
-                const response = await axios.post('http://127.0.0.1:8000/api/generate-qrcode', this.qrData.Guest);
+                const response = await axios.post(`${this.API_URL}generate-qrCode`, this.qrData.Guest,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`
+                        }
+                    }
+                );
                 this.qrCode = 'data:image/svg+xml;base64,' + btoa(response.data.qr_code);
                 this.qrCodeVisible = true;
                

@@ -1,15 +1,8 @@
-<script setup>
-import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
-import { sidebarWidth } from '@/components/Bars/Sidebar/state';
-import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-import EventsNav from '@/components/Events/EventsNav.vue';
-import axios from "axios";
-</script>
 <template>
   <div>
-    <Sidebar/>
+    <Sidebar />
     <div :style="{ marginLeft: sidebarWidth, transition: 'margin 0.8s' }">
-      <TopBar/>
+      <TopBar />
       <main class="py-6 bg-surface-secondary">
         <div class="container-fluid">
           <main class="py-6 bg-surface-secondary">
@@ -27,30 +20,62 @@ import axios from "axios";
     </div>
   </div>
 </template>
+
 <script>
+import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
+import { sidebarWidth } from '@/components/Bars/Sidebar/state';
+import TopBar from '@/components/Bars/TopBar/TopBar.vue';
+import EventsNav from '@/components/Events/EventsNav.vue';
+import axios from "axios";
+
+// import { ref, onMounted, watch } from 'vue';
+// import { useRoute } from 'vue-router';
+import { mapState } from 'pinia';
+import useGeneralStore from '@/stores/general';
+import useUserStore from '@/stores/users';
+
+// const route = useRoute();
 export default {
-  props: ['eventId'],
-  data() {
-    return {
-      sidebarWidth,
-      eventInfo: null,
-    };
+  components: {
+    Sidebar,
+    TopBar,
+    EventsNav,
   },
-  created() {
-    const eventId = this.$route.params.eventId;
-      this.pullEventInfo(eventId);  
-  },
-  methods: {
-    async pullEventInfo(eventId) {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
-        this.eventInfo = response.data.data;
-        console.log(response.data.data);
-      } catch (error) {
-        console.error('Error fetching event info:', error);
-        // Optionally, display an error message to the user
+
+ data(){
+  return {
+    sidebarWidth,
+    eventInfo: null,
+    eventId: null
+  };
+ },
+
+ computed:{
+  ...mapState(useGeneralStore, ['API_URL']),
+  ...mapState(useUserStore, ['token']),
+ },
+
+ created(){
+  this.eventId = this.$route.params.eventId;
+  this.getEventInfo();
+ },
+ methods: {
+  getEventInfo(){
+    axios.get(`${this.API_URL}pull-event-info${this.eventId}`, {
+      headers: {
+        Authorization: `Bearer ${this.token}`
       }
-    },
-  },
-};
+    })
+   .then(response => {
+     this.eventInfo = response.data.event;
+     console.log(this.eventInfo);
+    })
+   .catch(error => {
+     console.log(error);
+    });
+  }
+ },
+
+}
+
 </script>

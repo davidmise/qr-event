@@ -9,8 +9,10 @@
 </template>
 <script>
 import axios from "axios";
-// import useEventStore from '@/stores/eventinfo';
-// import { mapState, mapActions } from 'pinia';
+import useEventStore from '@/stores/eventinfo';
+import useGeneralStore from '@/stores/general';
+import useUserStore from '@/stores/users';
+import { mapState, mapActions } from 'pinia';
 export default {
     props: ['eventId'],
   data(){
@@ -24,14 +26,27 @@ export default {
     const eventId = this.$route.params.eventId;
       this.pullEventInfo(eventId);  
   },
+  computed: {
+    ...mapState(useGeneralStore, ['API_URL']),
+    ...mapState(useUserStore, ['token']),
+    ...mapState(useEventStore, ['event']),
+  },
 
   methods: {
+    ...mapActions(useEventStore, ['storeEvent']),
+
   async pullEventInfo(eventId) {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
-      this.eventInfo = response.data.data;
+      const response = await axios.get(`${this.API_URL}pull-event-info${eventId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
+      this.eventInfo = response.data.event;
       console.log("eventInfo", this.eventInfo);
-      this.event_id = response.data.data.id;
+      this.event_id = response.data.event.id;
       console.log("eventInfoID", this.event_id);
     } catch (error) {
       console.error('Error fetching event info:', error);

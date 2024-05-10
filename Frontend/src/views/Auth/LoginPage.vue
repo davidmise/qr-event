@@ -156,7 +156,8 @@ export default {
     'API_URL'
     ]) ,
     ...mapState(useUserStore,[
-      'storedUser'
+      'storedUser',
+      'token',
   ])
   },
   methods: {
@@ -170,12 +171,18 @@ export default {
       axios.post(`${this.API_URL}login`, {
         email: _this.email,
         password: _this.password
-      })
+      },
+    {
+      headers: {
+        Authorization: `Bearer ${this.token}`
+    }
+    })
       .then(response =>{
         const user =response.data.user;
-        _this.storeLoggedInUser(user);
+        const token =response.data.token;
+        _this.storeLoggedInUser(user,token);
         this.message = response.data.message
-        console.log(response.data.user);
+        console.log(response.data);
         this.handelSuccessToast()
         this.resetForm();
       })

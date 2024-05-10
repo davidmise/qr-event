@@ -33,7 +33,9 @@
 
 <script>
 import axios from "axios";
-
+import useGeneralStore from "@/stores/general";
+import useUserStore from "@/stores/users";
+import { mapState } from "pinia";
 export default {
   props: ['eventId'],
 
@@ -57,22 +59,35 @@ export default {
     const eventId = this.$route.params.eventId;
     this.pullEventInfo(eventId);
   },
-
+computed:{
+    ...mapState(useGeneralStore, [
+      'API_URL'
+    ]),
+    ...mapState(useUserStore, [
+      'token'
+    ]),
+},
   methods: {
     async pullEventInfo(eventId) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/pull-event-info${eventId}`);
-        this.eventInfo = response.data.data;
-        this.eventName = response.data.data.event_name;
-        this.eventSubtitle = response.data.data.event_subtitle;
-        this.eventDate = response.data.data.start_date;
-        this.eventStartTime = response.data.data.start_time;
-        this.eventEndTime = response.data.data.end_time;
-        this.city = response.data.data.location.city;
-        this.country = response.data.data.location.country;
-        this.street = response.data.data.location.street;
-        this.eventPrice = response.data.data.ticket.price;
-        this.ticketId = response.data.data.ticket.id;
+        const response = await axios.get(`${this.API_URL}pull-event-info${eventId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${this.token}`
+                }
+            }
+        );
+        this.eventInfo = response.data.event;
+        this.eventName = response.data.event.event_name;
+        this.eventSubtitle = response.data.event.event_subtitle;
+        this.eventDate = response.data.event.start_date;
+        this.eventStartTime = response.data.event.start_time;
+        this.eventEndTime = response.data.event.end_time;
+        this.city = response.data.event.location.city;
+        this.country = response.data.event.location.country;
+        this.street = response.data.event.location.street;
+        this.eventPrice = response.data.event.ticket.price;
+        this.ticketId = response.data.event.ticket.id;
 
         console.log(response.data.data);
         console.log(this.ticket)

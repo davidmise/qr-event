@@ -27,11 +27,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(event, index) in paginatedEvents" :key="event.id" @click="route">
+                      <tr v-for="(event, index) in paginatedEvents" :key="event.id" @click="route(event.id)">
                         <td class="text-heading font-semibold ">
-                          <router-link class="decoration-none"
-                            :to="{ name: 'viewEvent', params: { eventId: event.id } }">{{ (currentPage - 1) *
-      itemsPerPage + index + 1 }}</router-link>
+
+                            {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+      
                         </td>
                         <td>{{ event.event_name }}</td>
                         <td>{{ event.event_subtitle }}</td>
@@ -55,10 +55,9 @@
                     <button class="page-link btn btn-outline-success" @click="handlePreviousPage"
                       :disabled="currentPage === 1" style="color:teal">Previous</button>
                   </li>
-                  <li class="page-item" v-for="page in lastPage" :key="page"
-                    :class="{ active: currentPage === page }">
+                  <li class="page-item" v-for="page in lastPage" :key="page" :class="{ active: currentPage === page }">
                     <button class=" btn btn-outline-success border-0" @click="fetchEventInfo(page)">{{ page
-                        }}</button>
+                      }}</button>
                   </li>
                   <li class="page-item" :class="{ disabled: currentPage === lastPage }">
                     <button class="page-link btn btn-outline-success" @click="handleNextPage"
@@ -66,32 +65,23 @@
                   </li>
                 </ul>
               </div>
-              
             </div>
           </main>
-
-          <div>
-            <h1>WELCOME TO THE HOME PAGE</h1>
-            <h2>Price Per Laptop: {{ pricePerEvents }}</h2>
-            <h2>Total Laptops: {{ totalEvents }}</h2>
-            <h2>Total Laptop Prices: {{ totalEventsPrices }}</h2>
-            <button @click="addEvent()">Add Laptop</button>
-          </div>
-
         </div>
       </main>
       <RouterView />
     </div>
   </div>
 </template>
-
 <script>
 import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state';
 import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-// import axios from "axios";
+import axios from "axios";
 
 import useEventStore from '@/stores/eventinfo';
+import useGeneralStore from '@/stores/general';
+import useUserStore from '@/stores/users';
 import { mapState, mapActions } from 'pinia';
 
 export default {
@@ -101,79 +91,71 @@ export default {
   },
   data() {
     return {
-      // events: [],
       sidebarWidth,
-      // itemCount: 20,
-      // currentPage: 1,
-      // itemsPerPage: 5,
-      // totalItems: 0,
-      // nextPageUrl: null, // Store next page URL from backend response (if pro
+      data: {},
+      events: [],
+      event: null,
+      currentPage: 1,
+      itemsPerPage: 10,
+      lastPage: null,
     }
   },
   created() {
-    this.fetchEventInfo(1)
-    // console.log(this.totalPages)
-    // console.log(this.totalPages)
-    // this.$on('paginate', this.handlePagination); // Listen for 'paginate' event
-    // console.log('current event id', localStorage.getItem("event_id"))
+    this.fetchEventInfo(1);
   },
-  methods: {
-    // ...
 
-    ...mapActions(useEventStore, [
-      'addEvent',
-      'fetchEventInfo',
-      'handlePageChange',
-      'handlePreviousPage',
-      'handleNextPage',
-      // 'fetchEventsFromUrl'
-    ])
-
-  },
   computed: {
-
-    ...mapState(useEventStore, [
-      'totalEvents',
-      'pricePerEvents',
-      'totalEventsPrices',
-
-      'events',
-      'data',
-      'event',
-
-      'itemCount',
-      'currentPage',
-      'itemsPerPage',
-      'totalItems',
-      'totalPages',
-      'lastPage',
-      'nextPageUrl'
-    ]),
+    ...mapState(useGeneralStore, ['API_URL']),
+    ...mapState(useUserStore, ['token']),
+    ...mapState(useEventStore, ['event']),
 
     paginatedEvents() {
-      if (!this.events.length) return []; // Return empty array if no events yet
-
+      if (!this.events.length) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      // console.log(this.currentPage)
       return this.events.slice(startIndex, endIndex);
     },
+  },
+  methods: {
+    ...mapActions(useEventStore, ['storeEvent']),
 
-    formattedEvents() {
-      return this.events.map(event => ({
-        ...event,
-        ticketPrice: event.ticket ? event.ticket.price : 'N/A',
-      }));
+    async fetchEventInfo(index) {
+      this.currentPage = index;
+      try {
+        const response = await axios.get(`${this.API_URL}all-events?page=` + this.currentPage, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        });
+        this.data = response.data;
+        this.events = this.data.data;
+        this.lastPage = response.data.last_page;
+      } catch (error) {
+        console.error('Error fetching Event Info:', error);
+      }
     },
-    totalPages() {
-      // Assuming total is provided by the backend (refer to backend changes)
-      const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-      console.log("Total pages: ", totalPages);
-      return totalPages;
+
+    handlePreviousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchEventInfo(this.currentPage);
+      }
+    },
+
+    handleNextPage() {
+      if (this.currentPage < this.data.last_page) {
+        this.currentPage++;
+        this.fetchEventInfo(this.currentPage);
+      }
+    },
+
+    route(eventId) {
+      this.$router.push({ name: 'viewEvent', params: { eventId: eventId } });
     }
   },
+
   mounted() {
-    this.fetchEventInfo(1)
+    this.fetchEventInfo(1);
   }
 };
 </script>

@@ -3,6 +3,9 @@ import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
 import { sidebarWidth } from '@/components/Bars/Sidebar/state';
 import TopBar from '@/components/Bars/TopBar/TopBar.vue';
 import axios from "axios";
+import useGeneralStore from '@/stores/general';
+import {  mapState } from 'pinia';
+import useUserStore from '@/stores/users';
 // import { useRouter } from "vue-router";
 </script>
 
@@ -214,6 +217,7 @@ import axios from "axios";
 </template>
 
 <script>
+
 export default {
   name: 'CreateEvent',
   data() {
@@ -255,16 +259,28 @@ export default {
       }
     }
   },
+
+  computed:{
+    ...mapState(useGeneralStore,[
+  'API_URL'
+]),
+
+...mapState(useUserStore,['token'])
+  },
+
   methods: {
-
- 
-
     async createEvent() {
       try {
-        const response = await axios.post('http://localhost:8000/api/create-event', this.event_info);
+        const response = await axios.post(`${this.API_URL}create-event`, this.event_info,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`
+            }
+          }
+        );
 
-        const event_id = response.data.data.event_info.id;
-        console.log(response.data.data);
+        const event_id = response.data.event.event_info.id;
+        console.log(response.data.event);
         localStorage.setItem("event_id", event_id);
         console.log('this event id is: ' + event_id);
         this.resetForm();

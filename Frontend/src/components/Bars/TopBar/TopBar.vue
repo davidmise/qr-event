@@ -25,7 +25,7 @@
             <li><hr class="dropdown-divider"></li>
             <li>
               
-              <p  @click="handleLogout" class="dropdown-item">
+              <p  @click="loggingOut === false && handleLogout()" class="dropdown-item">
               <i class="material-icons">exit_to_app</i> 
               logout
               </p>
@@ -47,8 +47,10 @@
 <script >
   import Swal from 'sweetalert2'
   import Avatar from '@/components/AvatarImage.vue';
+  import axios from "axios"
   // import LogoutButton from '@/components/Buttons/LogoutButton.vue';
   import useUserStore from "@/stores/users";
+  import useGeneralStore from "@/stores/general";
 import { mapActions, mapState} from "pinia";
 import { computed } from 'vue';
   export default {
@@ -57,15 +59,30 @@ import { computed } from 'vue';
       },
       setup() {
     const userIsLoggedIn = computed(() => !!useUserStore.storedUser);
+    // const API_URL = computed(() => useGeneralStore.API_URL);
 
         return{ 
           userAvatarUrl:'src/assets/Images/Avatar/man.png',
-          userIsLoggedIn
+          userIsLoggedIn,
+          loggingOut: false
         }
       },
       methods: {
         ...mapActions(useUserStore, ['logoutUser']),
-
+   logout(){
+    axios.post(`${this.API_URL}logout`, {},
+   {
+    headers: {
+        Authorization: `Bearer ${this.token}`
+    }
+   }
+    )
+    .then(response =>{
+        console.log(response.data)
+    }).catch(error =>{
+        console.log(error.message);
+    });
+   },     
     handleLogout() {
       Swal.fire({
         title: "Are you sure?",
@@ -82,7 +99,8 @@ import { computed } from 'vue';
             text: "You have been Logged out.",
             icon: "success"
           });
-          localStorage.removeItem('user');
+          // localStorage.removeItem('user');
+          this.logout();
           this.logoutUser();
           this.$emit('logged-out');
         }
@@ -90,9 +108,11 @@ import { computed } from 'vue';
     },
       },
       computed: {
-    ...mapState(useUserStore, ['storedUser'])
+    ...mapState(useUserStore, ['storedUser','token'])
+  },
+  ...mapState(useGeneralStore, ['API_URL'])
   }
-  }
+  
 </script>
 
 <style>

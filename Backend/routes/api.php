@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthRegisteredUserController;
@@ -12,61 +11,50 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestAttendanceController;
 
-
-Route::post('/generate-qrcode', [QrCodeController::class, 'generateQrCode']);
-
-
-
-// register routes for user authentication
+// Public routes (no authentication required)
 Route::post('/register', [AuthRegisteredUserController::class, "create"]);
-Route::post('/login', [AuthRegisteredUserController::class, "login"]);
+// Route::post('/login', [AuthRegisteredUserController::class, "login"])->name('login');
+Route::post('/login', [AuthRegisteredUserController::class, "login"])->name('login');
 
-Route::get('/users', [AuthRegisteredUserController::class, "index"]);
-Route::get('/user{id}', [AuthRegisteredUserController::class, "show"]);
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+// Protected routes (require authentication)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthRegisteredUserController::class, "logout"]);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // EventInfo
+    Route::get('/all-events', [EventInfoController::class, 'index']);
+    Route::post('/create-event', [EventInfoController::class, 'store']);
+    Route::get('/pull-event-info{id}', [EventInfoController::class,'show']);
+
+    // Location
+    Route::get('/all-locations', [LocationController::class, 'index']);
+    Route::post('/create-location', [LocationController::class, 'store']);
+
+    // Organizer
+    Route::get('/all-organizers', [OrganizerController::class, 'index']);
+    Route::post('/create-organizer', [OrganizerController::class, 'store']);
+
+    // Ticket
+    Route::get('/all-tickets', [TicketController::class, 'index']);
+    Route::post('/create-ticket', [TicketController::class, 'store']);
+    Route::put('/update-ticket/{id}', [TicketController::class, 'update']);
+
+    // Social Link
+    Route::post('/social-links', 'App\Http\Controllers\SocialLinkController@storeOrUpdate');
+    Route::get('/all-social-links', 'App\Http\Controllers\SocialLinkController@index');
+
+    // Media
+    Route::post('/media', [MediaController::class, 'store']);
+    Route::get('/all-media', [MediaController::class, 'index']);
+
+    // Guest
+    Route::post('/guest', [GuestController::class, 'store']);
+    Route::get('/all-guests', [GuestController::class, 'index']);
+
+    // Guest Attendance
+    Route::post('/guest-attendance', [GuestAttendanceController::class, 'store']);
+    Route::get('/all-guest-attendances', [GuestAttendanceController::class, 'index']);
+
+    // Qr-code
+    Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);
 });
-
-// EventInfo
-Route::get('/all-events', [EventInfoController::class, 'index']);
-Route::post('/create-event', [EventInfoController::class, 'store']);
-Route::get('/pull-event-info{id}', [EventInfoController::class,'show']);
-// location
-Route::get('/all-locations', [LocationController::class, 'index']);
-Route::post('/create-location', [LocationController::class, 'store']);
-// organizer
-Route::get('/all-organizers', [OrganizerController::class, 'index']);
-Route::post('/create-organizer', [OrganizerController::class, 'store']);
-// ticket
-Route::get('/all-tickets', [TicketController::class, 'index']);
-Route::post('/create-ticket', [TicketController::class, 'store']);
-Route::put('/update-ticket/{id}', [TicketController::class, 'update']);
-// social link
-Route::post('/social-links', 'App\Http\Controllers\SocialLinkController@storeOrUpdate'); // Assuming namespace is App\Http\Controllers
-Route::get('/all-social-links', 'App\Http\Controllers\SocialLinkController@index'); // Assuming namespace is App\Http\Controllers
-// media
-Route::post('/media', [MediaController::class, 'store']);
-Route::get('/all-media', [MediaController::class, 'index']);
-// guest
-Route::post('/guest', [GuestController::class, 'store']);
-Route::get('/all-guests', [GuestController::class, 'index']);
-// Route::get('/guest{id}', [GuestController::class,'show']);
-// Route::put('/guest{id}', [GuestController::class, 'update']);
-// Route::delete('/guest{id}', [GuestController::class, 'destroy']);
-
-// guest attendance
-Route::post('/guest-attendance', [GuestAttendanceController::class, 'store']);
-Route::get('/all-guest-attendances', [GuestAttendanceController::class, 'index']);
-// Route::get('/guest-attendance{id}', [GuestAttendanceController::class,'show']);

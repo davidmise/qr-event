@@ -25,13 +25,13 @@
 
           <div class="pt-5 ">
             <div v-if="currentService === 'Ticketing' || currentService === null">
-                <Ticketing class="slide-left"/>
+                <Ticketing class="slide-left" :eventId="eventId"/>
             </div>
             <div v-else-if="currentService === 'Payments'">
-                <Payments class="slide-left"/>
+                <Payments class="slide-left" :eventId="eventId"/>
             </div>
             <div v-else-if="currentService === 'Attendance'">
-                <Attendance class="slide-left"/>
+                <Attendance class="slide-left" :eventId="eventId"/>
             </div>
             <div v-else>
                 <BookingSettings class="slide-left" :eventId="eventId"/>
