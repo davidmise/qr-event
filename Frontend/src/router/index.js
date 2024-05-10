@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotFound from '@/views/NotFound.vue'; // Import the NotFound component
+import useUserStore from '@/stores/users';
 
 
 const router = createRouter({
@@ -27,7 +28,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { requiresAuth: true },
     },
 
     {
@@ -42,7 +44,7 @@ const router = createRouter({
     {
       path: '/events/all',
       name: 'AllEvents',
-      // meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -91,8 +93,8 @@ const router = createRouter({
 
 // Authentication Logic
 router.beforeEach((to, from, next) => {
-  // Check if the user is logged in (based on your logic)
-  const isAuthenticated = !!localStorage.getItem('user_id');
+  // Get the current state of the user store
+  const isAuthenticated = useUserStore().storedUser !== null;
 
   if (to.meta.requiresAuth) {
     // This route requires authentication
@@ -110,6 +112,5 @@ router.beforeEach((to, from, next) => {
     // For other routes, simply allow the navigation
     next();
   }
-  
 });
 export default router
