@@ -1,6 +1,4 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-    <div>
-        Payemnts 
-    </div>
+  <div>Payemnts</div>
 </template>

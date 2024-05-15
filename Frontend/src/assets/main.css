@@ -1,11 +1,9 @@
 @import './base.css';
 
-.material-icons{
+.material-icons {
   vertical-align: middle;
 }
 input:focus {
   outline: none; /* Remove the default focus ring */
   /* Add any other styling you want for the focused state */
 }
-
-

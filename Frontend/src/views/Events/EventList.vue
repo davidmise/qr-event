@@ -27,11 +27,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(event, index) in paginatedEvents" :key="event.id" @click="route(event.id)">
-                        <td class="text-heading font-semibold ">
-
-                            {{ (currentPage - 1) * itemsPerPage + index + 1 }}
-      
+                      <tr
+                        v-for="(event, index) in paginatedEvents"
+                        :key="event.id"
+                        @click="route(event.id)"
+                      >
+                        <td class="text-heading font-semibold">
+                          {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                         </td>
                         <td>{{ event.event_name }}</td>
                         <td>{{ event.event_subtitle }}</td>
@@ -39,8 +41,12 @@
                         <td>{{ event.start_time }}</td>
                         <td>{{ event.ticket ? event.ticket.price : 'N/A' }}</td>
                         <td>
-                          <img v-if="event.media && event.media.poster" :src="event.media.poster" alt="Poster"
-                            style="max-width: 100px;">
+                          <img
+                            v-if="event.media && event.media.poster"
+                            :src="event.media.poster"
+                            alt="Poster"
+                            style="max-width: 100px"
+                          />
                           <span v-else>N/A</span>
                         </td>
                       </tr>
@@ -52,16 +58,34 @@
               <div class="mt-3">
                 <ul class="pagination justify-content-center">
                   <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                    <button class="page-link btn btn-outline-success" @click="handlePreviousPage"
-                      :disabled="currentPage === 1" style="color:teal">Previous</button>
+                    <button
+                      class="page-link btn btn-outline-success"
+                      @click="handlePreviousPage"
+                      :disabled="currentPage === 1"
+                      style="color: teal"
+                    >
+                      Previous
+                    </button>
                   </li>
-                  <li class="page-item" v-for="page in lastPage" :key="page" :class="{ active: currentPage === page }">
-                    <button class=" btn btn-outline-success border-0" @click="fetchEventInfo(page)">{{ page
-                      }}</button>
+                  <li
+                    class="page-item"
+                    v-for="page in lastPage"
+                    :key="page"
+                    :class="{ active: currentPage === page }"
+                  >
+                    <button class="btn btn-outline-success border-0" @click="fetchEventInfo(page)">
+                      {{ page }}
+                    </button>
                   </li>
                   <li class="page-item" :class="{ disabled: currentPage === lastPage }">
-                    <button class="page-link btn btn-outline-success" @click="handleNextPage"
-                      :disabled="currentPage === lastPage" style="color:teal">Next</button>
+                    <button
+                      class="page-link btn btn-outline-success"
+                      @click="handleNextPage"
+                      :disabled="currentPage === lastPage"
+                      style="color: teal"
+                    >
+                      Next
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -75,14 +99,14 @@
 </template>
 <script>
 import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
-import { sidebarWidth } from '@/components/Bars/Sidebar/state';
-import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-import axios from "axios";
+import { sidebarWidth } from '@/components/Bars/Sidebar/state'
+import TopBar from '@/components/Bars/TopBar/TopBar.vue'
+import axios from 'axios'
 
-import useEventStore from '@/stores/eventinfo';
-import useGeneralStore from '@/stores/general';
-import useUserStore from '@/stores/users';
-import { mapState, mapActions } from 'pinia';
+import useEventStore from '@/stores/eventinfo'
+import useGeneralStore from '@/stores/general'
+import useUserStore from '@/stores/users'
+import { mapState, mapActions } from 'pinia'
 
 export default {
   components: {
@@ -97,11 +121,11 @@ export default {
       event: null,
       currentPage: 1,
       itemsPerPage: 10,
-      lastPage: null,
+      lastPage: null
     }
   },
   created() {
-    this.fetchEventInfo(1);
+    this.fetchEventInfo(1)
   },
 
   computed: {
@@ -110,52 +134,52 @@ export default {
     ...mapState(useEventStore, ['event']),
 
     paginatedEvents() {
-      if (!this.events.length) return [];
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.events.slice(startIndex, endIndex);
-    },
+      if (!this.events.length) return []
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage
+      const endIndex = startIndex + this.itemsPerPage
+      return this.events.slice(startIndex, endIndex)
+    }
   },
   methods: {
     ...mapActions(useEventStore, ['storeEvent']),
 
     async fetchEventInfo(index) {
-      this.currentPage = index;
+      this.currentPage = index
       try {
         const response = await axios.get(`${this.API_URL}all-events?page=` + this.currentPage, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
-        });
-        this.data = response.data;
-        this.events = this.data.data;
-        this.lastPage = response.data.last_page;
+        })
+        this.data = response.data
+        this.events = this.data.data
+        this.lastPage = response.data.last_page
       } catch (error) {
-        console.error('Error fetching Event Info:', error);
+        console.error('Error fetching Event Info:', error)
       }
     },
 
     handlePreviousPage() {
       if (this.currentPage > 1) {
-        this.currentPage--;
-        this.fetchEventInfo(this.currentPage);
+        this.currentPage--
+        this.fetchEventInfo(this.currentPage)
       }
     },
 
     handleNextPage() {
       if (this.currentPage < this.data.last_page) {
-        this.currentPage++;
-        this.fetchEventInfo(this.currentPage);
+        this.currentPage++
+        this.fetchEventInfo(this.currentPage)
       }
     },
 
     route(eventId) {
-      this.$router.push({ name: 'viewEvent', params: { eventId: eventId } });
+      this.$router.push({ name: 'viewEvent', params: { eventId: eventId } })
     }
   },
 
   mounted() {
-    this.fetchEventInfo(1);
+    this.fetchEventInfo(1)
   }
-};
+}
 </script>

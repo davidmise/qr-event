@@ -1,19 +1,17 @@
-
-
 <script>
 import { RouterView } from 'vue-router'
 export default {
   data() {
     return {
-      RouterView ,
-      isMobile: false,
-    };
+      RouterView,
+      isMobile: false
+    }
   },
   mounted() {
-    const userAgent = navigator.userAgent;
-    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-  },
-};
+    const userAgent = navigator.userAgent
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
+  }
+}
 </script>
 <template>
   <div v-if="isMobile">
@@ -25,5 +23,3 @@ export default {
     <!-- This is not a mobile device. -->
   </div>
 </template>
-
-

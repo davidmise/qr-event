@@ -18,7 +18,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 // material icons
 import 'material-icons/iconfont/material-icons.css'
 
-
 const app = createApp(App)
 
 app.use(createPinia())

@@ -1,6 +1,6 @@
 <template>
   <div class="avatar">
-    <img :src="avatarUrl" :alt="altText">
+    <img :src="avatarUrl" :alt="altText" />
   </div>
 </template>
 
