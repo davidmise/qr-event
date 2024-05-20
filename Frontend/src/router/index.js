@@ -78,6 +78,26 @@ const router = createRouter({
     },
 
     {
+      path: '/host/clients/all',
+      name: 'hostClientsAll',
+      meta: { requiresAuth: true },
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/host/clients/AllClients.vue')
+    },
+
+    {
+      path: '/host/clients/new',
+      name: 'hostClientsNew',
+      meta: { requiresAuth: true },
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/host/clients/NewClient.vue')
+    },
+
+    {
       path: '/contacts',
       name: 'contacts',
       meta: { requiresAuth: true },

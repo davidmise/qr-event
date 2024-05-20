@@ -32,7 +32,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                           type="button"
                           data-mdb-button-init
                           data-mdb-ripple-init
-                          class="btn btn-outline-success  "
+                          class="btn btn-outline-success"
                         >
                           Edit
                         </button>

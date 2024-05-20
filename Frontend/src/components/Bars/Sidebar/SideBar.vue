@@ -100,10 +100,27 @@
     <SideBarLink to="/events/view" :text="collapsed ? '' : 'Events'" />
   </div> -->
       <div class="collapse" id="events">
-        <SideBarLink to="/host/events/new" :text="collapsed ? '' : 'Create New Event'" />
+        <SideBarLink to="/host/events/new" :text="collapsed ? '' : 'New Event'" />
       </div>
       <div class="collapse" id="events">
         <SideBarLink to="/host/events/all" :text="collapsed ? '' : 'All Events'" />
+      </div>
+      <a
+        class="btn text-uppercase"
+        data-bs-toggle="collapse"
+        href="#clients"
+        role="button"
+        aria-expanded="false"
+        aria-controls="Recieved"
+      >
+        <i class="material-icons icon">event</i>
+        <span v-if="!collapsed" class="ms-3">Clients</span>
+      </a>
+      <div class="collapse" id="clients">
+        <SideBarLink :to="{ name: 'hostClientsNew' }" :text="collapsed ? '' : 'New Client'" />
+      </div>
+      <div class="collapse" id="clients">
+        <SideBarLink :to="{ name: 'hostClientsAll' }" :text="collapsed ? '' : 'All Clients'" />
       </div>
     </div>
     <!-- Contacts -->
