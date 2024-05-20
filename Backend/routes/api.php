@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthRegisteredUserController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\EventInfoController;
 use App\Http\Controllers\LocationController;
@@ -11,15 +12,17 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestAttendanceController;
 
+
 // Public routes (no authentication required)
-Route::post('/register', [AuthRegisteredUserController::class, "create"]);
+Route::post('/register', 'App\Http\Controllers\UserController@create');
+Route::post('/users', 'App\Http\Controllers\UserController@index');
 // Route::post('/login', [AuthRegisteredUserController::class, "login"])->name('login');
-Route::post('/login', [AuthRegisteredUserController::class, "login"])->name('login');
+Route::post('/login', [AuthController::class, "login"])->name('login');
 
 
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthRegisteredUserController::class, "logout"]);
+    Route::post('/logout', [AuthController::class, "logout"]);
 
     // EventInfo
     Route::get('/all-events', [EventInfoController::class, 'index']);

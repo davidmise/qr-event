@@ -35,7 +35,7 @@ class OrganizerController extends Controller
         //
         $rules = [
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:organizers,email', // Unique email validation
+            'email' => 'required|email', // Unique email validation
             'phone' => 'nullable|string',
             'event_info_id'=>'nullable|string',
         ];

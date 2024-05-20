@@ -37,7 +37,7 @@ class GuestController extends Controller
         //
         $rules = [
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:guests,email', // Unique email validation
+            'email' => 'email', // Unique email validation
             'phone_number' => 'nullable|numeric|integer',
             'guest_attendance_id'=>'nullable|existing',
             'qr_code' => 'nullable|string',

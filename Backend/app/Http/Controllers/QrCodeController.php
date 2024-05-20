@@ -17,7 +17,7 @@ class QrCodeController extends Controller
         // Validate guest data (optional)
         $this->validate($request, [
             'name' => 'required|string',
-            'email' => 'required|email|unique:guests', // Ensure unique email
+            'email' => 'email', // Ensure unique email
             'phone_number' => 'required|numeric|integer',
             'event_info_id' => 'required', // Ensure
         ]);
