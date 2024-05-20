@@ -35,11 +35,27 @@
               <Avatar :avatarUrl="userAvatarUrl" altText="Avatar" />
             </a>
             <ul class="dropdown-menu">
-              <li>
-                <RouterLink class="dropdown-item" to="/profile">
-                  <i class="material-icons">person</i> Profile</RouterLink
-                >
-              </li>
+              <div v-if="isAdmin">
+                <li>
+                  <RouterLink class="dropdown-item" :to="{ name: 'adminViewProfile' }">
+                    <i class="material-icons">person</i> Profile</RouterLink
+                  >
+                </li>
+              </div>
+              <div v-if="isHost">
+                <li>
+                  <RouterLink class="dropdown-item" :to="{ name: 'hostProfile' }">
+                    <i class="material-icons">person</i> Profile</RouterLink
+                  >
+                </li>
+              </div>
+              <div v-if="isDoorman">
+                <li>
+                  <RouterLink class="dropdown-item" :to="{ name: 'hostProfile' }">
+                    <i class="material-icons">person</i> Profile</RouterLink
+                  >
+                </li>
+              </div>
               <!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
               <li><hr class="dropdown-divider" /></li>
               <li>
@@ -78,10 +94,17 @@ export default {
   setup() {
     const userIsLoggedIn = computed(() => !!useUserStore.storedUser)
     // const API_URL = computed(() => useGeneralStore.API_URL);
+    const userStore = useUserStore()
+    const isHost = computed(() => ['host'].includes(userStore.getUserRole))
+    const isDoorman = computed(() => ['doorman'].includes(userStore.getUserRole))
+    const isAdmin = computed(() => ['admin'].includes(userStore.getUserRole))
 
     return {
       userAvatarUrl: 'src/assets/Images/Avatar/man.png',
       userIsLoggedIn,
+      isHost,
+      isDoorman,
+      isAdmin,
       loggingOut: false
     }
   },

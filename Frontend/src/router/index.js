@@ -36,6 +36,7 @@ const router = createRouter({
       component: () => import('../views/ScanEvent.vue'),
       meta: { requiresAuth: true }
     },
+
     {
       path: '/host/events/view:eventId',
       name: 'hostviewEvent',
@@ -45,6 +46,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/host/Events/EventView.vue')
     },
+
     {
       path: '/host/events/all',
       name: 'hostAllEvents',
@@ -54,6 +56,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/host/Events/EventList.vue')
     },
+
     {
       path: '/host/events/new',
       name: 'hostNewEvents',
@@ -62,6 +65,16 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/host/Events/NewEvent.vue')
+    },
+
+    {
+      path: '/host/profile',
+      name: 'hostProfile',
+      meta: { requiresAuth: true },
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/host/ProfilePage.vue')
     },
 
     {
@@ -104,6 +117,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/admin/Events/EventList.vue')
     },
+
     {
       path: '/admin/events/view:eventId',
       name: 'adminViewEvent',
@@ -143,6 +157,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/admin/users/NewUser.vue')
     },
+
     {
       path: '/admin/user/view:userId',
       name: 'adminViewUser',
@@ -151,6 +166,15 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/admin/users/UserView.vue')
+    },
+    {
+      path: '/admin/profile',
+      name: 'adminViewProfile',
+      meta: { requiresAuth: true },
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/admin/ProfilePage.vue')
     },
 
     {
@@ -162,6 +186,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/doorman/DoormanView.vue')
     },
+
     {
       path: '/host/host-dashboard',
       name: 'host-dashboard',
