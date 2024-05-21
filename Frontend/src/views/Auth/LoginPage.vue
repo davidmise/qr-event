@@ -139,7 +139,7 @@
                   <div
                     class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4"
                   >
-                    <a href="#!">Forgot password</a>
+                    <router-link :to="{ name: 'forgotPassword' }">Forgot password</router-link>
                   </div>
                 </div>
               </div>
