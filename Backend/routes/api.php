@@ -11,6 +11,8 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestAttendanceController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\ForgotPasswordController;
 
 
 // Public routes (no authentication required)
@@ -18,6 +20,9 @@ Route::post('/register', 'App\Http\Controllers\UserController@create');
 Route::post('/users', 'App\Http\Controllers\UserController@index');
 // Route::post('/login', [AuthRegisteredUserController::class, "login"])->name('login');
 Route::post('/login', [AuthController::class, "login"])->name('login');
+
+Route::post('forgot-password', 'App\Http\Controllers\ForgotPasswordController@sendResetLinkEmail');
+Route::post('reset-password', 'App\Http\Controllers\ResetPasswordController@reset');
 
 
 // Protected routes (require authentication)

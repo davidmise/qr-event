@@ -5,10 +5,10 @@
       <TopBar />
       <main class="py-6 bg-surface-secondary">
         <div class="container-fluid">
-          <p>Client List</p>
+          <!-- <p>Client List</p> -->
           <main class="py-6 bg-surface-secondary">
             <div class="container-fluid">
-              <h2 class="mb-5">All Clients</h2>
+              <h2 class="mb-5">All Guests</h2>
               <div class="card shadow border-0 mb-7">
                 <div class="card-header">
                   <h5 class="mb-0">Applications</h5>
@@ -17,13 +17,10 @@
                   <table class="table table-hover table-nowrap">
                     <thead class="thead-light">
                       <tr>
-                        <th scope="col" class="fw-bold">#</th>
                         <th scope="col" class="fw-bold">Name</th>
                         <th scope="col" class="fw-bold">Email</th>
                         <th scope="col" class="fw-bold">Phone</th>
-                        <th scope="col" class="fw-bold">Event Type</th>
-                        <th scope="col" class="fw-bold">Event Capacity</th>
-                        <th scope="col" class="fw-bold">Cost</th>
+                        <th scope="col" class="fw-bold">Group</th>
                       </tr>
                     </thead>
                     <tbody>

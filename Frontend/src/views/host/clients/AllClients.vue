@@ -18,12 +18,12 @@
                     <thead class="thead-light">
                       <tr>
                         <th scope="col" class="fw-bold">#</th>
-                        <th scope="col" class="fw-bold">Event Name</th>
-                        <th scope="col" class="fw-bold">Event Subtitle</th>
-                        <th scope="col" class="fw-bold">Start Date</th>
-                        <th scope="col" class="fw-bold">Start Time</th>
-                        <th scope="col" class="fw-bold">Ticket Price</th>
-                        <th scope="col" class="fw-bold">Poster</th>
+                        <th scope="col" class="fw-bold">Name</th>
+                        <th scope="col" class="fw-bold">Email</th>
+                        <th scope="col" class="fw-bold">Phone</th>
+                        <th scope="col" class="fw-bold">Event Type</th>
+                        <th scope="col" class="fw-bold">Event Capacity</th>
+                        <th scope="col" class="fw-bold">Cost</th>
                       </tr>
                     </thead>
                     <tbody>

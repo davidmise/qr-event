@@ -24,13 +24,13 @@ const useUserStore = defineStore('user', {
       // Route user based on role
       switch (user.role) {
         case 'admin':
-          router.push({ name: 'admin-dashboard' })
+          router.push({ name: 'adminDashboard' })
           break
         case 'doorman':
           router.push({ name: 'doorman' })
           break
         case 'host':
-          router.push({ name: 'host-dashboard' })
+          router.push({ name: 'hostDashboard' })
           break
         default:
           router.push({ name: 'home' })

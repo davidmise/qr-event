@@ -1,38 +1,4 @@
 <template>
-  <!-- <div class="d-lg-flex half">
-      <div class="bg order-1 order-md-2" style="background-image: url('images/bg_1.jpg');"></div>
-      <div class="contents order-2 order-md-1">
-        <div class="container">
-          <div class="row align-items-center justify-content-center">
-            <div class="col-md-7">
-              <h3>Login to <strong>Colorlib</strong></h3>
-              <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
-              <form @submit.prevent="submitting === false && loginUser()">
-                <div class="form-group first">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" placeholder="demouser@example.com" value="demouser@example.com" id="username" v-model="email">
-                </div>
-                <div class="form-group last mb-3">
-                  <label for="password">Password</label>
-                  <input type="password" class="form-control" placeholder="demouser@123" value="demouser@123" id="password" v-model="password">
-                </div>
-                <div class="d-flex mb-5 align-items-center">
-                  <label class="control control--checkbox mb-0">
-                    <span class="caption">Remember me</span>
-                    <input type="checkbox" />
-                    <div class="control__indicator"></div>
-                  </label>
-                  <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
-                </div>
-                <input type="submit" value="Log In" class="btn btn-block btn-outline-secondary ">
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-  <!-- Login 9 - Bootstrap Brain Component -->
   <section class="bg-primary py-3 py-md-5 py-xl-8">
     <div class="container">
       <div class="row gy-4 align-items-center">
@@ -99,17 +65,28 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <div class="form-floating mb-3">
+                    <div class="form-floating mb-3 position-relative">
                       <input
-                        type="password"
+                        :type="passwordFieldType"
                         class="form-control"
                         name="password"
                         id="password"
-                        value=""
                         placeholder="Password"
                         v-model="password"
                         required
                       />
+                      <i
+                        :class="passwordToggleIcon"
+                        id="togglePassword"
+                        @click="togglePasswordVisibility"
+                        style="
+                          position: absolute;
+                          right: 10px;
+                          top: 50%;
+                          transform: translateY(-50%);
+                          cursor: pointer;
+                        "
+                      ></i>
                       <label for="password" class="form-label">Password</label>
                     </div>
                   </div>
@@ -181,18 +158,37 @@
                         width="24"
                         height="24"
                         fill="currentColor"
-                        class="bi bi-apple"
+                        class="bi bi-github"
                         viewBox="0 0 16 16"
                       >
                         <path
-                          d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516.024.034 1.52.087 2.475-1.258.955-1.345.762-2.391.728-2.43Zm3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422.212-2.189 1.675-2.789 1.698-2.854.023-.065-.597-.79-1.254-1.157a3.692 3.692 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56.244.729.625 1.924 1.273 2.796.576.984 1.34 1.667 1.659 1.899.319.232 1.219.386 1.843.067.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758.347-.79.505-1.217.473-1.282Z"
+                          d="M8 0C3.58 0 0 3.58 0 8c0 3.539 2.292 6.533 5.47 7.59.4.074.546-.173.546-.385 0-.19-.007-.693-.01-1.36-2.226.483-2.695-1.073-2.695-1.073-.364-.923-.89-1.168-.89-1.168-.727-.497.055-.487.055-.487.803.057 1.226.824 1.226.824.714 1.223 1.872.87 2.329.665.072-.517.279-.87.508-1.07-1.776-.201-3.644-.888-3.644-3.951 0-.872.31-1.585.823-2.144-.083-.202-.357-1.013.078-2.112 0 0 .67-.215 2.2.82a7.59 7.59 0 0 1 2.002-.269c.68.003 1.364.092 2.002.27 1.53-1.036 2.2-.821 2.2-.821.437 1.1.162 1.91.08 2.112.513.56.822 1.272.822 2.144 0 3.07-1.87 3.748-3.652 3.947.287.247.543.735.543 1.48 0 1.07-.01 1.933-.01 2.197 0 .214.144.462.55.384A8.008 8.008 0 0 0 16 8c0-4.42-3.58-8-8-8z"
                         />
+                      </svg>
+                    </a>
+                    <a href="#!" class="btn btn-outline-info bsb-btn-circle bsb-btn-circle-2xl">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        class="bi bi-twitter"
+                        viewBox="0 0 16 16"
+                      >
                         <path
-                          d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516.024.034 1.52.087 2.475-1.258.955-1.345.762-2.391.728-2.43Zm3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422.212-2.189 1.675-2.789 1.698-2.854.023-.065-.597-.79-1.254-1.157a3.692 3.692 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56.244.729.625 1.924 1.273 2.796.576.984 1.34 1.667 1.659 1.899.319.232 1.219.386 1.843.067.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758.347-.79.505-1.217.473-1.282Z"
+                          d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.01-.423A6.68 6.68 0 0 0 16 3.542a6.56 6.56 0 0 1-1.889.518 3.3 3.3 0 0 0 1.443-1.817 6.573 6.573 0 0 1-2.084.797 3.281 3.281 0 0 0-5.593 2.99A9.325 9.325 0 0 1 1.114 2.1a3.28 3.28 0 0 0 1.015 4.382A3.301 3.301 0 0 1 .64 6.575v.045A3.283 3.283 0 0 0 3.277 10.1a3.273 3.273 0 0 1-.865.115c-.211 0-.417-.02-.617-.058a3.283 3.283 0 0 0 3.065 2.278A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045 9.29 9.29 0 0 0 5.026 1.466"
                         />
                       </svg>
                     </a>
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <p class="small text-secondary mt-4">
+                    By continuing, you agree to our <a href="#">Terms of Service</a> and acknowledge
+                    our <a href="#">Privacy Policy</a>.
+                  </p>
                 </div>
               </div>
             </div>
@@ -202,16 +198,14 @@
     </div>
   </section>
 </template>
-
 <script>
 import { computed } from 'vue' // Import computed from Vue
-
 import axios from 'axios'
 import Swal from 'sweetalert2'
-
 import { mapActions, mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
+
 export default {
   data() {
     const userIsLoggedIn = computed(() => useUserStore.userIsLoggedIn)
@@ -220,7 +214,9 @@ export default {
       password: '',
       submitting: false,
       message: null,
-      userIsLoggedIn
+      userIsLoggedIn,
+      passwordFieldType: 'password', // Add password field type
+      passwordToggleIcon: 'bi bi-eye-slash' // Add password toggle icon
     }
   },
 
@@ -281,7 +277,26 @@ export default {
         icon: 'success',
         title: 'Logged in Successfully!'
       })
+    },
+    togglePasswordVisibility() {
+      if (this.passwordFieldType === 'password') {
+        this.passwordFieldType = 'text'
+        this.passwordToggleIcon = 'bi bi-eye'
+      } else {
+        this.passwordFieldType = 'password'
+        this.passwordToggleIcon = 'bi bi-eye-slash'
+      }
     }
   }
 }
 </script>
+
+<style scoped>
+#togglePassword {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+</style>

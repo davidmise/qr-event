@@ -144,18 +144,55 @@
                   </div>
                   <!-- password -->
                   <div class="col-12">
-                    <div class="form-floating mb-3">
+                    <div class="form-floating mb-3 position-relative">
                       <input
-                        type="password"
                         class="form-control"
                         name="password"
                         id="password"
-                        value=""
                         placeholder="Password"
                         v-model="password"
+                        :type="passwordFieldType"
                         required
                       />
                       <label for="password" class="form-label">Password</label>
+                      <span class="password-toggle-icon" @click="togglePasswordVisibility">
+                        <i
+                          :class="passwordToggleIcon"
+                          style="
+                            position: absolute;
+                            right: 10px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            cursor: pointer;
+                          "
+                        ></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-floating mb-3 position-relative">
+                      <input
+                        class="form-control"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        placeholder="Confirm Password"
+                        v-model="confirmPassword"
+                        :type="confirmPasswordFieldType"
+                        required
+                      />
+                      <label for="confirmPassword" class="form-label">Confirm Password</label>
+                      <span class="password-toggle-icon" @click="toggleConfirmPasswordVisibility">
+                        <i
+                          :class="confirmPasswordToggleIcon"
+                          style="
+                            position: absolute;
+                            right: 10px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            cursor: pointer;
+                          "
+                        ></i>
+                      </span>
                     </div>
                   </div>
                   <div class="col-12">
@@ -250,8 +287,13 @@ export default {
       email: '',
       username: '',
       password: '',
+      confirmPassword: '',
       submitting: false,
-      message: null
+      message: null,
+      passwordFieldType: 'password',
+      passwordToggleIcon: 'bi bi-eye-slash',
+      confirmPasswordFieldType: 'password',
+      confirmPasswordToggleIcon: 'bi bi-eye-slash'
     }
   },
 
@@ -269,6 +311,11 @@ export default {
     registerUser() {
       const _this = this
       _this.submitting = true
+
+      if (_this.password !== _this.confirmPassword) {
+        _this.handleError('Passwords do not match')
+        return
+      }
 
       axios
         .post(`${this.API_URL}register`, {
@@ -312,6 +359,24 @@ export default {
         text: this.message
         // footer: '<a href="#">Why do I have this issue?</a>'
       })
+    },
+    togglePasswordVisibility() {
+      if (this.passwordFieldType === 'password') {
+        this.passwordFieldType = 'text'
+        this.passwordToggleIcon = 'bi bi-eye'
+      } else {
+        this.passwordFieldType = 'password'
+        this.passwordToggleIcon = 'bi bi-eye-slash'
+      }
+    },
+    toggleConfirmPasswordVisibility() {
+      if (this.confirmPasswordFieldType === 'password') {
+        this.confirmPasswordFieldType = 'text'
+        this.confirmPasswordToggleIcon = 'bi bi-eye'
+      } else {
+        this.confirmPasswordFieldType = 'password'
+        this.confirmPasswordToggleIcon = 'bi bi-eye-slash'
+      }
     }
   }
 }

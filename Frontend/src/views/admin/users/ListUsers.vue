@@ -5,7 +5,6 @@
       <TopBar />
       <main class="py-6 bg-surface-secondary">
         <div class="container-fluid">
-          <p>Users List</p>
           <main class="py-6 bg-surface-secondary">
             <div class="container-fluid">
               <h2 class="mb-5">All Users</h2>
@@ -18,12 +17,11 @@
                     <thead class="thead-light">
                       <tr>
                         <th scope="col" class="fw-bold">#</th>
-                        <th scope="col" class="fw-bold">Event Name</th>
-                        <th scope="col" class="fw-bold">Event Subtitle</th>
-                        <th scope="col" class="fw-bold">Start Date</th>
-                        <th scope="col" class="fw-bold">Start Time</th>
-                        <th scope="col" class="fw-bold">Ticket Price</th>
-                        <th scope="col" class="fw-bold">Poster</th>
+                        <th scope="col" class="fw-bold">Name</th>
+                        <th scope="col" class="fw-bold">Email</th>
+                        <th scope="col" class="fw-bold">Phone</th>
+                        <th scope="col" class="fw-bold">Role</th>
+                        <th scope="col" class="fw-bold">Action</th>
                       </tr>
                     </thead>
                     <tbody>

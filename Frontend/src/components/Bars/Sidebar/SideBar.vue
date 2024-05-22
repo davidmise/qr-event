@@ -24,7 +24,9 @@
 
     <!-- Router - links -->
     <!-- Dashboard -->
-    <div class="collapse-container">
+
+    <!-- Admin Router-->
+    <div v-if="isAdmin" class="collapse-container">
       <a
         class="btn text-uppercase"
         data-bs-toggle="collapse"
@@ -37,12 +39,9 @@
         <span v-if="!collapsed" class="ms-3">Home</span>
       </a>
       <div class="collapse" id="Dashboard">
-        <SideBarLink to="/" :text="collapsed ? '' : 'Dashboard'" />
+        <SideBarLink :to="{ name: 'adminDashboard' }" :text="collapsed ? '' : 'Dashboard'" />
       </div>
-    </div>
 
-    <!-- Admin Router-->
-    <div v-if="isAdmin" class="collapse-container">
       <a
         class="btn text-uppercase"
         data-bs-toggle="collapse"
@@ -72,7 +71,7 @@
         aria-expanded="false"
         aria-controls="Recieved"
       >
-        <i class="material-icons icon">person</i>
+        <i class="material-icons icon">face</i>
         <span v-if="!collapsed" class="ms-3">Users</span>
       </a>
       <div class="collapse" id="users">
@@ -81,10 +80,59 @@
       <div class="collapse" id="users">
         <SideBarLink to="/admin/users/all" :text="collapsed ? '' : 'All Users'" />
       </div>
+      <!-- clients -->
+      <a
+        class="btn text-uppercase"
+        data-bs-toggle="collapse"
+        href="#clients"
+        role="button"
+        aria-expanded="false"
+        aria-controls="Recieved"
+      >
+        <i class="material-icons icon">business_center</i>
+        <span v-if="!collapsed" class="ms-3">Clients</span>
+      </a>
+      <div class="collapse" id="clients">
+        <SideBarLink :to="{ name: 'adminClientsNew' }" :text="collapsed ? '' : 'New Client'" />
+      </div>
+      <div class="collapse" id="clients">
+        <SideBarLink :to="{ name: 'adminClientsAll' }" :text="collapsed ? '' : 'All Clients'" />
+      </div>
+
+      <!-- guest -->
+      <a
+        class="btn text-uppercase"
+        data-bs-toggle="collapse"
+        href="#guests"
+        role="button"
+        aria-expanded="false"
+        aria-controls="Recieved"
+      >
+        <i class="material-icons icon">group</i>
+        <span v-if="!collapsed" class="ms-3">Guests</span>
+      </a>
+      <div class="collapse" id="guests">
+        <SideBarLink :to="{ name: 'adminGuestAll' }" :text="collapsed ? '' : 'All Guests'" />
+      </div>
     </div>
 
     <!-- Host Router -->
     <div v-if="isHost" class="collapse-container">
+      <a
+        class="btn text-uppercase"
+        data-bs-toggle="collapse"
+        href="#Dashboard"
+        role="button"
+        aria-expanded="false"
+        aria-controls="Dashboard"
+      >
+        <i class="material-icons icon">home</i>
+        <span v-if="!collapsed" class="ms-3">Home</span>
+      </a>
+      <div class="collapse" id="Dashboard">
+        <SideBarLink :to="{ name: 'hostDashboard' }" :text="collapsed ? '' : 'Dashboard'" />
+      </div>
+
       <a
         class="btn text-uppercase"
         data-bs-toggle="collapse"
@@ -113,7 +161,7 @@
         aria-expanded="false"
         aria-controls="Recieved"
       >
-        <i class="material-icons icon">event</i>
+        <i class="material-icons icon">business_center</i>
         <span v-if="!collapsed" class="ms-3">Clients</span>
       </a>
       <div class="collapse" id="clients">
@@ -121,6 +169,22 @@
       </div>
       <div class="collapse" id="clients">
         <SideBarLink :to="{ name: 'hostClientsAll' }" :text="collapsed ? '' : 'All Clients'" />
+      </div>
+
+      <!-- clients -->
+      <a
+        class="btn text-uppercase"
+        data-bs-toggle="collapse"
+        href="#guests"
+        role="button"
+        aria-expanded="false"
+        aria-controls="Recieved"
+      >
+        <i class="material-icons icon">group</i>
+        <span v-if="!collapsed" class="ms-3">Guests</span>
+      </a>
+      <div class="collapse" id="guests">
+        <SideBarLink :to="{ name: 'adminGuestAll' }" :text="collapsed ? '' : 'All Guests'" />
       </div>
     </div>
     <!-- Contacts -->
