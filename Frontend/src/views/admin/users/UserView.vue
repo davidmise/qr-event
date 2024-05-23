@@ -30,19 +30,19 @@ import EdditUserModal from '@/components/admin/user/modal/EdditUserModal.vue'
                       />
                       <h5 class="my-3">{{ userInfo.name }}</h5>
                       <div class="d-flex justify-content-center mb-2">
-                              <!-- Button trigger modal -->
+                        <!-- Button trigger modal -->
                         <button
                           type="button"
                           data-mdb-button-init
                           data-mdb-ripple-init
                           class="btn btn-outline-success"
                           data-bs-toggle="modal"
-                           data-bs-target="#exampleModal"
+                          data-bs-target="#exampleModal"
                         >
                           Edit
                         </button>
                         <!-- Modal -->
-                      <EdditUserModal/>
+                        <EdditUserModal />
                         <button
                           type="button"
                           data-mdb-button-init
