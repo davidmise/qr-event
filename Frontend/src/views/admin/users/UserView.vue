@@ -107,10 +107,6 @@ import EdditUserModal from '@/components/admin/user/modal/EdditUserModal.vue'
                 </div>
               </div>
             </div>
-      
-
-
-
           </section>
         </div>
       </main>

@@ -4,49 +4,72 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Eddit User Details</h1>
+              <h1 class="modal-title fs-5 text-secondary fw-bold" id="exampleModalLabel">Eddit User Details</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+            </div><form @submit.prevent="updateUser">
             <div class="modal-body">
                 <div>
                     <!-- Form elements for editing user information -->
-                    <form @submit.prevent="updateUser">
-                      <div class="form-group">
-                        <label for="name">Name</label>
-                        <input v-model="user.name" type="text" id="name" class="form-control" />
-                      </div>
-                      <div class="form-group">
-                        <label for="username">Username</label>
-                        <input v-model="user.username" type="text" id="username" class="form-control" />
-                      </div>
-                      <div class="form-group">
-                        <label for="email">Email</label>
-                        <input v-model="user.email" type="email" id="email" class="form-control" />
-                      </div>
-                      <!-- <div class="form-group">
-                        <label for="email">Phone</label>
-                        <input v-model="user.phone" type="number" id="number" class="form-control" />
-                      </div> -->
-                      <div class="form-group">
-                        <label for="password">Password</label>
-                        <input v-model="user.password" type="password" id="password" class="form-control" />
-                      </div>
-                      <div class="form-group">
-                        <label for="role">Role</label>
-                        <select v-model="user.role" id="role" class="form-control">
-                          <option value="admin">Admin</option>
-                          <option value="host">Host</option>
-                          <option value="doorman">Doorman</option>
-                        </select>
-                      </div>
-                      <button type="submit" class="btn btn-primary">Update User</button>
-                    </form>
+                    
+                        <div class="form-floating mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInput"
+                              v-model="user.name"
+                            />
+                            <label for="floatingInput"> Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInput"
+                              v-model="user.username"
+                            />
+                            <label for="floatingInput"> Username</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInput"
+                              v-model="user.email"
+                            />
+                            <label for="floatingInput"> Email</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input
+                            
+                            type="password"
+                              class="form-control"
+                              id="floatingInput"
+                              v-model="user.password"
+                            />
+                            <label for="floatingInput"> Password</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select
+                              class="form-select form-select-lg"
+                              aria-label="Large select example"
+                              v-model="user.role"
+                            >
+                              <option disabled selected>Open this select menu</option>
+                              <option value="admin">Admin</option>
+                              <option value="host">Host</option>
+                              <option value="doorman">Doorman</option>
+                            </select>
+                            <label for="floatingInput">Event Type</label>
+                          </div>
+                     
+                      <!-- <button type="submit" class="btn btn-primary">Update User</button> -->
+                    
                   </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-            </div>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div></form>
           </div>
         </div>
       </div>
