@@ -18,41 +18,35 @@
                       <tr>
                         <th scope="col" class="fw-bold">#</th>
                         <th scope="col" class="fw-bold">Name</th>
+                        <th scope="col" class="fw-bold">Username</th>
                         <th scope="col" class="fw-bold">Email</th>
-                        <th scope="col" class="fw-bold">Phone</th>
+                        <!-- <th scope="col" class="fw-bold">Phone</th> -->
                         <th scope="col" class="fw-bold">Role</th>
                         <th scope="col" class="fw-bold">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(event, index) in paginatedEvents"
-                        :key="event.id"
-                        @click="route(event.id)"
+                        v-for="(user, index) in paginatedUsers"
+                        :key="user.id"
+                        @click="route(user.id)"
                       >
                         <td class="text-heading font-semibold">
                           {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                         </td>
-                        <td>{{ event.event_name }}</td>
-                        <td>{{ event.event_subtitle }}</td>
-                        <td>{{ event.start_date }}</td>
-                        <td>{{ event.start_time }}</td>
-                        <td>{{ event.ticket ? event.ticket.price : 'N/A' }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <!-- <td>{{ user.phone }}</td> -->
+                        <td>{{ user.role }}</td>
                         <td>
-                          <img
-                            v-if="event.media && event.media.poster"
-                            :src="event.media.poster"
-                            alt="Poster"
-                            style="max-width: 100px"
-                          />
-                          <span v-else>N/A</span>
+                          <button @click="route(user.id)" class="btn btn-primary">View</button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-
               <div class="mt-3">
                 <ul class="pagination justify-content-center">
                   <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -71,7 +65,7 @@
                     :key="page"
                     :class="{ active: currentPage === page }"
                   >
-                    <button class="btn btn-outline-success border-0" @click="fetchEventInfo(page)">
+                    <button class="btn btn-outline-success border-0" @click="fetchUserInfo(page)">
                       {{ page }}
                     </button>
                   </li>
@@ -95,13 +89,13 @@
     </div>
   </div>
 </template>
+
 <script>
 import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state.js'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
 
-import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState, mapActions } from 'pinia'
@@ -115,69 +109,58 @@ export default {
     return {
       sidebarWidth,
       data: {},
-      events: [],
-      event: null,
+      users: [],
+      user: null,
       currentPage: 1,
       itemsPerPage: 10,
       lastPage: null
     }
   },
   created() {
-    this.fetchEventInfo(1)
+    this.fetchUserInfo(1)
   },
-
   computed: {
     ...mapState(useGeneralStore, ['API_URL']),
-    ...mapState(useUserStore, ['token']),
-    ...mapState(useEventStore, ['event']),
-
-    paginatedEvents() {
-      if (!this.events.length) return []
+    ...mapState(useUserStore, ['token', 'user']),
+    paginatedUsers() {
+      if (!this.users.length) return []
       const startIndex = (this.currentPage - 1) * this.itemsPerPage
       const endIndex = startIndex + this.itemsPerPage
-      return this.events.slice(startIndex, endIndex)
+      return this.users.slice(startIndex, endIndex)
     }
   },
   methods: {
-    ...mapActions(useEventStore, ['storeEvent']),
-
-    async fetchEventInfo(index) {
+    ...mapActions(useUserStore, ['storeLoggedInUser']),
+    async fetchUserInfo(index) {
       this.currentPage = index
       try {
-        const response = await axios.get(`${this.API_URL}all-events?page=` + this.currentPage, {
+        const response = await axios.get(`${this.API_URL}users?page=${this.currentPage}`, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
         })
         this.data = response.data
-        this.events = this.data.data
-        this.lastPage = response.data.last_page
+        this.users = this.data.data
+        this.lastPage = this.data.last_page
       } catch (error) {
-        console.error('Error fetching Event Info:', error)
+        console.error('Error fetching user info:', error)
       }
     },
-
     handlePreviousPage() {
       if (this.currentPage > 1) {
         this.currentPage--
-        this.fetchEventInfo(this.currentPage)
+        this.fetchUserInfo(this.currentPage)
       }
     },
-
     handleNextPage() {
-      if (this.currentPage < this.data.last_page) {
+      if (this.currentPage < this.lastPage) {
         this.currentPage++
-        this.fetchEventInfo(this.currentPage)
+        this.fetchUserInfo(this.currentPage)
       }
     },
-
-    route(eventId) {
-      this.$router.push({ name: 'viewEvent', params: { eventId: eventId } })
+    route(userId) {
+      this.$router.push({ name: 'adminViewUser', params: { userId } })
     }
-  },
-
-  mounted() {
-    this.fetchEventInfo(1)
   }
 }
 </script>

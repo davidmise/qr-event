@@ -17,7 +17,7 @@ use App\Http\Controllers\ForgotPasswordController;
 
 // Public routes (no authentication required)
 Route::post('/register', 'App\Http\Controllers\UserController@create');
-Route::post('/users', 'App\Http\Controllers\UserController@index');
+
 // Route::post('/login', [AuthRegisteredUserController::class, "login"])->name('login');
 Route::post('/login', [AuthController::class, "login"])->name('login');
 
@@ -28,6 +28,11 @@ Route::post('reset-password', 'App\Http\Controllers\ResetPasswordController@rese
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, "logout"]);
+
+    // all users
+    Route::get('/users', 'App\Http\Controllers\UserController@index');
+    Route::get('/user{id}', 'App\Http\Controllers\UserController@show');
+    Route::put('/update-user{id}', 'App\Http\Controllers\UserController@update');
 
     // EventInfo
     Route::get('/all-events', [EventInfoController::class, 'index']);
