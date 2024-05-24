@@ -28,27 +28,19 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(event, index) in paginatedEvents"
-                        :key="event.id"
-                        @click="route(event.id)"
+                        v-for="(client, index) in paginatedClients"
+                        :key="client.id"
+                        @click="route(client.id)"
                       >
                         <td class="text-heading font-semibold">
                           {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                         </td>
-                        <td>{{ event.event_name }}</td>
-                        <td>{{ event.event_subtitle }}</td>
-                        <td>{{ event.start_date }}</td>
-                        <td>{{ event.start_time }}</td>
-                        <td>{{ event.ticket ? event.ticket.price : 'N/A' }}</td>
-                        <td>
-                          <img
-                            v-if="event.media && event.media.poster"
-                            :src="event.media.poster"
-                            alt="Poster"
-                            style="max-width: 100px"
-                          />
-                          <span v-else>N/A</span>
-                        </td>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>{{ client.phone }}</td>
+                        <td>{{ client.event_type }}</td>
+                        <td>{{ client.event_capacity }}</td>
+                        <td>{{ client.cost }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -73,7 +65,7 @@
                     :key="page"
                     :class="{ active: currentPage === page }"
                   >
-                    <button class="btn btn-outline-success border-0" @click="fetchEventInfo(page)">
+                    <button class="btn btn-outline-success border-0" @click="fetchClientInfo(page)">
                       {{ page }}
                     </button>
                   </li>
@@ -97,6 +89,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state'
@@ -117,15 +110,15 @@ export default {
     return {
       sidebarWidth,
       data: {},
-      events: [],
-      event: null,
+      clients: [],
+      client: null,
       currentPage: 1,
       itemsPerPage: 10,
       lastPage: null
     }
   },
   created() {
-    this.fetchEventInfo(1)
+    this.fetchClientInfo(1)
   },
 
   computed: {
@@ -133,53 +126,52 @@ export default {
     ...mapState(useUserStore, ['token']),
     ...mapState(useEventStore, ['event']),
 
-    paginatedEvents() {
-      if (!this.events.length) return []
+    paginatedClients() {
+      if (!this.clients.length) return []
       const startIndex = (this.currentPage - 1) * this.itemsPerPage
       const endIndex = startIndex + this.itemsPerPage
-      return this.events.slice(startIndex, endIndex)
+      return this.clients.slice(startIndex, endIndex)
     }
   },
   methods: {
     ...mapActions(useEventStore, ['storeEvent']),
 
-    async fetchEventInfo(index) {
-      this.currentPage = index
+    async fetchClientInfo(page) {
+      this.currentPage = page
       try {
-        const response = await axios.get(`${this.API_URL}all-events?page=` + this.currentPage, {
+        const response = await axios.get(`${this.API_URL}all-clients?page=${this.currentPage}`, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
         })
         this.data = response.data
-        this.events = this.data.data
+        this.clients = this.data.data
         this.lastPage = response.data.last_page
+        console.log(this.data)
       } catch (error) {
-        console.error('Error fetching Event Info:', error)
+        console.error('Error fetching Client Info:', error)
       }
     },
 
     handlePreviousPage() {
       if (this.currentPage > 1) {
-        this.currentPage--
-        this.fetchEventInfo(this.currentPage)
+        this.fetchClientInfo(this.currentPage - 1)
       }
     },
 
     handleNextPage() {
-      if (this.currentPage < this.data.last_page) {
-        this.currentPage++
-        this.fetchEventInfo(this.currentPage)
+      if (this.currentPage < this.lastPage) {
+        this.fetchClientInfo(this.currentPage + 1)
       }
     },
 
-    route(eventId) {
-      this.$router.push({ name: 'viewEvent', params: { eventId: eventId } })
+    route(clientId) {
+      this.$router.push({ name: 'adminDashboard', params: { clientId: clientId } })
     }
   },
 
   mounted() {
-    this.fetchEventInfo(1)
+    this.fetchClientInfo(1)
   }
 }
 </script>

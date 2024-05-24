@@ -19,7 +19,7 @@ import useUserStore from '@/stores/users'
           <main class="py-6 bg-surface-secondary ms-4">
             <div class="container">
               <h2 class="mb-3">Create Client</h2>
-              <form action="" @submit.prevent="createEvent">
+              <form action="" @submit.prevent="createClient">
                 <div class="container-fluid mb-5">
                   <!-- first row  -->
                   <div class="row mt-5">
@@ -34,7 +34,7 @@ import useUserStore from '@/stores/users'
                             type="text"
                             class="form-control"
                             id="floatingInput"
-                            v-model="event_info.name"
+                            v-model="client.name"
                           />
                           <label for="floatingInput">Client Name</label>
                         </div>
@@ -44,7 +44,7 @@ import useUserStore from '@/stores/users'
                             type="text"
                             class="form-control"
                             id="floatingInput"
-                            v-model="event_info.email"
+                            v-model="client.email"
                           />
                           <label for="floatingInput">Client Email</label>
                         </div>
@@ -55,7 +55,7 @@ import useUserStore from '@/stores/users'
                             type="text"
                             class="form-control"
                             id="floatingInput"
-                            v-model="event_info.phone"
+                            v-model="client.phone"
                           />
                           <label for="floatingInput">Client Phone</label>
                         </div>
@@ -64,7 +64,7 @@ import useUserStore from '@/stores/users'
                           <select
                             class="form-select form-select-lg"
                             aria-label="Large select example"
-                            v-model="event_info.event_type"
+                            v-model="client.event_type"
                           >
                             <option disabled selected>Open this select menu</option>
                             <option value="conference">Conference</option>
@@ -112,7 +112,7 @@ import useUserStore from '@/stores/users'
                             type="number"
                             class="form-control"
                             id="floatingInput"
-                            v-model="event_info.event_capacity"
+                            v-model="client.event_capacity"
                           />
                           <label for="floatingInput">Event Capacity</label>
                         </div>
@@ -121,7 +121,7 @@ import useUserStore from '@/stores/users'
                             type="number"
                             class="form-control"
                             id="floatingInput"
-                            v-model="event_info.price"
+                            v-model="client.cost"
                           />
                           <label for="floatingInput">Event Cost</label>
                         </div>
@@ -153,42 +153,16 @@ import useUserStore from '@/stores/users'
 
 <script>
 export default {
-  name: 'CreateEvent',
+  name: 'CreateClient',
   data() {
     return {
-      event_info: {
-        event_name: '',
-        event_subtitle: '',
-        start_date: '',
-        end_date: '',
-        start_time: '',
-        end_time: '',
-        location: {
-          city: '',
-          state: '',
-          country: '',
-          postal_code: '',
-          google_map_url: ''
-        },
-        organizer: {
-          name: '',
-          email: '',
-          phone: ''
-        },
-        ticket: {
-          price: '',
-          event_capacity: ''
-        },
-        media: {
-          poster: '',
-          banner: '',
-          logo: ''
-        },
-        social_links: {
-          instagram: '',
-          twitter: '',
-          facebook: ''
-        }
+      client: {
+        name: '',
+        email: '',
+        phone: '',
+        event_type: '',
+        event_capacity: '',
+        cost: ''
       }
     }
   },
@@ -200,20 +174,20 @@ export default {
   },
 
   methods: {
-    async createEvent() {
+    async createClient() {
       try {
-        const response = await axios.post(`${this.API_URL}create-event`, this.event_info, {
+        const response = await axios.post(`${this.API_URL}client`, this.client, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
         })
 
-        const event_id = response.data.event.event_info.id
-        console.log(response.data.event)
-        localStorage.setItem('event_id', event_id)
-        console.log('this event id is: ' + event_id)
+        const client_id = response.data.client.id
+        console.log(response.data.client)
+        localStorage.setItem('client_id', client_id)
+        console.log('this client id is: ' + client_id)
         this.resetForm()
-        this.$router.push({ name: 'AllEvents' })
+        this.$router.push({ name: 'adminClientsAll' })
       } catch (error) {
         if (error.response && error.response.status === 500) {
           console.error('Internal server error:', error.response.data)
@@ -226,39 +200,13 @@ export default {
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)
     },
     resetForm() {
-      this.event_info = {
-        event_name: '',
-        event_subtitle: '',
-        start_date: '',
-        end_date: '',
-        start_time: '',
-        end_time: '',
-        location: {
-          city: '',
-          state: '',
-          country: '',
-          postal_code: '',
-          google_map_url: ''
-        },
-        organizer: {
-          name: '',
-          email: '',
-          phone: ''
-        },
-        ticket: {
-          price: '',
-          event_capacity: ''
-        },
-        media: {
-          poster: '',
-          banner: '',
-          logo: ''
-        },
-        social_links: {
-          instagram: '',
-          twitter: '',
-          facebook: ''
-        }
+      this.client = {
+        name: '',
+        email: '',
+        phone: '',
+        event_type: '',
+        event_capacity: '',
+        cost: ''
       }
     }
   }
