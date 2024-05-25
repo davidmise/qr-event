@@ -11,8 +11,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestAttendanceController;
-use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\ForgotPasswordController;
+
 
 
 // Public routes (no authentication required)
@@ -67,6 +66,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Guest Attendance
     Route::post('/guest-attendance', [GuestAttendanceController::class, 'store']);
     Route::get('/all-guest-attendances', [GuestAttendanceController::class, 'index']);
+
+    // client   registration
+    Route::post('/client', 'App\Http\Controllers\ClientsController@store');
+    Route::get('/all-clients', 'App\Http\Controllers\ClientsController@index');
 
     // Qr-code
     Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);

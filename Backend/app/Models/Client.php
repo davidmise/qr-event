@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
-class Clients extends Model
+class Client extends Model
 {
     use HasFactory,HasFactory, Notifiable;
     protected $fillable = [

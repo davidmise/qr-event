@@ -25,8 +25,8 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(event, index) in paginatedEvents"
-                        :key="event.id"
+                        v-for="(guest, index) in guests"
+                        :key="guest.id"
                         @click="route(event.id)"
                       >
                         <td class="text-heading font-semibold">

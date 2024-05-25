@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +15,8 @@ class ClientsController extends Controller
     public function index()
     {
         //
-        $clients = Clients::with('event')->paginate(5);
+        $clients = Client::with('event')->paginate(5);
+
         return $clients;
     }
 
@@ -33,7 +34,41 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         //
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string',
+            'event_type' => 'required|in:Wedding,Exhibition,Coorporate,Seminars,Festivals,Conference,Others',
+            'cost' => 'required|integer|min:0.01', // Minimum price of 0.01
+            'event_capacity' => 'required|integer|min:1', // Minimum capacity of 1
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $client = new Client([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'event_type' => $request->input('event_type'),
+            'cost' => $request->input('cost'),
+            'event_capacity' => $request->input('event_capacity'),
+         ]);
+
+         $client->save();
+
+         return response()->json([
+            'status' => true,
+            'message' => 'Client created successfully',
+            'client' => $client
+        ], 201);
     }
+
 
     /**
      * Display the specified resource.

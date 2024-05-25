@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(client, index) in paginatedClients"
+                        v-for="(client, index) in clients"
                         :key="client.id"
                         @click="route(client.id)"
                       >

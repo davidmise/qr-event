@@ -27,7 +27,7 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(user, index) in paginatedUsers"
+                        v-for="(user, index) in users"
                         :key="user.id"
                         @click="route(user.id)"
                       >
