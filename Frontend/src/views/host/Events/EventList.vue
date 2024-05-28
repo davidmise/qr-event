@@ -174,7 +174,7 @@ export default {
     },
 
     route(eventId) {
-      this.$router.push({ name: 'viewEvent', params: { eventId: eventId } })
+      this.$router.push({ name: 'hostviewEvent', params: { eventId: eventId } })
     }
   },
 
