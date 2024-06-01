@@ -166,58 +166,73 @@ class UserController extends Controller
     }
 
     public function search(Request $request)
-{
-    $rules = [
-        'name' => 'nullable|string|max:255',
-        'username' => 'nullable|string|max:255',
-        'email' => 'nullable|string|email|max:255',
-        'role' => 'nullable|in:admin,host,doorman',
-        'page' => 'nullable|integer|min:1',
-        'per_page' => 'nullable|integer|min:1|max:100'
-    ];
-
-    $validator = Validator::make($request->all(), $rules);
-
-    if ($validator->fails()) {
+    {
+        $searchTerm = $request->input('search_term');
+        $users = User::query()->where('name', 'LIKE', "%$searchTerm%")
+            ->orWhere('username', 'LIKE', "%$searchTerm%")
+            ->orWhere('email', 'LIKE', "%$searchTerm%")
+            ->orWhere('role', 'LIKE', "%$searchTerm%")
+            ->paginate(10);
         return response()->json([
-            'status' => false,
-            'errors' => $validator->errors()
-        ], 422);
+            'message' => 'Users searched successfully',
+            'users' => $users
+        ], 200);
     }
 
-    $query = User::query();
+    
+//     public function search(Request $request)
+// {
+//     $rules = [
+//         'name' => 'nullable|string|max:255',
+//         'username' => 'nullable|string|max:255',
+//         'email' => 'nullable|string|email|max:255',
+//         'role' => 'nullable|in:admin,host,doorman',
+//         'page' => 'nullable|integer|min:1',
+//         'per_page' => 'nullable|integer|min:1|max:100'
+//     ];
 
-    if ($request->has('name')) {
-        $query->where('name', 'like', '%' . $request->input('name') . '%');
-    }
+//     $validator = Validator::make($request->all(), $rules);
 
-    if ($request->has('username')) {
-        $query->where('username', 'like', '%' . $request->input('username') . '%');
-    }
+//     if ($validator->fails()) {
+//         return response()->json([
+//             'status' => false,
+//             'errors' => $validator->errors()
+//         ], 422);
+//     }
 
-    if ($request->has('email')) {
-        $query->where('email', 'like', '%' . $request->input('email') . '%');
-    }
+//     $query = User::query();
 
-    if ($request->has('role')) {
-        $query->where('role', $request->input('role'));
-    }
+//     if ($request->has('name')) {
+//         $query->where('name', 'like', '%' . $request->input('name') . '%');
+//     }
 
-    // Pagination
-    $perPage = $request->input('per_page', 10);
-    $page = $request->input('page', 1);
+//     if ($request->has('username')) {
+//         $query->where('username', 'like', '%' . $request->input('username') . '%');
+//     }
 
-    $users = $query->paginate($perPage, ['*'], 'page', $page);
+//     if ($request->has('email')) {
+//         $query->where('email', 'like', '%' . $request->input('email') . '%');
+//     }
 
-    return response()->json([
-        'status' => true,
-        'users' => $users->items(),
-        'current_page' => $users->currentPage(),
-        'last_page' => $users->lastPage(),
-        'per_page' => $users->perPage(),
-        'total' => $users->total()
-    ], 200);
-}
+//     if ($request->has('role')) {
+//         $query->where('role', $request->input('role'));
+//     }
+
+//     // Pagination
+//     $perPage = $request->input('per_page', 10);
+//     $page = $request->input('page', 1);
+
+//     $users = $query->paginate($perPage, ['*'], 'page', $page);
+
+//     return response()->json([
+//         'status' => true,
+//         'users' => $users->items(),
+//         'current_page' => $users->currentPage(),
+//         'last_page' => $users->lastPage(),
+//         'per_page' => $users->perPage(),
+//         'total' => $users->total()
+//     ], 200);
+// }
 
 
 }

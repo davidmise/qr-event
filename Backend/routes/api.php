@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user{id}', [UserController::class, 'show']);
     Route::put('/update-user{id}', [UserController::class, 'update']);
     Route::delete('/delete-user{id}', [UserController::class, 'destroy']);
-    Route::get('/users/search', [UserController::class, 'search']);
+    Route::get('/search', [UserController::class, 'search']);
 
 });
     // EventInfo

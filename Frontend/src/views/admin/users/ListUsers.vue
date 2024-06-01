@@ -15,9 +15,10 @@
                       class="form-control" 
                       id="datatable-search-input" 
                       v-model="searchQuery" 
-                      @input="debouncedSearch"
+                      @input="searchData"
                     />
                     <label for="datatable-search-input">Search</label>
+                    <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
                   </div>
                 <div class="card shadow border-0 mb-7">
                   <div class="card-header">
@@ -125,11 +126,10 @@
         lastPage: null,
         message: null,
         searchQuery: '',
-        debouncedSearch: null
+        searchedData:''
       }
     },
     created() {
-      this.debouncedSearch = debounce(this.searchUsers, 300)
       this.fetchUserInfo(1)
     },
     computed: {
@@ -144,10 +144,28 @@
     },
     methods: {
       ...mapActions(useUserStore, ['storeLoggedInUser']),
-      async fetchUserInfo(page, search = '') {
+      searchData(){
+            console.log(this.searchQuery);
+            
+            axios.get(`${this.API_URL}search`, { 
+            headers: {
+              Authorization: `Bearer ${this.token}`
+            },
+            params: { search_term: this.searchQuery} })
+           .then(response =>{
+                this.data = response.data;
+                this.users = response.data.users.data;
+                console.log(this.data)
+            })
+
+            .catch(error=>{
+            console.log("error searching books", error)
+            });
+        },
+      async fetchUserInfo(page) {
         this.currentPage = page
         try {
-          const response = await axios.get(`${this.API_URL}users?page=${this.currentPage}&search=${search}`, {
+          const response = await axios.get(`${this.API_URL}users?page=${this.currentPage}`, {
             headers: {
               Authorization: `Bearer ${this.token}`
             }
@@ -187,14 +205,6 @@
           text: this.message
         })
       },
-    }
-  }
-  
-  function debounce(func, wait) {
-    let timeout
-    return function(...args) {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => func.apply(this, args), wait)
     }
   }
   </script>
