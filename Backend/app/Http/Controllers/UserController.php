@@ -165,4 +165,49 @@ class UserController extends Controller
         return response()->json(['message' => 'User deleted successfully']);
     }
 
+    public function search(Request $request)
+{
+    $rules = [
+        'name' => 'nullable|string|max:255',
+        'username' => 'nullable|string|max:255',
+        'email' => 'nullable|string|email|max:255',
+        'role' => 'nullable|in:admin,host,doorman'
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    $query = User::query();
+
+    if ($request->has('name')) {
+        $query->where('name', 'like', '%' . $request->input('name') . '%');
+    }
+
+    if ($request->has('username')) {
+        $query->where('username', 'like', '%' . $request->input('username') . '%');
+    }
+
+    if ($request->has('email')) {
+        $query->where('email', 'like', '%' . $request->input('email') . '%');
+    }
+
+    if ($request->has('role')) {
+        $query->where('role', $request->input('role'));
+    }
+
+    $users = $query->get();
+
+    return response()->json([
+        'status' => true,
+        'users' => $users
+    ], 200);
+}
+
+
 }
