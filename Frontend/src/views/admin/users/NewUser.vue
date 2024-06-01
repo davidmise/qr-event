@@ -42,7 +42,7 @@ Here's the corrected code for your Vue component to allow only admin users to re
                         <label for="phone">Phone</label>
                       </div>
 
-                      <div class="form-floating mb-3 position-relative">
+                    <div class="form-floating mb-3 position-relative">
                         <input
                           :type="passwordFieldType"
                           class="form-control"

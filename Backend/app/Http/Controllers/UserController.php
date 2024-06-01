@@ -171,7 +171,9 @@ class UserController extends Controller
         'name' => 'nullable|string|max:255',
         'username' => 'nullable|string|max:255',
         'email' => 'nullable|string|email|max:255',
-        'role' => 'nullable|in:admin,host,doorman'
+        'role' => 'nullable|in:admin,host,doorman',
+        'page' => 'nullable|integer|min:1',
+        'per_page' => 'nullable|integer|min:1|max:100'
     ];
 
     $validator = Validator::make($request->all(), $rules);
@@ -201,11 +203,19 @@ class UserController extends Controller
         $query->where('role', $request->input('role'));
     }
 
-    $users = $query->get();
+    // Pagination
+    $perPage = $request->input('per_page', 10);
+    $page = $request->input('page', 1);
+
+    $users = $query->paginate($perPage, ['*'], 'page', $page);
 
     return response()->json([
         'status' => true,
-        'users' => $users
+        'users' => $users->items(),
+        'current_page' => $users->currentPage(),
+        'last_page' => $users->lastPage(),
+        'per_page' => $users->perPage(),
+        'total' => $users->total()
     ], 200);
 }
 
