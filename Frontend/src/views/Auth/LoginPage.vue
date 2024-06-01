@@ -254,7 +254,7 @@ export default {
         })
         .catch((error) => {
           console.log(error)
-          this.message = error
+          this.message = error.response.statusText
           this.handelErrorToast()
         })
         .then(() => {

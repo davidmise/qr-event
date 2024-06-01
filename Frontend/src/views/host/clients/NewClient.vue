@@ -3,6 +3,7 @@ import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/users'
@@ -162,8 +163,10 @@ export default {
         phone: '',
         event_type: '',
         event_capacity: '',
-        cost: ''
-      }
+        cost: '',
+        
+      },
+      message: null
     }
   },
 
@@ -192,12 +195,27 @@ export default {
         if (error.response && error.response.status === 500) {
           console.error('Internal server error:', error.response.data)
           // Show user-friendly error message (optional)
+          this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
         } else {
           console.error('Error creating event:', error)
+          this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
         }
       }
 
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
     },
     resetForm() {
       this.client = {

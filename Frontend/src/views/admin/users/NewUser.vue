@@ -6,6 +6,7 @@ import axios from 'axios'
 import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/users'
+import Swal from 'sweetalert2'
 // import { useRouter } from "vue-router";
 </script>
 
@@ -185,8 +186,15 @@ export default {
         if (error.response && error.response.status === 500) {
           console.error('Internal server error:', error.response.data)
           // Show user-friendly error message (optional)
+          this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+        this.handelErrorToast()
         } else {
           console.error('Error creating event:', error)
+          this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
         }
       }
 
@@ -209,7 +217,14 @@ export default {
         this.confirmPasswordFieldType = 'password'
         this.confirmPasswordToggleIcon = 'bi bi-eye-slash'
       }
-    }
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
+    },
   }
 }
 </script>

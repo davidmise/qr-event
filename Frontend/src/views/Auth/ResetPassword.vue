@@ -91,7 +91,8 @@ export default {
       email: '',
       password: '',
       password_confirmation: '',
-      userIsLoggedIn
+      userIsLoggedIn,
+      message: null,
     }
   },
   setup() {
@@ -125,7 +126,7 @@ export default {
       } catch (error) {
         // alert(error.response.data.message)
         this.handelErrorToast()
-        this.message = error.response.data.message
+        this.message = error.response.statusText
       }
     },
     handelErrorToast() {

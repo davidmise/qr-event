@@ -96,6 +96,7 @@ import { sidebarWidth } from '@/components/Bars/Sidebar/state.js'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
 
+import Swal from 'sweetalert2'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState, mapActions } from 'pinia'
@@ -113,7 +114,8 @@ export default {
       user: null,
       currentPage: 1,
       itemsPerPage: 10,
-      lastPage: null
+      lastPage: null,
+      message: null
     }
   },
   created() {
@@ -144,6 +146,10 @@ export default {
         this.lastPage = this.data.last_page
       } catch (error) {
         console.error('Error fetching user info:', error)
+        this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
       }
     },
     handlePreviousPage() {
@@ -160,7 +166,14 @@ export default {
     },
     route(userId) {
       this.$router.push({ name: 'adminViewUser', params: { userId } })
-    }
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
+    },
   }
 }
 </script>

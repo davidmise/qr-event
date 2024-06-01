@@ -293,7 +293,8 @@ export default {
       passwordFieldType: 'password',
       passwordToggleIcon: 'bi bi-eye-slash',
       confirmPasswordFieldType: 'password',
-      confirmPasswordToggleIcon: 'bi bi-eye-slash'
+      confirmPasswordToggleIcon: 'bi bi-eye-slash',
+      
     }
   },
 
@@ -335,7 +336,7 @@ export default {
         })
         .catch((error) => {
           console.log(error)
-          this.message = error
+          this.message = error.response.statusText
           this.handelErrorToast()
         })
         .then(() => {

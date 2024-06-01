@@ -28,11 +28,12 @@ Route::post('reset-password', 'App\Http\Controllers\ResetPasswordController@rese
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, "logout"]);
 
-    // all users
-    Route::get('/users', 'App\Http\Controllers\UserController@index');
-    Route::get('/user{id}', 'App\Http\Controllers\UserController@show');
-    Route::put('/update-user{id}', 'App\Http\Controllers\UserController@update');
-
+   // User routes accessible only by admin
+   Route::middleware('auth.admin')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/user{id}', [UserController::class, 'show']);
+    Route::put('/update-user{id}', [UserController::class, 'update']);
+});
     // EventInfo
     Route::get('/all-events', [EventInfoController::class, 'index']);
     Route::post('/create-event', [EventInfoController::class, 'store']);

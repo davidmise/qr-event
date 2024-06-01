@@ -30,6 +30,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import EventsNav from '@/components/Events/EventsNav.vue'
 import axios from 'axios'
 
+import Swal from 'sweetalert2'
 // import { ref, onMounted, watch } from 'vue';
 // import { useRoute } from 'vue-router';
 import { mapState } from 'pinia'
@@ -48,7 +49,8 @@ export default {
     return {
       sidebarWidth,
       eventInfo: null,
-      eventId: null
+      eventId: null,
+      message: null
     }
   },
 
@@ -75,8 +77,19 @@ export default {
         })
         .catch((error) => {
           console.log(error)
+          this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
         })
-    }
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
+    },
   }
 }
 </script>

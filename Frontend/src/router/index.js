@@ -1,44 +1,28 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import NotFound from '@/views/NotFound.vue' // Import the NotFound component
+import NotFound from '@/views/NotFound.vue'
 import useUserStore from '@/stores/users'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // ... your existing routes
     {
       path: '/auth/login',
       name: 'login',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Auth/LoginPage.vue')
     },
     {
-      path: '/auth/reset-password',
-      name: 'resetPassword',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/Auth/ResetPassword.vue')
-    },
-    {
-      path: '/auth/forgot-password',
-      name: 'forgotPassword',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/Auth/ForgotPassword.vue')
-    },
-    {
-      path: '/auth/Register',
+      path: '/auth/register',
       name: 'register',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Auth/RegisterPage.vue')
     },
-
+    {
+      path: '/auth/forgotPassword',
+      name: 'forgotPassword',
+      component: () => import('../views/Auth/ForgotPassword.vue')
+    },
     {
       path: '/',
       name: 'home',
@@ -51,244 +35,163 @@ const router = createRouter({
       component: () => import('../views/ScanEvent.vue'),
       meta: { requiresAuth: true }
     },
-
     {
       path: '/host/events/view:eventId',
       name: 'hostviewEvent',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/Events/EventView.vue')
     },
-
     {
       path: '/host/events/all',
       name: 'hostAllEvents',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/Events/EventList.vue')
     },
-
     {
       path: '/host/events/new',
       name: 'hostNewEvents',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/Events/NewEvent.vue')
     },
-
     {
       path: '/host/profile',
       name: 'hostProfile',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/ProfilePage.vue')
     },
-
     {
       path: '/host/clients/all',
       name: 'hostClientsAll',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/clients/AllClients.vue')
     },
-
     {
       path: '/host/clients/new',
       name: 'hostClientsNew',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/clients/NewClient.vue')
     },
-
     {
       path: '/contacts',
       name: 'contacts',
       meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/ContactsView.vue')
     },
-
     {
       path: '/register-guest/:eventId',
       name: 'register-guest',
       meta: { requiresAuth: true },
       props: true,
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/RegisterGuest.vue')
     },
-
     {
       path: '/admin/admin-dashboard',
       name: 'adminDashboard',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/AdminDashboard.vue')
     },
-    // admin/events
     {
       path: '/admin/events/events/all',
       name: 'adminEventsAll',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/Events/EventList.vue')
     },
-
     {
       path: '/admin/events/view:eventId',
       name: 'adminViewEvent',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/Events/EventView.vue')
     },
-
     {
       path: '/admin/events/new',
       name: 'adminNewEvent',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/Events/NewEvent.vue')
     },
-
     {
       path: '/admin/users/all',
       name: 'adminUsersAll',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/users/ListUsers.vue')
     },
-
     {
       path: '/admin/users/new',
       name: 'adminNewUser',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/users/NewUser.vue')
     },
-
     {
       path: '/admin/user/view:userId',
       name: 'adminViewUser',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/users/UserView.vue')
     },
     {
       path: '/admin/clients/all',
       name: 'adminClientsAll',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/clients/AllClients.vue')
     },
-
     {
       path: '/admin/clients/new',
       name: 'adminClientsNew',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/clients/NewClient.vue')
     },
     {
       path: '/admin/guests/all',
       name: 'adminGuestAll',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/guests/AllGuests.vue')
     },
-
     {
       path: '/admin/profile',
       name: 'adminViewProfile',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'admin' }, // Added role meta
       component: () => import('../views/admin/ProfilePage.vue')
     },
-
     {
       path: '/doorman/doorman',
       name: 'doorman',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'doorman' }, // Added role meta
       component: () => import('../views/doorman/DoormanView.vue')
     },
-
     {
       path: '/host/host-dashboard',
       name: 'hostDashboard',
-      meta: { requiresAuth: true },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/HostDashboard.vue')
     },
-
-    // Catch-all route for 404 Not Found
     {
-      path: '/:catchAll(.*)', // Match all paths
-      component: NotFound // Render the NotFound component
+      path: '/:catchAll(.*)',
+      component: NotFound
     }
   ]
 })
 
-// Authentication Logic
 router.beforeEach((to, from, next) => {
-  // Get the current state of the user store
-  const isAuthenticated = useUserStore().storedUser !== null
+  const userStore = useUserStore()
+  const isAuthenticated = userStore.userIsLoggedIn
+  const userRole = userStore.getUserRole
 
   if (to.meta.requiresAuth) {
-    // This route requires authentication
     if (!isAuthenticated) {
-      // User is not logged in, redirect to login
+      // Redirect to login if not authenticated
       next({ name: 'login' })
+    } else if (to.meta.role && to.meta.role !== userRole) {
+      // Redirect to home if the role doesn't match
+      next({ name: 'home' })
     } else {
-      // User is logged in, allow navigation
+      // Allow navigation if authenticated and roles match
       next()
     }
-  } else if ((to.name === 'login' || to.name === 'Register') && isAuthenticated) {
-    // If user is logged in and tries to access login or register page, redirect to home
+  } else if ((to.name === 'login' || to.name === 'register') && isAuthenticated) {
+    // Redirect to home if trying to access login or register while authenticated
     next({ name: 'home' })
   } else {
-    // For other routes, simply allow the navigation
+    // Allow navigation for other routes
     next()
   }
 })
+
 export default router

@@ -6,6 +6,7 @@ import axios from 'axios'
 import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/users'
+import Swal from 'sweetalert2'
 // import { useRouter } from "vue-router";
 </script>
 
@@ -362,7 +363,8 @@ export default {
           twitter: '',
           facebook: ''
         }
-      }
+      },
+      message:null,
     }
   },
 
@@ -393,10 +395,21 @@ export default {
           // Show user-friendly error message (optional)
         } else {
           console.error('Error creating event:', error)
+          this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
         }
       }
 
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
     },
     resetForm() {
       this.event_info = {

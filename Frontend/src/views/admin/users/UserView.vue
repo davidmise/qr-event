@@ -3,6 +3,8 @@ import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state.js'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
+
+import Swal from 'sweetalert2'
 import { mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
@@ -119,7 +121,8 @@ export default {
   data() {
     return {
       userInfo: null,
-      userId: null
+      userId: null,
+      message: null,
     }
   },
   computed: {
@@ -144,8 +147,19 @@ export default {
         })
         .catch((error) => {
           console.log(error)
+          this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
         })
-    }
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
+    },
   }
 }
 </script>

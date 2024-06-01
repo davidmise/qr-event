@@ -103,6 +103,7 @@ import { sidebarWidth } from '@/components/Bars/Sidebar/state'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
 
+import Swal from 'sweetalert2'
 import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
@@ -121,7 +122,8 @@ export default {
       event: null,
       currentPage: 1,
       itemsPerPage: 10,
-      lastPage: null
+      lastPage: null,
+      message: null
     }
   },
   created() {
@@ -156,6 +158,10 @@ export default {
         this.lastPage = response.data.last_page
       } catch (error) {
         console.error('Error fetching Event Info:', error)
+        this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
       }
     },
 
@@ -175,7 +181,14 @@ export default {
 
     route(eventId) {
       this.$router.push({ name: 'adminViewEvent', params: { eventId: eventId } })
-    }
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
+    },
   },
 
   mounted() {

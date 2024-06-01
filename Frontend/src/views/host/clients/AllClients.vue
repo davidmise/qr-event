@@ -96,6 +96,7 @@ import { sidebarWidth } from '@/components/Bars/Sidebar/state'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
 
+import Swal from 'sweetalert2'
 import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
@@ -115,7 +116,8 @@ export default {
       client: null,
       currentPage: 1,
       itemsPerPage: 10,
-      lastPage: null
+      lastPage: null,
+      message: null
     }
   },
   created() {
@@ -157,6 +159,10 @@ export default {
         console.log(this.data)
       } catch (error) {
         console.error('Error fetching Client Info:', error)
+        this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+
+        this.handelErrorToast()
       }
     },
 
@@ -184,7 +190,14 @@ export default {
 
     route(clientId) {
       this.$router.push({ name: 'adminDashboard', params: { clientId: clientId } })
-    }
+    },
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
+    },
   },
 
   mounted() {
