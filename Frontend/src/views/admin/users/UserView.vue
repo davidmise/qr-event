@@ -50,6 +50,7 @@ import EdditUserModal from '@/components/admin/user/modal/EdditUserModal.vue'
                           data-mdb-button-init
                           data-mdb-ripple-init
                           class="btn btn-outline-danger ms-1"
+                          @click="handleDelete"
                         >
                           Delete
                         </button>
@@ -152,6 +153,42 @@ export default {
 
         this.handelErrorToast()
         })
+    },
+    deleteUser(){
+      axios
+       .delete(`${this.API_URL}delete-user${this.userId}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        })
+    },
+    handleDelete() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to delete this user',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Delete!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteUser();
+
+          Swal.fire({
+            title: 'Deleted!',
+            text:  'You have successfully deleted this user',
+            icon: 'success'
+          })
+        //  action to take place after successful sd
+        this.$router.push({name:'adminUsersAll'})
+        }
+      }).catch((error) => {
+        console.log(error)
+        this.isLoading = false // Set loading state to false after failed fetch
+        this.message = error.response.statusText
+        this.handelErrorToast();
+      });
     },
     handelErrorToast() {
       Swal.fire({

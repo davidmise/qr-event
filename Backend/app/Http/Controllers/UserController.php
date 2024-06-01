@@ -29,7 +29,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             // 'phone_number' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:admin,host,doorman'
+            'role' => 'nullable|in:admin,host,doorman'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -41,12 +41,14 @@ class UserController extends Controller
             ], 422);
         }
 
+        $role = $request->input('role', 'host');
+
         $user = new User([
             'name' => $request->input('name'),
             'username' => $request->input('username'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
-            'role' => $request->input('role'),
+            'role' => $role,
         ]);
         $user->save();
 
@@ -149,8 +151,18 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Delete the book record
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully']);
     }
+
 }
