@@ -4,14 +4,14 @@
     <div class="container" v-if="isAdmin">
       <h1>
         <span v-if="collapsed">
-          <div>Q</div>
-          <div>R</div>
+          <div><img :src="img" alt="logo"></div>
+         
         </span>
-        <span v-else>Admin Dashboard</span>
+        <span v-else> <img :src="img" alt="logo"></span>
       </h1>
     </div>
 
-    <!-- host -->
+    <!-- Host -->
     <div class="container" v-if="isHost">
       <h1>
         <span v-if="collapsed">
@@ -25,7 +25,7 @@
     <!-- Router - links -->
     <!-- Dashboard -->
 
-    <!-- Admin Router-->
+    <!-- Admin Router -->
     <div v-if="isAdmin" class="collapse-container">
       <a
         class="btn text-uppercase"
@@ -48,20 +48,18 @@
         href="#events"
         role="button"
         aria-expanded="false"
-        aria-controls="Recieved"
+        aria-controls="events"
       >
         <i class="material-icons icon">event</i>
         <span v-if="!collapsed" class="ms-3">Events</span>
       </a>
-      <!-- <div class="collapse" id="events">
-        <SideBarLink to="/admin/events/view" :text="collapsed ? '' : 'Events'" />
-      </div> -->
       <div class="collapse" id="events">
         <SideBarLink to="/admin/events/new" :text="collapsed ? '' : 'Create New Event'" />
       </div>
       <div class="collapse" id="events">
         <SideBarLink to="/admin/events/events/all" :text="collapsed ? '' : 'All Events'" />
       </div>
+
       <!-- User  -->
       <a
         class="btn text-uppercase"
@@ -69,7 +67,7 @@
         href="#users"
         role="button"
         aria-expanded="false"
-        aria-controls="Recieved"
+        aria-controls="users"
       >
         <i class="material-icons icon">face</i>
         <span v-if="!collapsed" class="ms-3">Users</span>
@@ -80,14 +78,15 @@
       <div class="collapse" id="users">
         <SideBarLink to="/admin/users/all" :text="collapsed ? '' : 'All Users'" />
       </div>
-      <!-- clients -->
+
+      <!-- Clients -->
       <a
         class="btn text-uppercase"
         data-bs-toggle="collapse"
         href="#clients"
         role="button"
         aria-expanded="false"
-        aria-controls="Recieved"
+        aria-controls="clients"
       >
         <i class="material-icons icon">business_center</i>
         <span v-if="!collapsed" class="ms-3">Clients</span>
@@ -99,14 +98,14 @@
         <SideBarLink :to="{ name: 'adminClientsAll' }" :text="collapsed ? '' : 'All Clients'" />
       </div>
 
-      <!-- guest -->
+      <!-- Guests -->
       <a
         class="btn text-uppercase"
         data-bs-toggle="collapse"
         href="#guests"
         role="button"
         aria-expanded="false"
-        aria-controls="Recieved"
+        aria-controls="guests"
       >
         <i class="material-icons icon">group</i>
         <span v-if="!collapsed" class="ms-3">Guests</span>
@@ -139,27 +138,25 @@
         href="#events"
         role="button"
         aria-expanded="false"
-        aria-controls="Recieved"
+        aria-controls="events"
       >
         <i class="material-icons icon">event</i>
         <span v-if="!collapsed" class="ms-3">Events</span>
       </a>
-      <!-- <div class="collapse" id="events">
-    <SideBarLink to="/events/view" :text="collapsed ? '' : 'Events'" />
-  </div> -->
       <div class="collapse" id="events">
         <SideBarLink to="/host/events/new" :text="collapsed ? '' : 'New Event'" />
       </div>
       <div class="collapse" id="events">
         <SideBarLink to="/host/events/all" :text="collapsed ? '' : 'All Events'" />
       </div>
+
       <a
         class="btn text-uppercase"
         data-bs-toggle="collapse"
         href="#clients"
         role="button"
         aria-expanded="false"
-        aria-controls="Recieved"
+        aria-controls="clients"
       >
         <i class="material-icons icon">business_center</i>
         <span v-if="!collapsed" class="ms-3">Clients</span>
@@ -171,14 +168,14 @@
         <SideBarLink :to="{ name: 'hostClientsAll' }" :text="collapsed ? '' : 'All Clients'" />
       </div>
 
-      <!-- clients -->
+      <!-- Guests -->
       <a
         class="btn text-uppercase"
         data-bs-toggle="collapse"
         href="#guests"
         role="button"
         aria-expanded="false"
-        aria-controls="Recieved"
+        aria-controls="guests"
       >
         <i class="material-icons icon">group</i>
         <span v-if="!collapsed" class="ms-3">Guests</span>
@@ -187,6 +184,7 @@
         <SideBarLink :to="{ name: 'adminGuestAll' }" :text="collapsed ? '' : 'All Guests'" />
       </div>
     </div>
+
     <!-- Contacts -->
     <div v-if="isDoorman" class="collapse-container">
       <a
@@ -195,18 +193,19 @@
         href="#Contacts"
         role="button"
         aria-expanded="false"
-        aria-controls="Expenses"
+        aria-controls="Contacts"
       >
         <i class="material-icons icon">person</i>
-        <span v-if="!collapsed" class="ms-3">person</span>
+        <span v-if="!collapsed" class="ms-3">Contacts</span>
       </a>
       <div class="collapse" id="Contacts">
-        <SideBarLink to="/contacts" :text="collapsed ? '' : 'Doorman'" />
+        <SideBarLink to="/contacts" :text="collapsed ? '' : 'Contacts'" />
       </div>
       <div class="collapse" id="Contacts">
-        <SideBarLink to="/contacts" :text="collapsed ? '' : 'Doorman'" />
+        <SideBarLink to="/contacts" :text="collapsed ? '' : 'Contacts'" />
       </div>
     </div>
+
     <!-- Sidebar Collapse Icon -->
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="bi bi-chevron-double-left"></i>
@@ -219,6 +218,7 @@ import SideBarLink from './SideBarLink.vue'
 import { collapsed, toggleSidebar, sidebarWidth } from './state'
 import useUserStore from '@/stores/users' // Adjust the path as necessary
 import { computed } from 'vue'
+import logo from "@/assets/Images/creativehublogo.png"
 
 export default {
   components: { SideBarLink },
@@ -227,6 +227,8 @@ export default {
     const isHost = computed(() => ['host'].includes(userStore.getUserRole))
     const isDoorman = computed(() => ['doorman'].includes(userStore.getUserRole))
     const isAdmin = computed(() => ['admin'].includes(userStore.getUserRole))
+    const img = logo
+
 
     return {
       collapsed,
@@ -234,7 +236,8 @@ export default {
       sidebarWidth,
       isHost,
       isDoorman,
-      isAdmin
+      isAdmin,
+      img
     }
   }
 }
@@ -263,6 +266,8 @@ export default {
   transition: width 0.7s ease;
   display: flex;
   flex-direction: column;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .background-radial-gradient {

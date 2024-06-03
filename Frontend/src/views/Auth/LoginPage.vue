@@ -1,21 +1,21 @@
 <template>
-  <section class="bg-primary py-3 py-md-5 py-xl-8">
+  <section class="cover py-3 py-md-5 py-xl-8">
     <div class="container">
       <div class="row gy-4 align-items-center">
         <div class="col-12 col-md-6 col-xl-7">
-          <div class="d-flex justify-content-center text-bg-primary">
+          <div class="d-flex justify-content-center ">
             <div class="col-12 col-xl-9">
               <img
                 class="img-fluid rounded mb-4"
                 loading="lazy"
-                src="./assets/img/bsb-logo-light.svg"
+                :src="img"
                 width="245"
                 height="80"
                 alt="BootstrapBrain Logo"
               />
               <hr class="border-primary-subtle mb-4" />
-              <h2 class="h1 mb-4">We make digital products that drive you to stand out.</h2>
-              <p class="lead mb-5">
+              <h2 class="h1 mb-4" style="color: #f3b41b">We make digital products that drive you to stand out.</h2>
+              <p class="lead mb-5 text-white">
                 We write words, take photos, make videos, and interact with artificial intelligence.
               </p>
               <div class="text-endx">
@@ -23,7 +23,7 @@
                   xmlns="http://www.w3.org/2000/svg"
                   width="48"
                   height="48"
-                  fill="currentColor"
+                  fill="#f3b41b"
                   class="bi bi-grip-horizontal"
                   viewBox="0 0 16 16"
                 >
@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="col-12 col-md-6 col-xl-5">
-          <div class="card border-0 rounded-4">
+          <div class="card bg-body-tertiary border-0 rounded-4">
             <div class="card-body p-3 p-md-4 p-xl-5">
               <div class="row">
                 <div class="col-12">
@@ -205,11 +205,13 @@ import Swal from 'sweetalert2'
 import { mapActions, mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
+import logo from "@/assets/Images/creativehublogo.png"
 
 export default {
   data() {
     const userIsLoggedIn = computed(() => useUserStore.userIsLoggedIn)
     return {
+      img:logo,
       email: '',
       password: '',
       submitting: false,
@@ -299,4 +301,25 @@ export default {
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+.cover {
+  background-color: hsl(218, 41%, 15%);
+  background-image: radial-gradient(
+      650px circle at 0% 0%,
+      hsl(218, 41%, 35%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%
+    ),
+    radial-gradient(
+      1250px circle at 100% 100%,
+      hsl(218, 41%, 45%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%
+    );
+}
+
 </style>
