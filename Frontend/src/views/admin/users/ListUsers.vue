@@ -38,7 +38,7 @@
                       </thead>
                       <tbody>
                         <tr
-                          v-for="(user, index) in paginatedUsers"
+                          v-for="(user, index) in users"
                           :key="user.id"
                           @click="route(user.id)"
                         >
@@ -147,7 +147,7 @@
       searchData(){
             console.log(this.searchQuery);
             
-            axios.get(`${this.API_URL}search`, { 
+            axios.get(`${this.API_URL}search-user`, { 
             headers: {
               Authorization: `Bearer ${this.token}`
             },
@@ -159,7 +159,10 @@
             })
 
             .catch(error=>{
-            console.log("error searching books", error)
+            console.log("error searching user", error)
+            this.isLoading = false
+          this.message = error.response.statusText
+          this.handelErrorToast()
             });
         },
       async fetchUserInfo(page) {

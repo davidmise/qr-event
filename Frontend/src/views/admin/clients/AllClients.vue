@@ -9,6 +9,18 @@
           <main class="py-6 bg-surface-secondary">
             <div class="container-fluid">
               <h2 class="mb-5">All Clients</h2>
+               <!-- searchbar -->
+               <div class="form-floating mb-3">
+                <input 
+                  type="search" 
+                  class="form-control" 
+                  id="datatable-search-input" 
+                  v-model="searchQuery" 
+                  @input="searchData"
+                />
+                <label for="datatable-search-input">Search</label>
+                <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+              </div>
               <div class="card shadow border-0 mb-7">
                 <div class="card-header">
                   <h5 class="mb-0">Applications</h5>
@@ -117,6 +129,8 @@ export default {
       itemsPerPage: 10,
       lastPage: null,
       message: null,
+        searchQuery: '',
+        searchedData:''
     }
   },
   created() {
@@ -137,6 +151,28 @@ export default {
   },
   methods: {
     ...mapActions(useEventStore, ['storeEvent']),
+
+    searchData(){
+            console.log(this.searchQuery);
+            
+            axios.get(`${this.API_URL}search-client`, { 
+            headers: {
+              Authorization: `Bearer ${this.token}`
+            },
+            params: { search_term: this.searchQuery} })
+           .then(response =>{
+                this.data = response.data;
+                this.clients = response.data.client.data;
+                console.log(this.data)
+            })
+
+            .catch(error=>{
+            console.log("error searching client", error)
+            this.isLoading = false
+          this.message = error.message;
+          this.handelErrorToast()
+            });
+        },
 
     async fetchClientInfo(page) {
       this.currentPage = page

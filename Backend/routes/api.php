@@ -34,13 +34,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user{id}', [UserController::class, 'show']);
     Route::put('/update-user{id}', [UserController::class, 'update']);
     Route::delete('/delete-user{id}', [UserController::class, 'destroy']);
-    Route::get('/search', [UserController::class, 'search']);
+    Route::get('/search-user', [UserController::class, 'search']);
 
 });
     // EventInfo
     Route::get('/all-events', [EventInfoController::class, 'index']);
     Route::post('/create-event', [EventInfoController::class, 'store']);
     Route::get('/pull-event-info{id}', [EventInfoController::class,'show']);
+    Route::get('/search-event', [EventInfoController::class, 'search']);
 
     // Location
     Route::get('/all-locations', [LocationController::class, 'index']);
@@ -66,14 +67,17 @@ Route::middleware('auth:sanctum')->group(function () {
     // Guest
     Route::post('/guest', [GuestController::class, 'store']);
     Route::get('/all-guests', [GuestController::class, 'index']);
+    Route::get('/search-guest', [GuestController::class, 'search']);
 
     // Guest Attendance
     Route::post('/guest-attendance', [GuestAttendanceController::class, 'store']);
     Route::get('/all-guest-attendances', [GuestAttendanceController::class, 'index']);
+    // Route::get('/search', [UserController::class, 'search']);
 
     // client   registration
     Route::post('/client', 'App\Http\Controllers\ClientsController@store');
     Route::get('/all-clients', 'App\Http\Controllers\ClientsController@index');
+    Route::get('/search-client', 'App\Http\Controllers\ClientsController@search');
 
     // Qr-code
     Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);

@@ -252,4 +252,46 @@ class EventInfoController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search_term');
+
+        if(!$searchTerm){
+            return response()->json([
+                'status' => false,
+                'message' => 'event not found'
+            ], 400); //bad request
+
+        }
+
+        $events = EventInfo::with(['location', 'organizer'])
+            ->where('event_name', 'LIKE', "%$searchTerm%")
+            ->orWhere('event_subtitle', 'LIKE', "%$searchTerm%")
+            ->orWhereHas('location', function ($query) use ($searchTerm) {
+                $query->where('city', 'LIKE', "%$searchTerm%")
+                    ->orWhere('country', 'LIKE', "%$searchTerm%")
+                    ->orWhere('street', 'LIKE', "%$searchTerm%")
+                    ->orWhere('postal_code', 'LIKE', "%$searchTerm%");
+            })
+            ->orWhereHas('organizer', function ($query) use ($searchTerm) {
+                $query->where('name', 'LIKE', "%$searchTerm%")
+                    ->orWhere('email', 'LIKE', "%$searchTerm%")
+                    ->orWhere('phone', 'LIKE', "%$searchTerm%");
+            })
+            ->paginate(10);
+
+            if($events->isEmpty()) {
+                return response()-> json([
+                    'status' => false,
+                    'message' => 'Event not found'
+                ],404); //Not Found
+            }
+
+        return response()->json([
+            'message' => 'Events searched successfully',
+            'event' => $events
+        ], 200);
+    }
+
 }

@@ -15,7 +15,7 @@ class ClientsController extends Controller
     public function index()
     {
         //
-        $clients = Client::with('event')->paginate(5);
+        $clients = Client::with('event')->paginate(10);
 
         return $clients;
     }
@@ -101,4 +101,35 @@ class ClientsController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search_term');
+
+        if(!$searchTerm) {
+            return response()->json([
+                'status'=>false,
+                'message' => 'client not found'
+            ],400); // bad request 
+        }
+
+        $client = Client::query()->where('name', 'LIKE', "%$searchTerm%")
+            ->orWhere('email', 'LIKE', "%$searchTerm%")
+            ->paginate(10);
+
+            if ($client->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'client not found'
+                ], 404); // Not Found
+            }
+        
+        return response()->json([
+            'status'=>true,
+            'message' => 'client searched successfully',
+            'client' => $client
+        ], 200);
+
+    }
+
 }
