@@ -123,6 +123,7 @@
         user: null,
         currentPage: 1,
         itemsPerPage: 10,
+        totalUsers:null,
         lastPage: null,
         message: null,
         searchQuery: '',
@@ -176,6 +177,11 @@
           this.data = response.data
           this.users = this.data.data
           this.lastPage = this.data.last_page
+          this.totalUsers = this.data.total
+        // //   console.log(this.totalUsers)
+        // localStorage.setItem('totalUsers', this.totalUsers)
+        //   console.log('total:' + localStorage.getItem('totalUsers'))
+
         } catch (error) {
           console.error('Error fetching user info:', error)
           this.isLoading = false

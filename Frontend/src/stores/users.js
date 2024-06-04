@@ -1,27 +1,30 @@
 import { defineStore } from 'pinia'
 import router from '../router'
+import axios from 'axios'
+import useGeneralStore from './general.js'
 
 const useUserStore = defineStore('user', {
   state: () => ({
     storedUser: JSON.parse(localStorage.getItem('user')) || null,
-    token: localStorage.getItem('token') || null
+    token: localStorage.getItem('token') || null,
+    totalUsers:  0
   }),
+
   getters: {
     userIsLoggedIn: (state) => state.storedUser !== null && state.token !== null,
     getToken: (state) => state.token,
-    getUserRole: (state) => state.storedUser?.role || null // Return the role or null if not set
+    getUserRole: (state) => state.storedUser?.role || null,
+    getTotalUsers: (state) => state.totalUsers,
+    API_URL: () => useGeneralStore().API_URL
   },
+
   actions: {
     storeLoggedInUser(user, token) {
-      // Save the user to localStorage
       localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('token', token)
-
-      // Save the user and the token to the store state
       this.storedUser = user
       this.token = token
 
-      // Route user based on role
       switch (user.role) {
         case 'admin':
           router.push({ name: 'adminDashboard' })
@@ -37,13 +40,31 @@ const useUserStore = defineStore('user', {
           break
       }
     },
+    
     logoutUser() {
       localStorage.removeItem('user')
       localStorage.removeItem('token')
-
+      localStorage.removeItem('totalUsers')
       this.storedUser = null
       this.token = null
+      this.totalUsers = null
       router.push({ name: 'home' })
+    },
+
+    async fetchUsers() {
+      try {
+        const API_URL = this.API_URL 
+        const response = await axios.get(`${API_URL}users`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        })
+        this.totalUsers = response.data.total
+        localStorage.setItem('totalUsers', this.totalUsers)
+        console.log('Total', this.totalUsers)
+      } catch (error) {
+        console.error('Error fetching user info:', error)
+      }
     }
   }
 })

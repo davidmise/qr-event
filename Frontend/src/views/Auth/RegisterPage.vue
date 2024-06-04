@@ -389,7 +389,7 @@ export default {
   background-color: hsl(218, 41%, 15%);
   background-image: radial-gradient(
       650px circle at 0% 0%,
-      hsl(218, 41%, 35%) 15%,
+      hsl(217, 26%, 16%) 15%,
       hsl(218, 41%, 30%) 35%,
       hsl(218, 41%, 20%) 75%,
       hsl(218, 41%, 19%) 80%,

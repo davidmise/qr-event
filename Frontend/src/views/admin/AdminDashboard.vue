@@ -1,8 +1,3 @@
-<script setup>
-import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
-import { sidebarWidth } from '@/components/Bars/Sidebar/state'
-import TopBar from '@/components/Bars/TopBar/TopBar.vue'
-</script>
 
 <template>
   <div>
@@ -21,7 +16,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Events</span>
-                      <span class="h3 font-bold mb-0">75</span>
+                      <span class="h3 font-bold mb-0">{{totalEvents}} </span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
@@ -29,12 +24,6 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="mt-2 mb-0 text-sm">
-                                <span class="badge badge-pill bg-soft-success text-success me-2">
-                                    <i class="bi bi-arrow-up me-1"></i>13%
-                                </span>
-                                <span class="text-nowrap text-xs text-muted">Since last month</span>
-                            </div> -->
                 </div>
               </div>
             </div>
@@ -44,7 +33,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Users</span>
-                      <span class="h3 font-bold mb-0">15</span>
+                      <span class="h3 font-bold mb-0">{{totalUsers}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
@@ -52,12 +41,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="mt-2 mb-0 text-sm">
-                                <span class="badge badge-pill bg-soft-success text-success me-2">
-                                    <i class="bi bi-arrow-up me-1"></i>30%
-                                </span>
-                                <span class="text-nowrap text-xs text-muted">Since last month</span>
-                            </div> -->
+                
                 </div>
               </div>
             </div>
@@ -67,7 +51,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Clients</span>
-                      <span class="h3 font-bold mb-0">14</span>
+                      <span class="h3 font-bold mb-0">{{totalClients}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
@@ -113,5 +97,46 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
     </div>
   </div>
 </template>
+<script>
+import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
+import { sidebarWidth } from '@/components/Bars/Sidebar/state'
+import TopBar from '@/components/Bars/TopBar/TopBar.vue'
+import useUserStore from '@/stores/users' // Ensure this path is correct
+import useEventStore from '@/stores/eventinfo' // Ensure this path is correct
+import useClientStore from '@/stores/clients' // Ensure this path is correct
+import { mapActions, mapState } from 'pinia'
 
-<style scope></style>
+export default {
+  data() {
+    return {}
+  },
+  setup() {
+    const userStore = useUserStore()
+    userStore.fetchUsers() // Fetch total users when the component is setup
+
+    const eventStore = useEventStore()
+    eventStore.fetchEvents() // Fetch total users when the component is setup
+
+    const clientStore = useClientStore()
+    clientStore.fetchClients() // Fetch total users when the component is setup
+
+    return {
+      sidebarWidth
+    }
+  },
+  computed: {
+    ...mapState(useUserStore, ['totalUsers']),
+    ...mapState(useEventStore, ['totalEvents']),
+    ...mapState(useClientStore, ['totalClients'])
+  },
+  components: {
+    Sidebar,
+    TopBar
+  },
+  methods:{
+    ...mapActions(useUserStore, ['fetchUsers']),
+    ...mapActions(useEventStore, ['fetchEvents']),
+    ...mapActions(useClientStore, ['fetchClients'])
+}
+}
+</script>
