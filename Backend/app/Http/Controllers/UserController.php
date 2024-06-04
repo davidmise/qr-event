@@ -169,12 +169,12 @@ class UserController extends Controller
     {
         $searchTerm = $request->input('search_term');
 
-        if(!$searchTerm) {
-            return response()->json([
-                'status'=>false,
-                'message' => 'user not found'
-            ],400); // bad request 
-        }
+        // if(!$searchTerm) {
+        //     return response()->json([
+        //         'status'=>false,
+        //         'message' => 'user not found'
+        //     ],400); // bad request
+        // }
 
         $users = User::query()->where('name', 'LIKE', "%$searchTerm%")
             ->orWhere('username', 'LIKE', "%$searchTerm%")
@@ -182,13 +182,13 @@ class UserController extends Controller
             ->orWhere('role', 'LIKE', "%$searchTerm%")
             ->paginate(10);
 
-            if ($users->isEmpty()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'User not found'
-                ], 404); // Not Found
-            }
-        
+            // if ($users->isEmpty()) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'User not found'
+            //     ], 404); // Not Found
+            // }
+
         return response()->json([
             'status'=>true,
             'message' => 'Users searched successfully',

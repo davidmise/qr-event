@@ -106,24 +106,24 @@ class ClientsController extends Controller
     {
         $searchTerm = $request->input('search_term');
 
-        if(!$searchTerm) {
-            return response()->json([
-                'status'=>false,
-                'message' => 'client not found'
-            ],400); // bad request 
-        }
+        // if(!$searchTerm) {
+        //     return response()->json([
+        //         'status'=>false,
+        //         'message' => 'client not found'
+        //     ],400); // bad request
+        // }
 
         $client = Client::query()->where('name', 'LIKE', "%$searchTerm%")
             ->orWhere('email', 'LIKE', "%$searchTerm%")
             ->paginate(10);
 
-            if ($client->isEmpty()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'client not found'
-                ], 404); // Not Found
-            }
-        
+            // if ($client->isEmpty()) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'client not found'
+            //     ], 404); // Not Found
+            // }
+
         return response()->json([
             'status'=>true,
             'message' => 'client searched successfully',

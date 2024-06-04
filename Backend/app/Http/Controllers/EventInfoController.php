@@ -257,13 +257,13 @@ class EventInfoController extends Controller
     {
         $searchTerm = $request->input('search_term');
 
-        if(!$searchTerm){
-            return response()->json([
-                'status' => false,
-                'message' => 'event not found'
-            ], 400); //bad request
+        // if(!$searchTerm){
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'event not found'
+        //     ], 400); //bad request
 
-        }
+        // }
 
         $events = EventInfo::with(['location', 'organizer'])
             ->where('event_name', 'LIKE', "%$searchTerm%")
@@ -281,12 +281,12 @@ class EventInfoController extends Controller
             })
             ->paginate(10);
 
-            if($events->isEmpty()) {
-                return response()-> json([
-                    'status' => false,
-                    'message' => 'Event not found'
-                ],404); //Not Found
-            }
+            // if($events->isEmpty()) {
+            //     return response()-> json([
+            //         'status' => false,
+            //         'message' => 'Event not found'
+            //     ],404); //Not Found
+            // }
 
         return response()->json([
             'message' => 'Events searched successfully',
