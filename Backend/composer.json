@@ -9,6 +9,7 @@
         "bacon/bacon-qr-code": "^2.0",
         "endroid/qr-code": "^5.0",
         "guzzlehttp/guzzle": "^7.2",
+        "ichtrojan/laravel-otp": "^2.0",
         "laravel/framework": "^10.10",
         "laravel/passport": "^12.2",
         "laravel/sanctum": "^3.3",

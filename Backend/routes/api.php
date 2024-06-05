@@ -12,16 +12,13 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestAttendanceController;
 
-
-
 // Public routes (no authentication required)
 Route::post('/register', 'App\Http\Controllers\UserController@create');
 
 // Route::post('/login', [AuthRegisteredUserController::class, "login"])->name('login');
 Route::post('/login', [AuthController::class, "login"])->name('login');
-
-Route::post('forgot-password', 'App\Http\Controllers\ForgotPasswordController@sendResetLinkEmail');
-Route::post('reset-password', 'App\Http\Controllers\ResetPasswordController@reset');
+Route::post('/forgot', [AuthController::class, "forgot"]);
+Route::post('/reset', [AuthController::class, "reset"]);
 
 
 // Protected routes (require authentication)
