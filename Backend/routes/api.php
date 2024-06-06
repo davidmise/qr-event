@@ -11,6 +11,8 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestAttendanceController;
+use App\Http\Controllers\GoogleSheetsController;
+use App\Http\Controllers\GuestListController;
 
 // Public routes (no authentication required)
 Route::post('/register', 'App\Http\Controllers\UserController@create');
@@ -23,8 +25,10 @@ Route::post('/reset', [AuthController::class, "reset"]);
 
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::post('/logout', [AuthController::class, "logout"]);
 
+    Route::get('/google-sheets', [GoogleSheetsController::class, 'index']);
    // User routes accessible only by admin
    Route::middleware('auth.admin')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
@@ -75,6 +79,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/client', 'App\Http\Controllers\ClientsController@store');
     Route::get('/all-clients', 'App\Http\Controllers\ClientsController@index');
     Route::get('/search-client', 'App\Http\Controllers\ClientsController@search');
+
+    // Guest List
+    Route::get('/guest-list',[GuestListController::class,'index']);
 
     // Qr-code
     Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);

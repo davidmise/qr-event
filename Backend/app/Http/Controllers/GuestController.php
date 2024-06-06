@@ -37,8 +37,8 @@ class GuestController extends Controller
         //
         $rules = [
             'name' => 'required|string',
-            'email' => 'email', // Unique email validation
-            'phone_number' => 'nullable|numeric|integer',
+            'email' => 'email|nullable', // Unique email validation
+            'phone_number' => 'required|numeric|integer',
             'guest_attendance_id'=>'nullable|existing',
             'qr_code' => 'nullable|string',
             'event_info_id' => 'required'
@@ -49,10 +49,11 @@ class GuestController extends Controller
             'name.string' => 'Name must be a string',
             'name.max' => 'Name must be less than 255 characters',
             // email
-            'email.required' => 'Email is required',
+      
             'email.email' => 'Invalid email address',
             'email.unique' => 'Email is already taken',
             // phone_number
+            'phone_number.required' => 'Email is required',
             'phone_number.numeric' => 'Phone must be a string',
             'phone_number.max' => 'Phone must be less than 255 characters',
             // guest_attendance_id
