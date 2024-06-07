@@ -74,7 +74,7 @@
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Guests</span>
-                      <span class="h3 font-bold mb-0">950</span>
+                      <span class="h3 font-bold mb-0">{{totalGuests}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
@@ -104,6 +104,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import useUserStore from '@/stores/users' // Ensure this path is correct
 import useEventStore from '@/stores/eventinfo' // Ensure this path is correct
 import useClientStore from '@/stores/clients' // Ensure this path is correct
+import useGuestStore from '@/stores/guests' // Ensure this path is correct
 import { mapActions, mapState } from 'pinia'
 
 export default {
@@ -120,6 +121,9 @@ export default {
     const clientStore = useClientStore()
     clientStore.fetchClients() // Fetch total users when the component is setup
 
+    const guestStore = useGuestStore()
+    guestStore.fetchGuests() // Fetch total users when the component is setup
+
     return {
       sidebarWidth
     }
@@ -127,7 +131,8 @@ export default {
   computed: {
     ...mapState(useUserStore, ['totalUsers']),
     ...mapState(useEventStore, ['totalEvents']),
-    ...mapState(useClientStore, ['totalClients'])
+    ...mapState(useClientStore, ['totalClients']),
+    ...mapState(useGuestStore, ['totalGuests'])
   },
   components: {
     Sidebar,
@@ -136,7 +141,8 @@ export default {
   methods:{
     ...mapActions(useUserStore, ['fetchUsers']),
     ...mapActions(useEventStore, ['fetchEvents']),
-    ...mapActions(useClientStore, ['fetchClients'])
+    ...mapActions(useClientStore, ['fetchClients']),
+    ...mapActions(useGuestStore, ['totalGuests'])
 }
 }
 </script>

@@ -7,6 +7,18 @@
           <div class="container-fluid">
             <h2 class="mb-5">All Guests</h2>
             <button @click="googleSheet" class="btn btn-primary mb-3">Refresh Guest List</button>
+            <!-- searchbar -->
+            <div class="form-floating mb-3">
+                <input 
+                  type="search" 
+                  class="form-control" 
+                  id="datatable-search-input" 
+                  v-model="searchQuery" 
+                  @input="searchData"
+                />
+                <label for="datatable-search-input">Search</label>
+                <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+              </div>
             <div class="card shadow border-0 mb-7">
               <div class="card-header">
                 <h5 class="mb-0">Guests</h5>
@@ -107,7 +119,9 @@
         itemsPerPage: 10,
         currentItems:0,
         total:0,
-        lastPage: null
+        lastPage: null,
+        earchQuery: '',
+        searchedData:''
       }
     },
     created() {
@@ -127,6 +141,27 @@
       }
     },
     methods: {
+        searchData(){
+              console.log(this.searchQuery);
+              
+              axios.get(`${this.API_URL}search-guest`, { 
+              headers: {
+                Authorization: `Bearer ${this.token}`
+              },
+              params: { search_term: this.searchQuery} })
+             .then(response =>{
+                  this.guests = response.data.guest.data;
+                  
+                  console.log(this.guests)
+              })
+  
+              .catch(error=>{
+              console.log("error searching events", error)
+              this.isLoading = false
+            this.message = error.response.statusText
+            this.handelErrorToast()
+              });
+          },
       async fetchGuestListInfo(index) {
         this.currentPage = index
         try {

@@ -82,6 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Guest List
     Route::get('/guest-list',[GuestListController::class,'index']);
+    Route::get('/search-guest',[GuestListController::class,'search']);
 
     // Qr-code
     Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);

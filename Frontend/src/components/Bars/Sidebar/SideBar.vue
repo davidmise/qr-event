@@ -15,10 +15,10 @@
     <div class="container" v-if="isHost">
       <h1>
         <span v-if="collapsed">
-          <div>H</div>
-          <div>D</div>
+          <div><img :src="img" alt="logo"></div>
+         
         </span>
-        <span v-else>Host Dashboard</span>
+        <span v-else> <img :src="img" alt="logo"></span>
       </h1>
     </div>
 

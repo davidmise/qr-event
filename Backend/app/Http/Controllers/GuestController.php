@@ -129,23 +129,23 @@ class GuestController extends Controller
     {
         $searchTerm = $request->input('search_term');
 
-        if(!$searchTerm) {
-            return response()->json([
-                'status'=>false,
-                'message' => 'user not found'
-            ],400); // bad request 
-        }
+        // if(!$searchTerm) {
+        //     return response()->json([
+        //         'status'=>false,
+        //         'message' => 'user not found'
+        //     ],400); // bad request 
+        // }
 
         $guest = Guest::query()->where('name', 'LIKE', "%$searchTerm%")
             ->orWhere('email', 'LIKE', "%$searchTerm%")
             ->paginate(10);
 
-            if ($guest->isEmpty()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'guest not found'
-                ], 404); // Not Found
-            }
+            // if ($guest->isEmpty()) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'guest not found'
+            //     ], 404); // Not Found
+            // }
         
         return response()->json([
             'status'=>true,
