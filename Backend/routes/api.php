@@ -21,14 +21,19 @@ Route::post('/register', 'App\Http\Controllers\UserController@create');
 Route::post('/login', [AuthController::class, "login"])->name('login');
 Route::post('/forgot', [AuthController::class, "forgot"]);
 Route::post('/reset', [AuthController::class, "reset"]);
-
+ // Qr-code
+ Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);
+ // show single event 
+ Route::get('/pull-event-info{id}', [EventInfoController::class,'show']);
+ 
 
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
-
+// logout
     Route::post('/logout', [AuthController::class, "logout"]);
-
+// google-sheets
     Route::get('/google-sheets', [GoogleSheetsController::class, 'index']);
+
    // User routes accessible only by admin
    Route::middleware('auth.admin')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
@@ -41,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // EventInfo
     Route::get('/all-events', [EventInfoController::class, 'index']);
     Route::post('/create-event', [EventInfoController::class, 'store']);
-    Route::get('/pull-event-info{id}', [EventInfoController::class,'show']);
+
     Route::get('/search-event', [EventInfoController::class, 'search']);
 
     // Location
@@ -84,6 +89,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/guest-list',[GuestListController::class,'index']);
     Route::get('/search-guest',[GuestListController::class,'search']);
 
-    // Qr-code
-    Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);
+   
 });

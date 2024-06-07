@@ -245,7 +245,7 @@ export default {
     },
 
     route(eventId) {
-      this.$router.push({ name: 'viewEvent', params: { eventId: eventId } })
+      this.$router.push({ name: 'adminViewEvent', params: { eventId: eventId } })
     },
 
     handelErrorToast() {

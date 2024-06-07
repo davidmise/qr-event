@@ -45,7 +45,6 @@ class QrCodeController extends Controller
             'phone_number' => $guestData['phone_number'],
             'event_info_id' => $guestData['event_info_id'], // Store event info ID
             'qr_code' => $svgImage->getString() // Store SVG string
-
         ]);
 
         return response()->json([

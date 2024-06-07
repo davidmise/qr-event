@@ -91,7 +91,7 @@ const router = createRouter({
     {
       path: '/register-guest/:eventId',
       name: 'register-guest',
-      meta: { requiresAuth: true },
+      // meta: { requiresAuth: true },
       props: true,
       component: () => import('../views/RegisterGuest.vue')
     },
