@@ -123,7 +123,7 @@ export default {
     return {
       userInfo: null,
       userId: null,
-      message: null,
+      message: null
     }
   },
   computed: {
@@ -149,18 +149,17 @@ export default {
         .catch((error) => {
           console.log(error)
           this.isLoading = false // Set loading state to false after failed fetch
-        this.message = error.response.statusText
+          this.message = error.response.statusText
 
-        this.handelErrorToast()
+          this.handelErrorToast()
         })
     },
-    deleteUser(){
-      axios
-       .delete(`${this.API_URL}delete-user${this.userId}`, {
-          headers: {
-            Authorization: `Bearer ${this.token}`
-          }
-        })
+    deleteUser() {
+      axios.delete(`${this.API_URL}delete-user${this.userId}`, {
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        }
+      })
     },
     handleDelete() {
       Swal.fire({
@@ -171,24 +170,26 @@ export default {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, Delete!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.deleteUser();
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.deleteUser()
 
-          Swal.fire({
-            title: 'Deleted!',
-            text:  'You have successfully deleted this user',
-            icon: 'success'
-          })
-        //  action to take place after successful sd
-        this.$router.push({name:'adminUsersAll'})
-        }
-      }).catch((error) => {
-        console.log(error)
-        this.isLoading = false // Set loading state to false after failed fetch
-        this.message = error.response.statusText
-        this.handelErrorToast();
-      });
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'You have successfully deleted this user',
+              icon: 'success'
+            })
+            //  action to take place after successful sd
+            this.$router.push({ name: 'adminUsersAll' })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.isLoading = false // Set loading state to false after failed fetch
+          this.message = error.response.statusText
+          this.handelErrorToast()
+        })
     },
     handelErrorToast() {
       Swal.fire({
@@ -196,7 +197,7 @@ export default {
         title: 'An error has occurred',
         text: this.message
       })
-    },
+    }
   }
 }
 </script>

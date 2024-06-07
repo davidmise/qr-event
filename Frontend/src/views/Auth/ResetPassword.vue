@@ -8,7 +8,7 @@
           Enter your email address and we'll send you an email with instructions to reset your
           password.
         </p>
-        <form @submit.prevent="submit"> 
+        <form @submit.prevent="submit">
           <!-- Email -->
           <div class="form-floating mb-3">
             <input
@@ -22,8 +22,8 @@
             />
             <label for="email" class="form-label">Email</label>
           </div>
-           <!-- Token -->
-           <div class="form-floating mb-3">
+          <!-- Token -->
+          <div class="form-floating mb-3">
             <input
               type="text"
               class="form-control"

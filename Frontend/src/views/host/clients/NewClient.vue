@@ -163,8 +163,7 @@ export default {
         phone: '',
         event_type: '',
         event_capacity: '',
-        cost: '',
-        
+        cost: ''
       },
       message: null
     }
@@ -196,15 +195,15 @@ export default {
           console.error('Internal server error:', error.response.data)
           // Show user-friendly error message (optional)
           this.isLoading = false // Set loading state to false after failed fetch
-        this.message = error.response.statusText
+          this.message = error.response.statusText
 
-        this.handelErrorToast()
+          this.handelErrorToast()
         } else {
           console.error('Error creating event:', error)
           this.isLoading = false // Set loading state to false after failed fetch
-        this.message = error.response.statusText
+          this.message = error.response.statusText
 
-        this.handelErrorToast()
+          this.handelErrorToast()
         }
       }
 

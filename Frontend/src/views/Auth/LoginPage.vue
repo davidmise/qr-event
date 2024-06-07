@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row gy-4 align-items-center">
         <div class="col-12 col-md-6 col-xl-7">
-          <div class="d-flex justify-content-center ">
+          <div class="d-flex justify-content-center">
             <div class="col-12 col-xl-9">
               <img
                 class="img-fluid rounded mb-4"
@@ -14,7 +14,9 @@
                 alt="BootstrapBrain Logo"
               />
               <hr class="border-primary-subtle mb-4" />
-              <h2 class="h1 mb-4" style="color: #f3b41b">We make digital products that drive you to stand out.</h2>
+              <h2 class="h1 mb-4" style="color: #f3b41b">
+                We make digital products that drive you to stand out.
+              </h2>
               <p class="lead mb-5 text-white">
                 We write words, take photos, make videos, and interact with artificial intelligence.
               </p>
@@ -205,13 +207,13 @@ import Swal from 'sweetalert2'
 import { mapActions, mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
-import logo from "@/assets/Images/creativehublogo.png"
+import logo from '@/assets/Images/creativehublogo.png'
 
 export default {
   data() {
     const userIsLoggedIn = computed(() => useUserStore.userIsLoggedIn)
     return {
-      img:logo,
+      img: logo,
       email: '',
       password: '',
       submitting: false,
@@ -321,5 +323,4 @@ export default {
       transparent 100%
     );
 }
-
 </style>

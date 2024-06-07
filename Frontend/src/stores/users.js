@@ -7,7 +7,7 @@ const useUserStore = defineStore('user', {
   state: () => ({
     storedUser: JSON.parse(localStorage.getItem('user')) || null,
     token: localStorage.getItem('token') || null,
-    totalUsers:  0
+    totalUsers: 0
   }),
 
   getters: {
@@ -40,7 +40,7 @@ const useUserStore = defineStore('user', {
           break
       }
     },
-    
+
     logoutUser() {
       localStorage.removeItem('user')
       localStorage.removeItem('token')
@@ -53,7 +53,7 @@ const useUserStore = defineStore('user', {
 
     async fetchUsers() {
       try {
-        const API_URL = this.API_URL 
+        const API_URL = this.API_URL
         const response = await axios.get(`${API_URL}users`, {
           headers: {
             Authorization: `Bearer ${this.token}`

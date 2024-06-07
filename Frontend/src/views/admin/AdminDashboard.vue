@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <Sidebar />
@@ -16,7 +15,7 @@
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Events</span>
-                      <span class="h3 font-bold mb-0">{{totalEvents}} </span>
+                      <span class="h3 font-bold mb-0">{{ totalEvents }} </span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
@@ -33,7 +32,7 @@
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Users</span>
-                      <span class="h3 font-bold mb-0">{{totalUsers}}</span>
+                      <span class="h3 font-bold mb-0">{{ totalUsers }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
@@ -41,7 +40,6 @@
                       </div>
                     </div>
                   </div>
-                
                 </div>
               </div>
             </div>
@@ -51,7 +49,7 @@
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Clients</span>
-                      <span class="h3 font-bold mb-0">{{totalClients}}</span>
+                      <span class="h3 font-bold mb-0">{{ totalClients }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
@@ -74,7 +72,7 @@
                   <div class="row">
                     <div class="col">
                       <span class="h6 font-semibold text-muted text-sm d-block mb-2">Guests</span>
-                      <span class="h3 font-bold mb-0">{{totalGuests}}</span>
+                      <span class="h3 font-bold mb-0">{{ totalGuests }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
@@ -138,11 +136,11 @@ export default {
     Sidebar,
     TopBar
   },
-  methods:{
+  methods: {
     ...mapActions(useUserStore, ['fetchUsers']),
     ...mapActions(useEventStore, ['fetchEvents']),
     ...mapActions(useClientStore, ['fetchClients']),
     ...mapActions(useGuestStore, ['totalGuests'])
-}
+  }
 }
 </script>

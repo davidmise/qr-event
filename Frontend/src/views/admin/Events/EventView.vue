@@ -50,7 +50,7 @@ export default {
       sidebarWidth,
       eventInfo: null,
       eventId: null,
-      message: null,
+      message: null
     }
   },
 
@@ -78,9 +78,9 @@ export default {
         .catch((error) => {
           console.log(error)
           this.isLoading = false // Set loading state to false after failed fetch
-        this.message = error.response.statusText
+          this.message = error.response.statusText
 
-        this.handelErrorToast()
+          this.handelErrorToast()
         })
     },
     handelErrorToast() {
@@ -89,7 +89,7 @@ export default {
         title: 'An error has occurred',
         text: this.message
       })
-    },
+    }
   }
 }
 </script>

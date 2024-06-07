@@ -364,7 +364,7 @@ export default {
           facebook: ''
         }
       },
-      message:null,
+      message: null
     }
   },
 
@@ -396,9 +396,9 @@ export default {
         } else {
           console.error('Error creating event:', error)
           this.isLoading = false // Set loading state to false after failed fetch
-        this.message = error.response.statusText
+          this.message = error.response.statusText
 
-        this.handelErrorToast()
+          this.handelErrorToast()
         }
       }
 

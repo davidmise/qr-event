@@ -9,13 +9,13 @@
           <main class="py-6 bg-surface-secondary">
             <div class="container-fluid">
               <h2 class="mb-5">All Events</h2>
-               <!-- searchbar -->
-               <div class="form-floating mb-3">
-                <input 
-                  type="search" 
-                  class="form-control" 
-                  id="datatable-search-input" 
-                  v-model="searchQuery" 
+              <!-- searchbar -->
+              <div class="form-floating mb-3">
+                <input
+                  type="search"
+                  class="form-control"
+                  id="datatable-search-input"
+                  v-model="searchQuery"
                   @input="searchData"
                 />
                 <label for="datatable-search-input">Search</label>
@@ -39,11 +39,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        v-for="(event, index) in events"
-                        :key="event.id"
-                        @click="route(event.id)"
-                      >
+                      <tr v-for="(event, index) in events" :key="event.id" @click="route(event.id)">
                         <td class="text-heading font-semibold">
                           {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                         </td>
@@ -136,8 +132,8 @@ export default {
       itemsPerPage: 10,
       lastPage: null,
       message: null,
-        searchQuery: '',
-        searchedData:''
+      searchQuery: '',
+      searchedData: ''
     }
   },
   created() {
@@ -159,27 +155,29 @@ export default {
   methods: {
     ...mapActions(useEventStore, ['storeEvent']),
 
-    searchData(){
-              console.log(this.searchQuery);
-              
-              axios.get(`${this.API_URL}search-event`, { 
-              headers: {
-                Authorization: `Bearer ${this.token}`
-              },
-              params: { search_term: this.searchQuery} })
-             .then(response =>{
-                  this.events = response.data.event.data;
-                  console.log(this.events)
-              })
-  
-              .catch(error=>{
-              console.log("error searching events", error)
-              this.isLoading = false
-            this.message = error.response.statusText
-            this.handelErrorToast()
-            console.log(this.response.data)
-              });
+    searchData() {
+      console.log(this.searchQuery)
+
+      axios
+        .get(`${this.API_URL}search-event`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
           },
+          params: { search_term: this.searchQuery }
+        })
+        .then((response) => {
+          this.events = response.data.event.data
+          console.log(this.events)
+        })
+
+        .catch((error) => {
+          console.log('error searching events', error)
+          this.isLoading = false
+          this.message = error.response.statusText
+          this.handelErrorToast()
+          console.log(this.response.data)
+        })
+    },
 
     async fetchEventInfo(index) {
       this.currentPage = index
@@ -218,14 +216,14 @@ export default {
     route(eventId) {
       this.$router.push({ name: 'hostviewEvent', params: { eventId: eventId } })
     },
-    
+
     handelErrorToast() {
       Swal.fire({
         icon: 'error',
         title: 'An error has occurred',
         text: this.message
       })
-    },
+    }
   },
 
   mounted() {

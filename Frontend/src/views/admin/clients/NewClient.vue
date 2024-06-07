@@ -165,7 +165,7 @@ export default {
         event_capacity: '',
         cost: ''
       },
-      message:null
+      message: null
     }
   },
 
@@ -197,9 +197,9 @@ export default {
         } else {
           console.error('Error creating event:', error)
           this.isLoading = false // Set loading state to false after failed fetch
-        this.message = error.response.statusText
+          this.message = error.response.statusText
 
-        this.handelErrorToast()
+          this.handelErrorToast()
         }
       }
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)

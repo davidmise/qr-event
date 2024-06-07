@@ -1,5 +1,4 @@
 Here's the corrected code for your Vue component to allow only admin users to register new users:
-
 ```html
 <template>
   <div>
@@ -42,7 +41,7 @@ Here's the corrected code for your Vue component to allow only admin users to re
                         <label for="phone">Phone</label>
                       </div>
 
-                    <div class="form-floating mb-3 position-relative">
+                      <div class="form-floating mb-3 position-relative">
                         <input
                           :type="passwordFieldType"
                           class="form-control"
@@ -92,17 +91,32 @@ Here's the corrected code for your Vue component to allow only admin users to re
                       </div>
                       <!-- Role selection -->
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="role" id="hostRadio" value="host" checked />
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="role"
+                          id="hostRadio"
+                          value="host"
+                          checked
+                        />
                         <label class="form-check-label" for="hostRadio">Host</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="role" id="doormanRadio" value="doorman" />
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="role"
+                          id="doormanRadio"
+                          value="doorman"
+                        />
                         <label class="form-check-label" for="doormanRadio">Doorman</label>
                       </div>
                     </div>
                     <!-- Submit button -->
                     <div class="btn-container d-grid mt-5">
-                      <button type="submit" class="btn btn-secondary btn-lg rounded">Create User</button>
+                      <button type="submit" class="btn btn-secondary btn-lg rounded">
+                        Create User
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -116,83 +130,87 @@ Here's the corrected code for your Vue component to allow only admin users to re
 </template>
 
 <script setup>
-import Sidebar from '@/components/Bars/Sidebar/SideBar.vue';
-import { sidebarWidth } from '@/components/Bars/Sidebar/state';
-import TopBar from '@/components/Bars/TopBar/TopBar.vue';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import router from '@/router';
-import  useGeneralStore  from '@/stores/general.js';
-import { ref } from 'vue';
+import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
+import { sidebarWidth } from '@/components/Bars/Sidebar/state'
+import TopBar from '@/components/Bars/TopBar/TopBar.vue'
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import router from '@/router'
+import useGeneralStore from '@/stores/general.js'
+import { ref } from 'vue'
 
-const name = ref('');
-const email = ref('');
-const username = ref('');
-const phone = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const submitting = ref(false);
-const passwordFieldType = ref('password');
-const passwordToggleIcon = ref('bi bi-eye-slash');
-const confirmPasswordFieldType = ref('password');
-const confirmPasswordToggleIcon = ref('bi bi-eye-slash');
-const API_URL = useGeneralStore().API_URL;
+const name = ref('')
+const email = ref('')
+const username = ref('')
+const phone = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const submitting = ref(false)
+const passwordFieldType = ref('password')
+const passwordToggleIcon = ref('bi bi-eye-slash')
+const confirmPasswordFieldType = ref('password')
+const confirmPasswordToggleIcon = ref('bi bi-eye-slash')
+const API_URL = useGeneralStore().API_URL
 
 const registerUser = () => {
-  submitting.value = true;
+  submitting.value = true
 
   if (password.value !== confirmPassword.value) {
-    handleError('Passwords do not match');
-    return;
+    handleError('Passwords do not match')
+    return
   }
 
-  axios.post(`${API_URL}register`, {
-    name: name.value,
-    username: username.value,
-    email: email.value,
-    password: password.value,
-    role: document.querySelector('input[name="role"]:checked').value
-  })
-  .then((response) => {
-    console.log(response.data.message);
-    handelSuccessToast(response.data.message);
-    router.push({ name: 'login' });
-  })
-  .catch((error) => {
-    console.log(error);
-    handelErrorToast(error.response.statusText);
-  })
-  .finally(() => {
-    submitting.value = false;
-  });
-};
+  axios
+    .post(`${API_URL}register`, {
+      name: name.value,
+      username: username.value,
+      email: email.value,
+      password: password.value,
+      role: document.querySelector('input[name="role"]:checked').value
+    })
+    .then((response) => {
+      console.log(response.data.message)
+      handelSuccessToast(response.data.message)
+      router.push({ name: 'login' })
+    })
+    .catch((error) => {
+      console.log(error)
+      handelErrorToast(error.response.statusText)
+    })
+    .finally(() => {
+      submitting.value = false
+    })
+}
 
 const handelSuccessToast = (message) => {
   Swal.fire({
     icon: 'success',
     text: message
-  });
-};
+  })
+}
 
 const handelErrorToast = (message) => {
   Swal.fire({
     icon: 'error',
     title: 'Registration failed!',
     text: message
-  });
-};
+  })
+}
 
 const handleError = (message) => {
-  handelErrorToast(message);
-};
+  handelErrorToast(message)
+}
 
 const togglePasswordVisibility = () => {
-  passwordFieldType.value = (passwordFieldType.value === 'password') ? 'text' : 'password';
-  passwordToggleIcon.value = (passwordToggleIcon.value === 'bi bi-eye-slash') ? 'bi bi-eye' : 'bi bi-eye-slash';
-};
+  passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password'
+  passwordToggleIcon.value =
+    passwordToggleIcon.value === 'bi bi-eye-slash' ? 'bi bi-eye' : 'bi bi-eye-slash'
+}
 
 const toggleConfirmPasswordVisibility = () => {
-  confirmPasswordFieldType.value = (confirmPasswordFieldType.value === 'password') ? 'text' : 'password';
-  confirmPasswordToggleIcon.value = (confirmPasswordToggleIcon.value === 'bi bi-eye-slash') ? 'bi bi-eye' : 'bi bi-eye-slash';
-};
+  confirmPasswordFieldType.value =
+    confirmPasswordFieldType.value === 'password' ? 'text' : 'password'
+  confirmPasswordToggleIcon.value =
+    confirmPasswordToggleIcon.value === 'bi bi-eye-slash' ? 'bi bi-eye' : 'bi bi-eye-slash'
+}
 </script>

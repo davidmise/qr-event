@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import axios from "axios";
-import useUserStore  from './users.js'; // Import useUserStore
+import axios from 'axios'
+import useUserStore from './users.js' // Import useUserStore
 import useGeneralStore from './general.js'
 
 const useEventStore = defineStore('event', {
   state: () => ({
     storedEvent: localStorage.getItem('event') || null,
-    totalEvents:0
+    totalEvents: 0
   }),
 
   getters: {
@@ -30,8 +30,8 @@ const useEventStore = defineStore('event', {
     },
     async fetchEvents() {
       try {
-        const token = this.authToken; // Use token getter
-        const API_URL = this.API_URL 
+        const token = this.authToken // Use token getter
+        const API_URL = this.API_URL
         const response = await axios.get(`${API_URL}all-events`, {
           headers: {
             Authorization: `Bearer ${token}`
