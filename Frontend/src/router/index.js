@@ -77,6 +77,12 @@ const router = createRouter({
       component: () => import('../views/host/clients/NewClient.vue')
     },
     {
+      path: '/host/guests/all',
+      name: 'hostGuestsAll',
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
+      component: () => import('../views/host/guests/AllGuests.vue')
+    },
+    {
       path: '/contacts',
       name: 'contacts',
       meta: { requiresAuth: true },

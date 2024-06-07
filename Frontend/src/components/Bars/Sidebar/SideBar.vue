@@ -181,7 +181,7 @@
         <span v-if="!collapsed" class="ms-3">Guests</span>
       </a>
       <div class="collapse" id="guests">
-        <SideBarLink :to="{ name: 'adminGuestAll' }" :text="collapsed ? '' : 'All Guests'" />
+        <SideBarLink :to="{ name: 'hostGuestsAll' }" :text="collapsed ? '' : 'All Guests'" />
       </div>
     </div>
 

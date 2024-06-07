@@ -13,8 +13,8 @@ class GuestListController extends Controller
      */
     public function index()
     {
-        $guests = GuestList::get();
-        return response()->json($guests);
+        $guests = GuestList::paginate(10);
+        return $guests;
     }
 
     /**
