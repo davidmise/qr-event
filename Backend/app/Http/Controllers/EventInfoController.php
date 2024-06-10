@@ -10,7 +10,7 @@ use App\Models\Guest;
 use App\Models\Organizer;
 use App\Models\Ticket;
 use App\Models\Location;
-use App\Models\Media;
+// use App\Models\Media;
 use App\Models\SocialLink;
 use App\Models\GuestAttendance;
 
@@ -27,7 +27,7 @@ class EventInfoController extends Controller
     // $page = $request->input('page', 1);
 
     // Query events with relationships
-    $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'media', 'ticket','guest', 'attendance.guest')
+    $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'ticket','guest', 'attendance.guest')
         ->paginate(10);
 
     return $events;
@@ -138,14 +138,7 @@ class EventInfoController extends Controller
             'google_map_url' => $request->input('google_map_url'),
             'event_info_id' => $event_info->id,
         ]);
-        // Create related records(media)
-        $media = Media::create([
-            'url' => $request->input('url'),
-            'poster' => $request->input('poster'),
-            'banner' => $request->input('banner'),
-            'logo' => $request->input('logo'),
-            'event_info_id' => $event_info->id,
-        ]);
+
         // Create related records(social_links)
         $socialLink = SocialLink::create([
             'instagram' => $request->input('instagram'),
@@ -172,7 +165,7 @@ class EventInfoController extends Controller
             'organizer' => $organizer,
             'ticket' => $ticket,
             'location' => $location,
-            'media' => $media,
+            // 'media' => $media,
             'socialLink' => $socialLink,
         ];
         return response()->json([
@@ -207,7 +200,7 @@ class EventInfoController extends Controller
             'Organizer',
             'SocialLink',
             'Ticket',
-            'media',
+            // 'media',
             'guest',
             'attendance.guest'
         ])->find($id);

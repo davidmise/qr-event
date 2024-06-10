@@ -43,11 +43,7 @@ class EventInfo extends Model
     {
         return $this->hasOne(Ticket::class);
     }
-    public function media()
-    {
-        return $this->hasOne(Media::class);
-    }
-
+  
     public function attendance()
     {
         return $this->hasOne(GuestAttendance::class);
