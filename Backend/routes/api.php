@@ -8,7 +8,7 @@ use App\Http\Controllers\EventInfoController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\TicketController;
-use App\Http\Controllers\MediaController;
+// use App\Http\Controllers\MediaController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestAttendanceController;
 use App\Http\Controllers\GoogleSheetsController;
@@ -23,9 +23,9 @@ Route::post('/forgot', [AuthController::class, "forgot"]);
 Route::post('/reset', [AuthController::class, "reset"]);
  // Qr-code
  Route::post('/generate-qrCode', [QrCodeController::class, 'generateQrCode']);
- // show single event 
+ // show single event
  Route::get('/pull-event-info{id}', [EventInfoController::class,'show']);
- 
+
 
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
@@ -37,12 +37,14 @@ Route::middleware('auth:sanctum')->group(function () {
    // User routes accessible only by admin
    Route::middleware('auth.admin')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
-    Route::get('/user{id}', [UserController::class, 'show']);
+    // Route::get('/user{id}', [UserController::class, 'show']);
     Route::put('/update-user{id}', [UserController::class, 'update']);
     Route::delete('/delete-user{id}', [UserController::class, 'destroy']);
     Route::get('/search-user', [UserController::class, 'search']);
 
 });
+// doorman
+Route::get('/user{id}', [UserController::class, 'show']);
     // EventInfo
     Route::get('/all-events', [EventInfoController::class, 'index']);
     Route::post('/create-event', [EventInfoController::class, 'store']);
@@ -66,10 +68,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/social-links', 'App\Http\Controllers\SocialLinkController@storeOrUpdate');
     Route::get('/all-social-links', 'App\Http\Controllers\SocialLinkController@index');
 
-    // Media
-    Route::post('/media', [MediaController::class, 'store']);
-    Route::get('/all-media', [MediaController::class, 'index']);
-
     // Guest
     Route::post('/guest', [GuestController::class, 'store']);
     Route::get('/all-guests', [GuestController::class, 'index']);
@@ -89,5 +87,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/guest-list',[GuestListController::class,'index']);
     Route::get('/search-guest',[GuestListController::class,'search']);
 
-   
+
 });

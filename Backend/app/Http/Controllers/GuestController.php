@@ -14,10 +14,8 @@ class GuestController extends Controller
     public function index()
     {
         //
-        $guests = Guest::with([
-            'attendances'
-        ])->get();
-        return response()->json($guests); // Assuming you have an 'index.blade.php' view for guests
+        $guests = Guest::paginate(10);
+        return $guests; // Assuming you have an 'index.blade.php' view for guests
 
     }
 
@@ -49,7 +47,7 @@ class GuestController extends Controller
             'name.string' => 'Name must be a string',
             'name.max' => 'Name must be less than 255 characters',
             // email
-      
+
             'email.email' => 'Invalid email address',
             'email.unique' => 'Email is already taken',
             // phone_number
@@ -133,7 +131,7 @@ class GuestController extends Controller
         //     return response()->json([
         //         'status'=>false,
         //         'message' => 'user not found'
-        //     ],400); // bad request 
+        //     ],400); // bad request
         // }
 
         $guest = Guest::query()->where('name', 'LIKE', "%$searchTerm%")
@@ -146,7 +144,7 @@ class GuestController extends Controller
             //         'message' => 'guest not found'
             //     ], 404); // Not Found
             // }
-        
+
         return response()->json([
             'status'=>true,
             'message' => 'guest searched successfully',

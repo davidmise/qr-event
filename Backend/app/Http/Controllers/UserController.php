@@ -78,7 +78,7 @@ class UserController extends Controller
         if (!$user) {
             return response()->json([
                 "status" => false,
-                'message' => "User not found",
+                'message' => "User not found kmmk",
             ],404);
         } else {
             return response()->json([
