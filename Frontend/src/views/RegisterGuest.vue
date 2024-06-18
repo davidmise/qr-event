@@ -147,13 +147,14 @@ export default {
   methods: {
     async fetchEventInfo(eventId) {
       try {
-        const response = await axios.get(`${this.API_URL}pull-event-info${eventId}`
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${this.token}`
-        //   }
-        // }
-      )
+        const response = await axios.get(
+          `${this.API_URL}pull-event-info${eventId}`
+          // {
+          //   headers: {
+          //     Authorization: `Bearer ${this.token}`
+          //   }
+          // }
+        )
         this.eventInfo = response.data.event
         this.location = response.data.event.location
         this.organizer = response.data.event.organizer
@@ -172,13 +173,15 @@ export default {
       try {
         const eventId = this.$route.params.eventId
         this.qrData.Guest.event_info_id = eventId
-        const response = await axios.post(`${this.API_URL}generate-qrCode`, this.qrData.Guest
-        //  {
-        //   headers: {
-        //     Authorization: `Bearer ${this.token}`
-        //   }
-        // }
-      )
+        const response = await axios.post(
+          `${this.API_URL}generate-qrCode`,
+          this.qrData.Guest
+          //  {
+          //   headers: {
+          //     Authorization: `Bearer ${this.token}`
+          //   }
+          // }
+        )
         this.qrCode = 'data:image/svg+xml;base64,' + btoa(response.data.qr_code)
         this.qrCodeVisible = true
 

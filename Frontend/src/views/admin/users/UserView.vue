@@ -3,13 +3,13 @@ import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state.js'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
-
 import Swal from 'sweetalert2'
 import { mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import EdditUserModal from '@/components/admin/user/modal/EdditUserModal.vue'
 </script>
+
 <template>
   <div>
     <Sidebar />
@@ -123,7 +123,8 @@ export default {
     return {
       userInfo: null,
       userId: null,
-      message: null
+      message: null,
+      isLoading: false
     }
   },
   computed: {
@@ -135,31 +136,39 @@ export default {
     this.getUserInfo()
   },
   methods: {
-    getUserInfo() {
-      axios
-        .get(`${this.API_URL}user${this.userId}`, {
+    async getUserInfo() {
+      this.isLoading = true
+      try {
+        const response = await axios.get(`${this.API_URL}user${this.userId}`, {
           headers: {
             Authorization: `Bearer ${this.token}`
           }
         })
-        .then((response) => {
-          this.userInfo = response.data.user
-          console.log(this.userInfo)
-        })
-        .catch((error) => {
-          console.log(error)
-          this.isLoading = false // Set loading state to false after failed fetch
-          this.message = error.response.statusText
-
-          this.handelErrorToast()
-        })
+        this.userInfo = response.data.user
+        console.log(this.userInfo)
+      } catch (error) {
+        console.error('Error fetching user info:', error)
+        this.message = 'An error occurred while fetching user information. Please try again.'
+        this.handelErrorToast()
+      } finally {
+        this.isLoading = false
+      }
     },
-    deleteUser() {
-      axios.delete(`${this.API_URL}delete-user${this.userId}`, {
-        headers: {
-          Authorization: `Bearer ${this.token}`
-        }
-      })
+    async deleteUser() {
+      this.isLoading = true
+      try {
+        await axios.delete(`${this.API_URL}delete-user${this.userId}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        })
+      } catch (error) {
+        console.error('Error deleting user:', error)
+        this.message = 'An error occurred while deleting the user. Please try again.'
+        this.handelErrorToast()
+      } finally {
+        this.isLoading = false
+      }
     },
     handleDelete() {
       Swal.fire({
@@ -173,21 +182,19 @@ export default {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            this.deleteUser()
-
-            Swal.fire({
-              title: 'Deleted!',
-              text: 'You have successfully deleted this user',
-              icon: 'success'
+            this.deleteUser().then(() => {
+              Swal.fire({
+                title: 'Deleted!',
+                text: 'You have successfully deleted this user',
+                icon: 'success'
+              })
+              this.$router.push({ name: 'adminUsersAll' })
             })
-            //  action to take place after successful sd
-            this.$router.push({ name: 'adminUsersAll' })
           }
         })
         .catch((error) => {
-          console.log(error)
-          this.isLoading = false // Set loading state to false after failed fetch
-          this.message = error.response.statusText
+          console.error('Error handling delete confirmation:', error)
+          this.message = 'An error occurred during the delete confirmation. Please try again.'
           this.handelErrorToast()
         })
     },

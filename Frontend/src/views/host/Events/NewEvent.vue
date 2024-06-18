@@ -20,43 +20,6 @@ import useUserStore from '@/stores/users'
           <main class="py-6 bg-surface-secondary ms-4">
             <h2 class="mb-3">Create Event</h2>
             <form action="" @submit.prevent="createEvent">
-              <div class="container mb-4">
-                <div class="row">
-                  <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card shadow border-0 py-3 px-4">
-                      <label for="logoFile" class="form-label">Upload Logo</label>
-                      <input
-                        class="form-control form-control-md"
-                        id="logoFile"
-                        type="text"
-                        v-model="event_info.logo"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card shadow border-0 py-3 px-4">
-                      <label for="posterFile" class="form-label">Upload Poster</label>
-                      <input
-                        class="form-control form-control-md"
-                        id="posterFile"
-                        type="text"
-                        v-model="event_info.poster"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card shadow border-0 py-3 px-4">
-                      <label for="bannerFile" class="form-label">Upload Banner</label>
-                      <input
-                        class="form-control form-control-md"
-                        id="bannerFile"
-                        type="text"
-                        v-model="event_info.banner"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="container mb-5">
                 <!-- first row  -->
                 <div class="row mb-2">
@@ -353,11 +316,6 @@ export default {
           price: '',
           event_capacity: ''
         },
-        media: {
-          poster: '',
-          banner: '',
-          logo: ''
-        },
         social_links: {
           instagram: '',
           twitter: '',
@@ -439,11 +397,7 @@ export default {
           price: '',
           event_capacity: ''
         },
-        media: {
-          poster: '',
-          banner: '',
-          logo: ''
-        },
+
         social_links: {
           instagram: '',
           twitter: '',

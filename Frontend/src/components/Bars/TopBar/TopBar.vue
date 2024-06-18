@@ -32,7 +32,7 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <Avatar :avatarUrl="userAvatarUrl" altText="Avatar" />
+              <i class="material-icons">account_circle</i>
             </a>
             <ul class="dropdown-menu">
               <div v-if="isAdmin">
@@ -51,7 +51,7 @@
               </div>
               <div v-if="isDoorman">
                 <li>
-                  <RouterLink class="dropdown-item" :to="{ name: 'hostProfile' }">
+                  <RouterLink class="dropdown-item" :to="{ name: 'doormanProfile' }">
                     <i class="material-icons">person</i> Profile</RouterLink
                   >
                 </li>
@@ -80,17 +80,14 @@
 
 <script>
 import Swal from 'sweetalert2'
-import Avatar from '@/components/AvatarImage.vue'
+// import Avatar from '@/components/AvatarImage.vue'
 import axios from 'axios'
 // import LogoutButton from '@/components/Buttons/LogoutButton.vue';
-import useUserStore from '@/stores/users'
+import useUserStore  from '@/stores/users'
 import useGeneralStore from '@/stores/general'
 import { mapActions, mapState } from 'pinia'
 import { computed } from 'vue'
 export default {
-  components: {
-    Avatar
-  },
   setup() {
     const userIsLoggedIn = computed(() => !!useUserStore.storedUser)
     // const API_URL = computed(() => useGeneralStore.API_URL);

@@ -51,7 +51,7 @@
             <div class="row">
               <div class="col-12 d-flex justify-content-center align-items-center mt-4">
                 <div
-                  v-show="searchQuery !== '' && clients.length == 0"
+                  v-show="searchQuery !== '' && guests.length == 0"
                   class="not-found-message text-center"
                 >
                   <span class="icon">
@@ -115,7 +115,7 @@
               </li>
             </ul>
           </div>
-
+          <!-- items showing -->
           <div class="card-footer border-0 py-5">
             <span class="text-muted text-sm"
               >Showing {{ currentItems }} items out of {{ total }} results found</span

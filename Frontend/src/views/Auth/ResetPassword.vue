@@ -38,7 +38,7 @@
           <!-- New Password -->
           <div class="form-floating mb-3">
             <input
-              type="password"
+              :type="passwordFieldType"
               class="form-control"
               name="password"
               id="password"
@@ -46,19 +46,41 @@
               v-model="password"
               required
             />
+            <i
+              :class="passwordToggleIcon"
+              id="togglePassword"
+              @click="togglePasswordVisibility"
+              style="
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+              "
+            ></i>
             <label for="password" class="form-label">New Password</label>
           </div>
           <!-- Confirm Password -->
           <div class="form-floating mb-3">
             <input
-              type="password"
               class="form-control"
-              name="password_confirmation"
-              id="password_confirmation"
-              placeholder="confirm password"
-              v-model="password_confirmation"
+              name="confirmPassword"
+              id="confirmPassword"
+              placeholder="Confirm Password"
+              v-model="confirmPassword"
+              :type="confirmPasswordFieldType"
               required
             />
+            <i
+              :class="confirmPasswordToggleIcon"
+              style="
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+              "
+            ></i>
             <label for="password_confirmation" class="form-label">Confirm Password</label>
           </div>
 
@@ -74,11 +96,44 @@
 </template>
 
 <style scoped>
+#togglePassword {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+#toggleConfirmPassword {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
 .centered-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+.cover {
+  background-color: hsl(218, 41%, 15%);
+  background-image: radial-gradient(
+      650px circle at 0% 0%,
+      hsl(218, 41%, 35%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%
+    ),
+    radial-gradient(
+      1250px circle at 100% 100%,
+      hsl(218, 41%, 45%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%
+    );
 }
 </style>
 
@@ -101,7 +156,11 @@ export default {
       password_confirmation: '',
       userIsLoggedIn,
       message: null,
-      validationErrors: null // Add validationErrors to data
+      validationErrors: null, // Add validationErrors to data
+      passwordFieldType: 'password', // Add password field type
+      passwordToggleIcon: 'bi bi-eye-slash',
+      confirmPasswordFieldType: 'password',
+      confirmPasswordToggleIcon: 'bi bi-eye-slash'
     }
   },
   setup() {
@@ -178,6 +237,25 @@ export default {
         title: 'Validation Error',
         text: errorMessages.trim()
       })
+    },
+
+    togglePasswordVisibility() {
+      if (this.passwordFieldType === 'password') {
+        this.passwordFieldType = 'text'
+        this.passwordToggleIcon = 'bi bi-eye'
+      } else {
+        this.passwordFieldType = 'password'
+        this.passwordToggleIcon = 'bi bi-eye-slash'
+      }
+    },
+    toggleConfirmPasswordVisibility() {
+      if (this.confirmPasswordFieldType === 'password') {
+        this.confirmPasswordFieldType = 'text'
+        this.confirmPasswordToggleIcon = 'bi bi-eye'
+      } else {
+        this.confirmPasswordFieldType = 'password'
+        this.confirmPasswordToggleIcon = 'bi bi-eye-slash'
+      }
     }
   }
 }

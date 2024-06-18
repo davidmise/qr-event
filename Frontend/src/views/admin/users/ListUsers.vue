@@ -122,6 +122,12 @@
                   </li>
                 </ul>
               </div>
+              <!-- doisplay show items -->
+              <div class="card-footer border-0 py-5">
+                <span class="text-muted text-sm"
+                  >Showing {{ currentItems }} items out of {{ total }} results found</span
+                >
+              </div>
             </div>
           </main>
         </div>
@@ -158,7 +164,9 @@ export default {
       lastPage: null,
       message: null,
       searchQuery: '',
-      searchedData: ''
+      searchedData: '',
+      total: 0,
+      currentItems: 0
     }
   },
   created() {
@@ -211,6 +219,8 @@ export default {
         this.users = this.data.data
         this.lastPage = this.data.last_page
         this.totalUsers = this.data.total
+        this.total = response.data.total
+        this.currentItems = response.data.to - response.data.from + 1
         // //   console.log(this.totalUsers)
         // localStorage.setItem('totalUsers', this.totalUsers)
         //   console.log('total:' + localStorage.getItem('totalUsers'))

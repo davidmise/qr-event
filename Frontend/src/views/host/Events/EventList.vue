@@ -35,7 +35,7 @@
                         <th scope="col" class="fw-bold">Start Date</th>
                         <th scope="col" class="fw-bold">Start Time</th>
                         <th scope="col" class="fw-bold">Ticket Price</th>
-                        <th scope="col" class="fw-bold">Poster</th>
+                        <!-- <th scope="col" class="fw-bold">Poster</th> -->
                       </tr>
                     </thead>
                     <tbody>
@@ -48,7 +48,7 @@
                         <td>{{ event.start_date }}</td>
                         <td>{{ event.start_time }}</td>
                         <td>{{ event.ticket ? event.ticket.price : 'N/A' }}</td>
-                        <td>
+                        <!-- <td>
                           <img
                             v-if="event.media && event.media.poster"
                             :src="event.media.poster"
@@ -56,7 +56,7 @@
                             style="max-width: 100px"
                           />
                           <span v-else>N/A</span>
-                        </td>
+                        </td> -->
                       </tr>
                     </tbody>
                   </table>

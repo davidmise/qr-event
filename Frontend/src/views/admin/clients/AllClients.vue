@@ -128,6 +128,12 @@
                   </li>
                 </ul>
               </div>
+              <!-- items showing -->
+              <div class="card-footer border-0 py-5">
+                <span class="text-muted text-sm"
+                  >Showing {{ currentItems }} items out of {{ total }} results found</span
+                >
+              </div>
             </div>
           </main>
         </div>
@@ -165,7 +171,9 @@ export default {
       lastPage: null,
       message: null,
       searchQuery: '',
-      searchedData: ''
+      searchedData: '',
+      currentItems: 0,
+      total: 0
     }
   },
   created() {
@@ -222,7 +230,9 @@ export default {
         this.data = response.data
         this.clients = this.data.data
         this.lastPage = response.data.last_page
+        this.total = response.data.total
         console.log(this.data)
+        this.currentItems = response.data.to - response.data.from + 1
       } catch (error) {
         console.error('Error fetching Client Info:', error)
         this.isLoading = false // Set loading state to false after failed fetch

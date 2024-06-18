@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotFound from '@/views/NotFound.vue'
 import useUserStore from '@/stores/users'
+// import { isMobile } from '@/utils/isMobile';
+import { mobileGuard } from '@/utils/mobileGuard';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -162,16 +164,32 @@ const router = createRouter({
       component: () => import('../views/admin/ProfilePage.vue')
     },
     {
-      path: '/doorman/doorman',
-      name: 'doorman',
+      path: '/doorman/home',
+      name: 'doormanHome',
       meta: { requiresAuth: true, role: 'doorman' }, // Added role meta
-      component: () => import('../views/doorman/DoormanView.vue')
+      component: () => import('../views/doorman/DoormanView.vue'),
+      beforeEnter: mobileGuard,
+    },
+    {
+      path: '/doorman/event/view:eventId',
+      name: 'doormanEventView',
+      meta: { requiresAuth: true, role: 'doorman' }, // Added role meta
+      component: () => import('../views/doorman/EventGuests.vue'),
+      beforeEnter: mobileGuard,
+    },
+    {
+      path: '/doorman/profile',
+      name: 'doormanProfile',
+      meta: { requiresAuth: true, role: 'doorman' }, // Added role meta
+      component: () => import('../views/doorman/ProfilePage.vue'),
+      beforeEnter: mobileGuard,
     },
     {
       path: '/host/host-dashboard',
       name: 'hostDashboard',
       meta: { requiresAuth: true, role: 'host' }, // Added role meta
-      component: () => import('../views/host/HostDashboard.vue')
+      component: () => import('../views/host/HostDashboard.vue'),
+     
     },
     {
       path: '/:catchAll(.*)',

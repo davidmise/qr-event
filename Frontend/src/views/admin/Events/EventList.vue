@@ -34,7 +34,7 @@
                         <th scope="col" class="fw-bold">Start Date</th>
                         <th scope="col" class="fw-bold">Start Time</th>
                         <th scope="col" class="fw-bold">Ticket Price</th>
-                        <th scope="col" class="fw-bold">Poster</th>
+                        <!-- <th scope="col" class="fw-bold">Poster</th> -->
                       </tr>
                     </thead>
                     <tbody>
@@ -47,15 +47,6 @@
                         <td>{{ event.start_date }}</td>
                         <td>{{ event.start_time }}</td>
                         <td>{{ event.ticket ? event.ticket.price : 'N/A' }}</td>
-                        <td>
-                          <img
-                            v-if="event.media && event.media.poster"
-                            :src="event.media.poster"
-                            alt="Poster"
-                            style="max-width: 100px"
-                          />
-                          <span v-else>N/A</span>
-                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -130,6 +121,12 @@
                   </li>
                 </ul>
               </div>
+              <!-- shown items -->
+              <div class="card-footer border-0 py-5">
+                <span class="text-muted text-sm"
+                  >Showing {{ currentItems }} items out of {{ total }} results found</span
+                >
+              </div>
             </div>
           </main>
         </div>
@@ -167,7 +164,10 @@ export default {
       lastPage: null,
       message: null,
       searchQuery: '',
-      searchedData: ''
+      searchedData: '',
+      currentItems: 0,
+      total: 0,
+      isLoading: false
     }
   },
   created() {
@@ -222,6 +222,8 @@ export default {
         this.data = response.data
         this.events = this.data.data
         this.lastPage = this.data.last_page
+        this.currentItems = response.data.to - response.data.from + 1
+        this.total = response.data.total
       } catch (error) {
         console.error('Error fetching Event Info:', error)
         this.isLoading = false

@@ -1,318 +1,186 @@
-<script setup>
-import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
-import { sidebarWidth } from '@/components/Bars/Sidebar/state'
-import TopBar from '@/components/Bars/TopBar/TopBar.vue'
-</script>
-
 <template>
   <div>
-    <Sidebar />
-    <div :style="{ marginLeft: sidebarWidth, transition: 'margin 0.8s' }">
-      <TopBar />
-      <main class="py-6 bg-surface-secondary">
-        <div class="container-fluid">
-          <main class="py-6 bg-surface-secondary ms-4">
-            <h2 class="mb-3">Doorman</h2>
-            <!-- media table -->
-            <div class="container mb-4">
-              <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <div class="card shadow border-0 py-3 px-4">
-                    <label for="formFileLg" class="form-label">Upload Logo</label>
-                    <input class="form-control form-control-md" id="formFileLg" type="file" />
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <div class="card shadow border-0 py-3 px-4">
-                    <label for="formFileLg" class="form-label">Upload Poster</label>
-                    <input class="form-control form-control-md" id="formFileLg" type="file" />
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <div class="card shadow border-0 py-3 px-4">
-                    <label for="formFileLg" class="form-label">Upload Banner</label>
-                    <input class="form-control form-control-md" id="formFileLg" type="file" />
-                  </div>
-                </div>
+    <TopNav />
+    <!-- Main -->
+    <main class="bg-surface-secondary">
+      <div class="container-fluid">
+        <!-- Card stats -->
+       
+
+        <div class="row">
+          <!-- Event Cards -->
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4" v-for="(event) in paginatedEvents" :key="event.id">
+            <div class="card shadow border-0" style="cursor: pointer;" @click="route(event.id, event.event_name)">
+              <!-- Event Image (if available) -->
+              <!-- <img v-if="event.image_url" :src="event.image_url" class="card-img-top" alt="Event Image"> -->
+
+              <div class="card-body">
+                <h5 class="card-title">{{ event.event_name }}</h5>
+                <p class="card-text">{{ event.event_subtitle }}</p>
+                <p class="card-text"><small class="text-muted">Start Date: {{ event.start_date }}</small></p>
+                <p class="card-text"><small class="text-muted">Start Time: {{ event.start_time }}</small></p>
+                <p class="card-text"><small class="text-muted">Ticket Price: {{ event.ticket ? event.ticket.price : 'N/A' }}</small></p>
               </div>
             </div>
-            <div class="container mb-5">
-              <!-- first row  -->
-              <div class="row mb-2">
-                <!-- Event info Table column -->
-                <div class="col-lg-5 col-md-6 col-sm-12">
-                  <div class="card border-0 shadow form-group py-3 px-4">
-                    <h5 class="text-secondary fw-bold">Event info</h5>
-                    <!-- <label for="name">Name</label> -->
-                    <!-- event name -->
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Event Name</label>
-                    </div>
-                    <!-- event subtitle -->
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Event Subtitle</label>
-                    </div>
-                    <!-- event duration (date) -->
-                    <div class="row">
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">Starting Date </label>
-                      </div>
-                      <!-- event end date -->
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">Ending Date </label>
-                      </div>
-                    </div>
-                    <!-- event duration (time) -->
-                    <div class="row">
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="time"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">Starting time </label>
-                      </div>
-                      <!-- event end time -->
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="time"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">Ending time</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Ticket table -->
-                <div class="col-lg-5 col-md-6 col-sm-12">
-                  <div class="card border-0 shadow form-group py-3 px-4">
-                    <h5 class="text-secondary fw-bold">Ticketing</h5>
-                    <!-- <label for="name">Name</label> -->
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Ticket Type</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Event Capacity</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Ticket Price</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- second row -->
-              <div class="row mt-5">
-                <!--Location Table-->
-                <div class="col-lg-5 col-md-6 col-sm-12">
-                  <div class="card border-0 shadow form-group py-3 px-4">
-                    <h5 class="text-secondary fw-bold">Event Location</h5>
-                    <!-- <label for="name">Name</label> -->
-                    <!-- event name -->
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Street Address</label>
-                    </div>
-                    <!-- event duration (date) -->
-                    <div class="row">
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">City </label>
-                      </div>
-                      <!-- event end date -->
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">State </label>
-                      </div>
-                    </div>
-                    <!-- event duration (time) -->
-                    <div class="row">
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">Country </label>
-                      </div>
-                      <!-- event end time -->
-                      <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="floatingInput"
-                          placeholder="name@example.com"
-                        />
-                        <label for="floatingInput" class="ms-3">Postal Code</label>
-                      </div>
-                    </div>
-                    <!-- event subtitle -->
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Google Map Url</label>
-                    </div>
-                  </div>
-                </div>
-                <!--  Social Links Table -->
-                <div class="col-lg-5 col-md-6 col-sm-12">
-                  <div class="card border-0 shadow form-group py-3 px-4">
-                    <h5 class="text-secondary fw-bold">Social Links</h5>
-                    <!-- <label for="name">Name</label> -->
-                    <div class="input-group mb-3">
-                      <span class="input-group-text"><i class="bi bi-instagram"></i></span>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="floatingInputGroup1"
-                          placeholder="Username"
-                        />
-                        <label for="floatingInputGroup1">URL (Optional)</label>
-                      </div>
-                    </div>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text"><i class="bi bi-twitter-x"></i></span>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="floatingInputGroup1"
-                          placeholder="Username"
-                        />
-                        <label for="floatingInputGroup1">URL (Optional)</label>
-                      </div>
-                    </div>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text"><i class="bi bi-facebook"></i></span>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="floatingInputGroup1"
-                          placeholder="Username"
-                        />
-                        <label for="floatingInputGroup1">URL (Optional)</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- third row -->
-              <div class="row mt-5">
-                <!-- Organizer Table -->
-                <div class="col-lg-5 col-md-6 col-sm-12">
-                  <div class="card border-0 shadow form-group py-3 px-4">
-                    <h5 class="text-secondary fw-bold">Organizer Info</h5>
-                    <!-- <label for="name">Name</label> -->
-                    <!-- event name -->
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Organizer Name</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Organizer Email</label>
-                    </div>
-
-                    <!-- event subtitle -->
-                    <div class="form-floating mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="floatingInput"
-                        placeholder="name@example.com"
-                      />
-                      <label for="floatingInput">Organizer Phone</label>
-                    </div>
-                  </div>
-                  <!-- submit BUTTON -->
-                  <div class="btn-container d-grid mt-5">
-                    <button type="submit" class="btn btn-secondary btn-lg rounded">
-                      Create Event
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </main>
+          </div>
         </div>
-      </main>
-    </div>
+
+        <div class="mt-3">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+              <button
+                class="page-link btn btn-outline-success"
+                @click="handlePreviousPage"
+                :disabled="currentPage === 1"
+                style="color: teal"
+              >
+                Previous
+              </button>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in lastPage"
+              :key="page"
+              :class="{ active: currentPage === page }"
+            >
+              <button class="btn btn-outline-success border-0" @click="fetchEventInfo(page)">
+                {{ page }}
+              </button>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === lastPage }">
+              <button
+                class="page-link btn btn-outline-success"
+                @click="handleNextPage"
+                :disabled="currentPage === lastPage"
+                style="color: teal"
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Shown items -->
+        <div class="card-footer border-0 py-5">
+          <span class="text-muted text-sm">Showing {{ currentItems }} items out of {{ total }} results found</span>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
+
+<script>
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import QrCode from '@/components/doorman/QrScanner.vue'
+import TopNav from '@/components/doorman/TopNav.vue'
+import useUserStore from '@/stores/users' // Ensure this path is correct
+import useEventStore from '@/stores/eventinfo' // Ensure this path is correct
+import useGeneralStore from '@/stores/general'
+import { mapActions, mapState } from 'pinia'
+
+export default {
+  data() {
+    return {
+      data: {},
+      events: [],
+      event: null,
+      currentPage: 1,
+      itemsPerPage: 10,
+      lastPage: null,
+      message: null,
+      searchQuery: '',
+      searchedData: '',
+      currentItems: 0,
+      total: 0,
+      isLoading: false
+    }
+  },
+  setup() {
+    const eventStore = useEventStore()
+    eventStore.fetchEvents()
+  },
+
+  created() {
+    this.fetchEventInfo(1)
+  },
+  computed: {
+    ...mapState(useGeneralStore, ['API_URL']),
+    ...mapState(useUserStore, ['token']),
+    ...mapState(useEventStore, ['totalEvents']),
+
+    paginatedEvents() {
+      if (!this.events.length) return []
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage
+      const endIndex = startIndex + this.itemsPerPage
+      return this.events.slice(startIndex, endIndex)
+    }
+  },
+  components: {
+    TopNav,
+    QrCode
+  },
+  methods: {
+    ...mapActions(useEventStore, ['fetchEvents']),
+
+    async fetchEventInfo(page) {
+      this.currentPage = page
+      try {
+        const response = await axios.get(`${this.API_URL}all-events?page=${this.currentPage}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        })
+        this.data = response.data
+        this.events = this.data.data
+        this.lastPage = this.data.last_page
+        this.currentItems = response.data.to - response.data.from + 1
+        this.total = response.data.total
+      } catch (error) {
+        console.error('Error fetching Event Info:', error)
+        this.isLoading = false
+        this.message = error.response.statusText
+        this.handelErrorToast()
+      }
+    },
+    handlePreviousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--
+        this.fetchEventInfo(this.currentPage, this.searchQuery)
+      }
+    },
+    handleNextPage() {
+      if (this.currentPage < this.lastPage) {
+        this.currentPage++
+        this.fetchEventInfo(this.currentPage, this.searchQuery)
+      }
+    },
+
+    route(eventId, eventName) {
+      this.$router.push({ name: 'doormanEventView', params: { eventId: eventId, eventName: eventName } })
+    },
+
+    handelErrorToast() {
+      Swal.fire({
+        icon: 'error',
+        title: 'An error has occurred',
+        text: this.message
+      })
+    }
+  },
+  mounted() {
+    this.fetchEventInfo(1)
+  }
+}
+</script>
+
+<style scoped>
+/* Add scoped styles here */
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Example: Lift card on hover */
+}
+</style>

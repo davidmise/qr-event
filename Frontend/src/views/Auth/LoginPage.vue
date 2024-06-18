@@ -249,6 +249,10 @@ export default {
         )
         .then((response) => {
           const user = response.data.user
+          const userId = response.data.user.id
+        localStorage.setItem("userId", userId);
+        console.log(userId);
+
           const token = response.data.token
           _this.storeLoggedInUser(user, token)
           this.message = response.data.message

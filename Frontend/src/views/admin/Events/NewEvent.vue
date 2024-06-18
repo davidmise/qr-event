@@ -20,43 +20,6 @@ import Swal from 'sweetalert2'
           <main class="py-6 bg-surface-secondary ms-4">
             <h2 class="mb-3">Create Event</h2>
             <form action="" @submit.prevent="createEvent">
-              <div class="container mb-4">
-                <div class="row">
-                  <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card shadow border-0 py-3 px-4">
-                      <label for="logoFile" class="form-label">Upload Logo</label>
-                      <input
-                        class="form-control form-control-md"
-                        id="logoFile"
-                        type="text"
-                        v-model="event_info.logo"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card shadow border-0 py-3 px-4">
-                      <label for="posterFile" class="form-label">Upload Poster</label>
-                      <input
-                        class="form-control form-control-md"
-                        id="posterFile"
-                        type="text"
-                        v-model="event_info.poster"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card shadow border-0 py-3 px-4">
-                      <label for="bannerFile" class="form-label">Upload Banner</label>
-                      <input
-                        class="form-control form-control-md"
-                        id="bannerFile"
-                        type="text"
-                        v-model="event_info.banner"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="container mb-5">
                 <!-- first row  -->
                 <div class="row mb-2">
@@ -64,7 +27,6 @@ import Swal from 'sweetalert2'
                   <div class="col-lg-5 col-md-6 col-sm-12">
                     <div class="card border-0 shadow form-group py-3 px-4">
                       <h5 class="text-secondary fw-bold">Event info</h5>
-                      <!-- <label for="name">Name</label> -->
                       <!-- event name -->
                       <div class="form-floating mb-3">
                         <input
@@ -135,7 +97,6 @@ import Swal from 'sweetalert2'
                   <div class="col-lg-5 col-md-6 col-sm-12">
                     <div class="card border-0 shadow form-group py-3 px-4">
                       <h5 class="text-secondary fw-bold">Ticketing</h5>
-                      <!-- <label for="name">Name</label> -->
                       <div class="form-floating mb-3">
                         <input
                           type="number"
@@ -163,8 +124,6 @@ import Swal from 'sweetalert2'
                   <div class="col-lg-5 col-md-6 col-sm-12">
                     <div class="card border-0 shadow form-group py-3 px-4">
                       <h5 class="text-secondary fw-bold">Event Location</h5>
-                      <!-- <label for="name">Name</label> -->
-                      <!-- event name -->
                       <div class="form-floating mb-3">
                         <input
                           type="text"
@@ -174,7 +133,6 @@ import Swal from 'sweetalert2'
                         />
                         <label for="floatingInput">City</label>
                       </div>
-                      <!-- event duration (date) -->
                       <div class="row">
                         <div class="form-floating mb-3 col-lg-6 col-sm-12">
                           <input
@@ -185,7 +143,6 @@ import Swal from 'sweetalert2'
                           />
                           <label for="floatingInput" class="ms-3">Postal Code </label>
                         </div>
-                        <!-- event end date -->
                         <div class="form-floating mb-3 col-lg-6 col-sm-12">
                           <input
                             type="text"
@@ -196,7 +153,6 @@ import Swal from 'sweetalert2'
                           <label for="floatingInput" class="ms-3">Street </label>
                         </div>
                       </div>
-                      <!-- event duration (time) -->
                       <div class="row">
                         <div class="form-floating mb-3 col-lg-12 col-sm-12">
                           <input
@@ -207,13 +163,7 @@ import Swal from 'sweetalert2'
                           />
                           <label for="floatingInput" class="ms-3"> Country</label>
                         </div>
-                        <!-- event end time -->
-                        <!-- <div class="form-floating mb-3 col-lg-6 col-sm-12">
-                          <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                          <label for="floatingInput" class="ms-3">Postal </label>
-                        </div> -->
                       </div>
-                      <!-- event subtitle -->
                       <div class="form-floating mb-3">
                         <input
                           type="text"
@@ -225,11 +175,9 @@ import Swal from 'sweetalert2'
                       </div>
                     </div>
                   </div>
-                  <!-- event ... -->
                   <div class="col-lg-5 col-md-6 col-sm-12">
                     <div class="card border-0 shadow form-group py-3 px-4">
                       <h5 class="text-secondary fw-bold">Social Links</h5>
-                      <!-- <label for="name">Name</label> -->
                       <div class="input-group mb-3">
                         <span class="input-group-text"><i class="bi bi-instagram"></i></span>
                         <div class="form-floating">
@@ -275,8 +223,6 @@ import Swal from 'sweetalert2'
                   <div class="col-lg-5 col-md-6 col-sm-12">
                     <div class="card border-0 shadow form-group py-3 px-4">
                       <h5 class="text-secondary fw-bold">Organizer Info</h5>
-                      <!-- <label for="name">Name</label> -->
-                      <!-- event name -->
                       <div class="form-floating mb-3">
                         <input
                           type="text"
@@ -297,7 +243,6 @@ import Swal from 'sweetalert2'
                         <label for="floatingInput">Organizer Email</label>
                       </div>
 
-                      <!-- event subtitle -->
                       <div class="form-floating mb-3">
                         <input
                           type="text"
@@ -353,18 +298,15 @@ export default {
           price: '',
           event_capacity: ''
         },
-        media: {
-          poster: '',
-          banner: '',
-          logo: ''
-        },
+
         social_links: {
           instagram: '',
           twitter: '',
           facebook: ''
         }
       },
-      message: null
+      message: null,
+      isLoading: false
     }
   },
 
@@ -376,6 +318,7 @@ export default {
 
   methods: {
     async createEvent() {
+      this.isLoading = true
       try {
         const response = await axios.post(`${this.API_URL}create-event`, this.event_info, {
           headers: {
@@ -384,25 +327,22 @@ export default {
         })
 
         const event_id = response.data.event.event_info.id
-        console.log(response.data.event)
         localStorage.setItem('event_id', event_id)
-        console.log('this event id is: ' + event_id)
         this.resetForm()
         this.$router.push({ name: 'adminEventsAll' })
       } catch (error) {
         if (error.response && error.response.status === 500) {
           console.error('Internal server error:', error.response.data)
-          // Show user-friendly error message (optional)
         } else {
           console.error('Error creating event:', error)
-          this.isLoading = false // Set loading state to false after failed fetch
-          this.message = error.response.statusText
-
-          this.handelErrorToast()
         }
-      }
 
-      // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)
+        this.message = 'An error occurred while creating the event. Please try again.'
+        this.handelErrorToast()
+        this.resetForm()
+      } finally {
+        this.isLoading = false
+      }
     },
     handelErrorToast() {
       Swal.fire({
@@ -435,11 +375,7 @@ export default {
           price: '',
           event_capacity: ''
         },
-        media: {
-          poster: '',
-          banner: '',
-          logo: ''
-        },
+
         social_links: {
           instagram: '',
           twitter: '',
