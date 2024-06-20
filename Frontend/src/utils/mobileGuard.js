@@ -1,9 +1,9 @@
-import { isMobile } from './isMobile';
+import { isMobile } from './isMobile'
 
 export function mobileGuard(to, from, next) {
   if (isMobile()) {
-    next();
+    next()
   } else {
-    next('/');
+    next('/')
   }
 }

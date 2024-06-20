@@ -83,7 +83,7 @@ import Swal from 'sweetalert2'
 // import Avatar from '@/components/AvatarImage.vue'
 import axios from 'axios'
 // import LogoutButton from '@/components/Buttons/LogoutButton.vue';
-import useUserStore  from '@/stores/users'
+import useUserStore from '@/stores/users'
 import useGeneralStore from '@/stores/general'
 import { mapActions, mapState } from 'pinia'
 import { computed } from 'vue'

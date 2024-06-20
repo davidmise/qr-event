@@ -146,5 +146,3 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
     </div>
   </div>
 </template>
-
-

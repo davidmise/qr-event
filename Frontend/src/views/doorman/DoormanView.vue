@@ -5,62 +5,67 @@
     <main class="bg-surface-secondary">
       <div class="container-fluid">
         <!-- Card stats -->
-       
+
         <!-- Card 1 - Bootstrap Brain Component -->
-<section class="py-3 py-md-5">
-    <div class="container">
-      <div class="row justify-content-center">
+        <section class="py-3 py-md-5">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-12 col-lg-10 col-xl-8 col-xxl-7">
+                <div class="row gy-4">
+                  <div class="col-12 col-sm-6" v-for="(event, index) in events" :key="event.id">
+                    <div
+                      class="card widget-card border-light shadow-sm"
+                      style="cursor: pointer"
+                      @click="route(event.id, event.event_name)"
+                    >
+                      <div class="card-body p-4">
+                        <div class="row">
+                          <div class="col-8">
+                            <h5 class="card-title widget-card-title mb-3">
+                              {{ event.event_name }}
+                            </h5>
+                            <h4 class="card-subtitle text-body-secondary m-0">
+                              {{ event.start_date }} @
+                              <span class="text-success">{{ event.start_time }}</span>
+                            </h4>
+                          </div>
+                          <div class="col-4">
+                            <div class="d-flex justify-content-end">
+                              <div
+                                class="lh-1 text-white bg-info rounded-pill p-3 d-flex align-items-center justify-content-center"
+                              >
+                                <!-- <i class="bi bi-truck fs-4"></i> -->
+                                <span class="text-heading font-semibold text-white">
+                                  {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
-        <div class="col-12 col-lg-10 col-xl-8 col-xxl-7">
-
-          <div class="row gy-4">
-            <div class="col-12 col-sm-6" v-for="(event, index) in events" :key="event.id">
-                
-              <div class="card widget-card border-light shadow-sm" style="cursor: pointer;" @click="route(event.id, event.event_name)">
-                <div class="card-body p-4">
-
-                  <div class="row">
-                    <div class="col-8">
-                      <h5 class="card-title widget-card-title mb-3">{{ event.event_name }}</h5>
-                      <h4 class="card-subtitle text-body-secondary m-0">{{ event.start_date }} @  <span class="text-success">{{ event.start_time }}</span></h4>
-                    </div>
-                    <div class="col-4">
-                      <div class="d-flex justify-content-end">
-                        <div class="lh-1 text-white bg-info rounded-pill p-3 d-flex align-items-center justify-content-center">
-                          <!-- <i class="bi bi-truck fs-4"></i> -->
-                          <span class="text-heading font-semibold text-white">
-                            {{ (currentPage - 1) * itemsPerPage + index + 1 }}
-                          </span>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="d-flex align-items-center mt-3">
+                              <span
+                                class="lh-1 me-3 bg-danger-subtle text-danger rounded-circle p-1 d-flex align-items-center justify-content-center"
+                              >
+                                <i class="bi bi-arrow-right-short bsb-rotate-45"></i>
+                              </span>
+                              <div>
+                                <p class="fs-7 mb-0">registerted</p>
+                                <p class="fs-7 mb-0 text-secondary">attendade</p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="d-flex align-items-center mt-3">
-                        <span class="lh-1 me-3 bg-danger-subtle text-danger rounded-circle p-1 d-flex align-items-center justify-content-center">
-                          <i class="bi bi-arrow-right-short bsb-rotate-45"></i>
-                        </span>
-                        <div>
-                          <p class="fs-7 mb-0">registerted</p>
-                          <p class="fs-7 mb-0 text-secondary">attendade</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-     
-
+        </section>
 
         <div class="mt-3">
           <ul class="pagination justify-content-center">
@@ -97,12 +102,12 @@
           </ul>
         </div>
 
-       <!-- Items showing -->
-       <div class=" pagination justify-content-center card-footer border-0 py-5">
-        <span class="text-muted text-sm">
-          Showing {{ currentItems }} items out of {{ total }} results found
-        </span>
-      </div>
+        <!-- Items showing -->
+        <div class="pagination justify-content-center card-footer border-0 py-5">
+          <span class="text-muted text-sm">
+            Showing {{ currentItems }} items out of {{ total }} results found
+          </span>
+        </div>
       </div>
     </main>
   </div>
@@ -156,7 +161,7 @@ export default {
     }
   },
   components: {
-    TopNav,
+    TopNav
     // QrCode
   },
   methods: {
@@ -196,7 +201,10 @@ export default {
     },
 
     route(eventId, eventName) {
-      this.$router.push({ name: 'doormanEventView', params: { eventId: eventId, eventName: eventName } })
+      this.$router.push({
+        name: 'doormanEventView',
+        params: { eventId: eventId, eventName: eventName }
+      })
     },
 
     handelErrorToast() {

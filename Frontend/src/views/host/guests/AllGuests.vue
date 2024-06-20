@@ -47,7 +47,7 @@
             </div>
           </div>
 
-                <!-- Pagination controls -->
+          <!-- Pagination controls -->
           <div class="mt-3">
             <ul class="pagination justify-content-center">
               <li class="page-item" :class="{ disabled: currentPage === 1 }">
