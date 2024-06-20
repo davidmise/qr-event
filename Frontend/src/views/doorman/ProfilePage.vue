@@ -1,12 +1,3 @@
-<script setup>
-import TopNav from '@/components/doorman/TopNav.vue'
-import axios from 'axios'
-// import Swal from 'sweetalert2'
-import { mapActions, mapState } from 'pinia'
-import useGeneralStore from '@/stores/general'
-import useUserStore from '@/stores/users'
-// import EdditUserModal from '@/components/admin/user/modal/EdditUserModal.vue'
-</script>
 <template>
   <div>
     <TopNav />
@@ -18,7 +9,7 @@ import useUserStore from '@/stores/users'
           <div class="container py-5">
             <div class="row">
               <div class="col-lg-8">
-                <div class="card mb-4">
+                <div class="card mb-4" v-if="userInfo">
                   <div class="card-body">
                     <div class="row">
                       <div class="col-sm-3">
@@ -66,6 +57,8 @@ import useUserStore from '@/stores/users'
                     </div>
                   </div>
                 </div>
+                <!-- Loader Component -->
+                <Loader v-if="isLoading" />
               </div>
             </div>
           </div>
@@ -76,10 +69,17 @@ import useUserStore from '@/stores/users'
 </template>
 
 <script>
+import TopNav from '@/components/doorman/TopNav.vue'
+import axios from 'axios'
+import { mapState } from 'pinia'
+import useGeneralStore from '@/stores/general'
+import useUserStore from '@/stores/users'
+import Loader from '@/components/CssLoader.vue'
+
 export default {
   data() {
     return {
-      userInfo: null,
+      userInfo: {}, // Initialize as an empty object
       userId: null,
       message: null,
       isLoading: false
@@ -89,14 +89,15 @@ export default {
     ...mapState(useGeneralStore, ['API_URL']),
     ...mapState(useUserStore, ['token', 'user'])
   },
-
-  created() {
-    ;(this.userId = localStorage.getItem('userId')), this.getUserInfo()
-    // this.storeLoggedInUser(this.user)
+  components: {
+    TopNav,
+    Loader
   },
-
+  created() {
+    this.userId = localStorage.getItem('userId')
+    this.getUserInfo()
+  },
   methods: {
-    // ...mapActions(useUserStore, ['fetchUserProfile'] ),
     async getUserInfo() {
       this.isLoading = true
       try {
@@ -110,7 +111,6 @@ export default {
       } catch (error) {
         console.error('Error fetching user info:', error)
         this.message = 'An error occurred while fetching user information. Please try again.'
-        // this.handelErrorToast()
       } finally {
         this.isLoading = false
       }
@@ -118,3 +118,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* Add scoped styles here */
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Example: Lift card on hover */
+}
+</style>

@@ -12,6 +12,7 @@
       <div v-if="decodedText">
         <p>Decoded QR Code Data: {{ decodedText }}</p>
       </div>
+      <Loader v-if="isLoading" />
     </div>
   </template>
   
@@ -21,16 +22,19 @@
   import useUserStore from '@/stores/users' // Ensure this path is correct
   import useEventStore from '@/stores/eventinfo' // Ensure this path is correct
   import useGeneralStore from '@/stores/general'
+  import Loader from '@/components/CssLoader.vue'
   import { mapState } from 'pinia'
   
   export default {
     components: {
-      StreamBarcodeReader
+      StreamBarcodeReader,
+      Loader 
     },
     data() {
       return {
         decodedText: null,
-        isScannerActive: false // Flag to track scanner activation
+        isScannerActive: false, // Flag to track scanner activation
+        isLoading: false // Flag to track loading state
       }
     },
     computed: {
@@ -47,6 +51,7 @@
         console.log(`Parsed QR data:`, qrData)
   
         if (qrData && qrData.guest_id && qrData.event_info_id) {
+            this.isLoading = true // Start loading
           try {
             const response = await axios.post(`${this.API_URL}mark-attendance`, {
               guest_id: qrData.guest_id,
@@ -79,7 +84,9 @@
               console.log('Error message:', error.message)
               alert(`Error marking attendance: ${error.message}`)
             }
-          }
+          } finally {
+          this.isLoading = false // End loading
+        }
         } else {
           alert('Invalid QR code data')
         }

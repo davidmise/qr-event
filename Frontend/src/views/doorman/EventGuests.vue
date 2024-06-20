@@ -44,6 +44,8 @@
                 </div>
               </div>
             </div>
+             <!-- Loader Component -->
+             <Loader v-if="isLoading" />
           </div>
         </div>
       </div>
@@ -98,6 +100,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import QrCode from '@/components/doorman/QrScanner.vue'
 import TopNav from '@/components/doorman/TopNav.vue'
+   import Loader from '@/components/CssLoader.vue'
 import useUserStore from '@/stores/users' // Ensure this path is correct
 import useGuestStore from '@/stores/guests' // Ensure this path is correct
 import useGeneralStore from '@/stores/general'
@@ -117,7 +120,8 @@ export default {
       searchQuery: '',
       searchedData: '',
       eventName: null,
-      eventId: null
+      eventId: null,
+      isLoading: false
       // eventName:''
     }
   },
@@ -140,12 +144,14 @@ export default {
   },
   components: {
     TopNav,
-    QrCode
+    QrCode,
+    Loader
   },
   methods: {
     ...mapActions(useGuestStore, ['fetchGuests']),
 
     async fetchGuestListInfo(page) {
+        this.isLoading = true
       this.currentPage = page
       try {
         const response = await axios.get(
@@ -171,6 +177,9 @@ export default {
           text: error.message
         })
       }
+      finally {
+          this.isLoading = false
+        }
     },
     handlePreviousPage() {
       if (this.currentPage > 1) {
