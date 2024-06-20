@@ -154,19 +154,46 @@ class GuestController extends Controller
 }
 
 public function markAttendance(Request $request)
-    {
-        $guestId = $request->input('guestId');
-        $status = $request->input('status');
+{
+    $validator = Validator::make($request->all(), [
+        'guest_id' => 'required|integer|exists:guests,id',
+        'event_info_id' => 'required|integer|exists:event_infos,id',
+    ]);
 
-        $guest = Guest::find($guestId);
-        if (!$guest) {
-            return response()->json(['message' => 'Guest not found'], 404);
-        }
-
-        $guest->status = $status;
-        $guest->save();
-
-        return response()->json(['message' => 'Status updated successfully'], 200);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ], 422);
     }
+
+    $guest = Guest::where('id', $request->guest_id)
+                   ->where('event_info_id', $request->event_info_id)
+                   ->first();
+
+    if (!$guest) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Guest not found for this event.'
+        ], 404);
+    }
+
+    if ($guest->status === 'present') {
+        return response()->json([
+            'status' => false,
+            'message' => 'Attendance has already been marked for this guest.'
+        ], 400);
+    }
+
+    $guest->status = 'present';
+    $guest->save();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Attendance marked successfully.',
+        'guest' => $guest
+    ], 200);
+}
+
 
 }

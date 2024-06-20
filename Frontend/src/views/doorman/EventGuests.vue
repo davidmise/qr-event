@@ -37,7 +37,7 @@
                         </div>
                       </div>
                       <div class="col-4">
-                        <h6 class="text-end">{{ guest.status }}</h6>
+                        <h6 class="text-end" :class="statusBadgeClass(guest.status)" >{{ guest.status }}</h6>
                       </div>
                     </div>
                   </div>
@@ -183,6 +183,14 @@ export default {
         this.currentPage++
         this.fetchGuestListInfo(this.currentPage)
       }
+    },
+    statusBadgeClass(status){
+        return {
+            'badge bg-success': status === 'present',  // Green badge for 'Present'
+            'badge bg-danger': status === 'absent',  // Red badge for 'Absent'
+            'badge bg-warning': status === 'pending',  // Red badge for 'Absent'
+        }
+
     }
     //   route(guestId) {
     //     this.$router.push({ name: 'guestView', params: { guestId } })

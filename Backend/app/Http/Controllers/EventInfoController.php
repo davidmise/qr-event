@@ -293,8 +293,8 @@ class EventInfoController extends Controller
     public function guests($eventId, Request $request)
     {
         // Validate event ID
-        $validator = Validator::make(['event_id' => $eventId], [
-            'event_id' => 'required|integer|exists:event_infos,id'
+        $validator = Validator::make(['event_info_id' => $eventId], [
+            'event_info_id' => 'required|integer|exists:event_infos,id'
         ]);
 
         if ($validator->fails()) {
