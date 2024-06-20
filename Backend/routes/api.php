@@ -45,6 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 // doorman
 Route::get('/user{id}', [UserController::class, 'show']);
+Route::post('/mark-attendance', [GuestController::class, 'markAttendance']);
+Route::get('/events/{eventId}/guests', [EventInfoController::class, 'guests']);
+
     // EventInfo
     Route::get('/all-events', [EventInfoController::class, 'index']);
     Route::post('/create-event', [EventInfoController::class, 'store']);

@@ -27,7 +27,7 @@ class EventInfoController extends Controller
     // $page = $request->input('page', 1);
 
     // Query events with relationships
-    $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'ticket','guest', 'attendance.guest')
+    $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'ticket','guests', 'attendance.guest')
         ->paginate(10);
 
     return $events;
@@ -197,8 +197,8 @@ class EventInfoController extends Controller
             'SocialLink',
             'Ticket',
             // 'media',
-            'guest',
-            'attendance.guest'
+            'guests',
+            'attendance.guests'
         ])->find($id);
 
         if (!$event_info) {
@@ -280,6 +280,41 @@ class EventInfoController extends Controller
         return response()->json([
             'message' => 'Events searched successfully',
             'event' => $events
+        ], 200);
+    }
+
+      /**
+     * Display guests of a specific event with pagination.
+     *
+     * @param string $eventId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function guests($eventId, Request $request)
+    {
+        // Validate event ID
+        $validator = Validator::make(['event_id' => $eventId], [
+            'event_id' => 'required|integer|exists:event_infos,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Retrieve the event and its guests with pagination
+        $event = EventInfo::with('guests')->findOrFail($eventId);
+        
+        // Paginate guests related to this event
+        $perPage = $request->input('per_page', 10); // Items per page, default to 10
+        $guests = $event->guests()->paginate($perPage);
+
+        return response()->json([
+            'status' => true,
+            'event_name' => $event->event_name, // Optionally return event details
+            'guests' => $guests
         ], 200);
     }
 

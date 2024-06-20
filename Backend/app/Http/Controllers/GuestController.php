@@ -153,4 +153,20 @@ class GuestController extends Controller
 
 }
 
+public function markAttendance(Request $request)
+    {
+        $guestId = $request->input('guestId');
+        $status = $request->input('status');
+
+        $guest = Guest::find($guestId);
+        if (!$guest) {
+            return response()->json(['message' => 'Guest not found'], 404);
+        }
+
+        $guest->status = $status;
+        $guest->save();
+
+        return response()->json(['message' => 'Status updated successfully'], 200);
+    }
+
 }

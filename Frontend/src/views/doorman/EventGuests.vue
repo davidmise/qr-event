@@ -7,12 +7,16 @@
         <!-- <p>Guest List </p> -->
        <span class="h3"> {{eventName}} </span> <QrCode></QrCode>
         <!-- Guest cards -->
-        <div class="col-md-4" v-for="(guest) in paginatedGuests" :key="guest.id">
+        <div class="col-md-4" v-for="(guest, index) in guests" :key="guest.id">
           <div class="card border-0 mb-4 shadow-blue">
+            <span class="text-heading font-semibold">
+                {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+              </span>
             <div class="card-body">
               <h5 class="card-title">{{ guest.name }}</h5>
               <p class="card-text"><strong>Email:</strong> {{ guest.email }}</p>
               <p class="card-text"><strong>Phone:</strong> {{ guest.phone_number }}</p>
+              <p class="card-text"><strong>Status:</strong> {{ guest.status }}</p>
             </div>
           </div>
         </div>
@@ -63,6 +67,7 @@
       return {
         data: {},
         guests: [],
+        guest: null,
         currentPage: 1,
         itemsPerPage: 10,
         currentItems: 0,
@@ -86,7 +91,7 @@
       ...mapState(useGeneralStore, ['API_URL']),
       ...mapState(useUserStore, ['token']),
       paginatedGuests() {
-        if (!this.guests || !this.guests.length) return []
+        if (!this.guests.length) return []
         const startIndex = (this.currentPage - 1) * this.itemsPerPage
         const endIndex = startIndex + this.itemsPerPage
         return this.guests.slice(startIndex, endIndex)
@@ -102,18 +107,18 @@
       async fetchGuestListInfo(page) {
         this.currentPage = page
         try {
-          const response = await axios.get(`${this.API_URL}pull-event-info${this.eventId}?page=${this.currentPage}`, {
+          const response = await axios.get(`${this.API_URL}events/${this.eventId}/guests?page=` + this.currentPage, {
             headers: {
               Authorization: `Bearer ${this.token}`
             }
           })
           this.data = response.data
-          this.eventName = this.data.event.event_name
-          this.guests = this.data.event.guest
-          console.log(this.guests)
-          this.total = response.data.total
-          this.currentItems = response.data.to - response.data.from + 1
-          this.lastPage = response.data.last_page
+          this.eventName = this.data.event_name
+          this.guests = this.data.guests.data
+          console.log(this.data)
+          this.total = response.data.guests.total
+          this.currentItems = response.data.guests.to - response.data.guests.from + 1
+          this.lastPage = response.data.guests.last_page
         } catch (error) {
           console.error('Error fetching Guest Info:', error)
           Swal.fire({

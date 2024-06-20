@@ -49,8 +49,9 @@ class EventInfo extends Model
         return $this->hasOne(GuestAttendance::class);
     }
 
-    public function guest(){
+    public function guests(){
         return $this->hasMany(Guest::class);
     }
+    
 
 }

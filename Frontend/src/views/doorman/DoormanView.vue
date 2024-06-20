@@ -9,11 +9,13 @@
 
         <div class="row">
           <!-- Event Cards -->
-          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4" v-for="(event) in paginatedEvents" :key="event.id">
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4" v-for="(event, index) in events" :key="event.id">
             <div class="card shadow border-0" style="cursor: pointer;" @click="route(event.id, event.event_name)">
               <!-- Event Image (if available) -->
               <!-- <img v-if="event.image_url" :src="event.image_url" class="card-img-top" alt="Event Image"> -->
-
+              <span class="text-heading font-semibold">
+                {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+              </span>
               <div class="card-body">
                 <h5 class="card-title">{{ event.event_name }}</h5>
                 <p class="card-text">{{ event.event_subtitle }}</p>

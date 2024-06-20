@@ -127,10 +127,12 @@ export default {
       qrCode: '',
       qrData: {
         Guest: {
+        //   id: null,
           name: '',
           email: '',
           phone_number: '',
-          event_info_id: null
+          event_info_id: null,
+        //   status:''
         }
       }
     }
@@ -149,11 +151,11 @@ export default {
       try {
         const response = await axios.get(
           `${this.API_URL}pull-event-info${eventId}`
-          // {
-          //   headers: {
-          //     Authorization: `Bearer ${this.token}`
-          //   }
-          // }
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${this.token}`
+        //     }
+        //   }
         )
         this.eventInfo = response.data.event
         this.location = response.data.event.location
@@ -175,7 +177,10 @@ export default {
         this.qrData.Guest.event_info_id = eventId
         const response = await axios.post(
           `${this.API_URL}generate-qrCode`,
-          this.qrData.Guest
+          this.qrData.Guest,{
+            // id: response.data.guest.id,
+            // status: this.qrData.Guest.status
+          }
           //  {
           //   headers: {
           //     Authorization: `Bearer ${this.token}`
@@ -187,6 +192,7 @@ export default {
 
         console.log('id is', this.qrData.Guest.event_info_id)
         console.log(this.qrCode)
+        console.log(response.data.guest)
         this.handelSuccessToast()
         this.resetForm()
       } catch (error) {

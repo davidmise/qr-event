@@ -15,7 +15,8 @@ class Guest extends Model
         'phone_number',
         'guest_attendance_id',
         'qr_code',
-        'event_info_id'
+        'event_info_id',
+        'status'
     ];
 
     public function attendances()
