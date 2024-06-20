@@ -5,9 +5,9 @@
       <div class="row p-3">
         <!-- Display event name -->
         <!-- <p>Guest List </p> -->
-        <QrCode></QrCode>
+       <span class="h3"> {{eventName}} </span> <QrCode></QrCode>
         <!-- Guest cards -->
-        <div class="col-md-4" v-for="(guest) in paginatedGuests" :key="guest.id" @click="route(guest.id)">
+        <div class="col-md-4" v-for="(guest) in paginatedGuests" :key="guest.id">
           <div class="card border-0 mb-4 shadow-blue">
             <div class="card-body">
               <h5 class="card-title">{{ guest.name }}</h5>
@@ -54,7 +54,6 @@
   import QrCode from '@/components/doorman/QrScanner.vue'
   import TopNav from '@/components/doorman/TopNav.vue'
   import useUserStore from '@/stores/users' // Ensure this path is correct
-  import useEventStore from '@/stores/eventinfo' // Ensure this path is correct
   import useGuestStore from '@/stores/guests' // Ensure this path is correct
   import useGeneralStore from '@/stores/general'
   import { mapActions, mapState } from 'pinia'
@@ -72,21 +71,22 @@
         searchQuery: '',
         searchedData: '',
         eventName: null,
-        eventId: null
+        eventId: null,
+        // eventName:''
       }
     },
     created() {
       // Fetch initial guest list and set eventName and eventId from route params
-      this.fetchGuestListInfo(1)
       this.eventId = this.$route.params.eventId
       this.eventName = this.$route.params.eventName
       console.log(this.eventName, this.eventId)
+      this.fetchGuestListInfo(1)
     },
     computed: {
       ...mapState(useGeneralStore, ['API_URL']),
       ...mapState(useUserStore, ['token']),
       paginatedGuests() {
-        if (!this.guests.length) return []
+        if (!this.guests || !this.guests.length) return []
         const startIndex = (this.currentPage - 1) * this.itemsPerPage
         const endIndex = startIndex + this.itemsPerPage
         return this.guests.slice(startIndex, endIndex)
@@ -102,13 +102,15 @@
       async fetchGuestListInfo(page) {
         this.currentPage = page
         try {
-          const response = await axios.get(`${this.API_URL}all-guests?page=${this.currentPage}`, {
+          const response = await axios.get(`${this.API_URL}pull-event-info${this.eventId}?page=${this.currentPage}`, {
             headers: {
               Authorization: `Bearer ${this.token}`
             }
           })
           this.data = response.data
-          this.guests = this.data.data
+          this.eventName = this.data.event.event_name
+          this.guests = this.data.event.guest
+          console.log(this.guests)
           this.total = response.data.total
           this.currentItems = response.data.to - response.data.from + 1
           this.lastPage = response.data.last_page
@@ -133,15 +135,16 @@
           this.fetchGuestListInfo(this.currentPage)
         }
       },
-      route(guestId) {
-        this.$router.push({ name: 'guestView', params: { guestId: guestId } })
-      }
+    //   route(guestId) {
+    //     this.$router.push({ name: 'guestView', params: { guestId } })
+    //   }
     },
     mounted() {
       this.fetchGuestListInfo(1)
     }
   }
   </script>
+  
   
   <style scoped>
   .shadow-blue {

@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::paginate(5);
+        $users = User::paginate(10);
         return $users;
     }
 
@@ -78,7 +78,7 @@ class UserController extends Controller
         if (!$user) {
             return response()->json([
                 "status" => false,
-                'message' => "User not found kmmk",
+                'message' => "User not found",
             ],404);
         } else {
             return response()->json([

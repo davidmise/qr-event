@@ -72,7 +72,7 @@
 <script>
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import QrCode from '@/components/doorman/QrScanner.vue'
+// import QrCode from '@/components/doorman/QrScanner.vue'
 import TopNav from '@/components/doorman/TopNav.vue'
 import useUserStore from '@/stores/users' // Ensure this path is correct
 import useEventStore from '@/stores/eventinfo' // Ensure this path is correct
@@ -118,7 +118,7 @@ export default {
   },
   components: {
     TopNav,
-    QrCode
+    // QrCode
   },
   methods: {
     ...mapActions(useEventStore, ['fetchEvents']),

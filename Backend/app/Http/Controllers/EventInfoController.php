@@ -31,11 +31,7 @@ class EventInfoController extends Controller
         ->paginate(10);
 
     return $events;
-    //  response()->json([
-    //     'status' => true,
-    //     'data' => $events,
-    //   'total' => $events->total()
-    // ], 200);
+   
 }
     /**
      * Show the form for creating a new resource.
