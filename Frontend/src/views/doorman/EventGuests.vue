@@ -2,26 +2,51 @@
     <div>
       <TopNav />
       <!-- Main content -->
-      <div class="row p-3">
-        <!-- Display event name -->
-        <!-- <p>Guest List </p> -->
-       <span class="h3"> {{eventName}} </span> <QrCode></QrCode>
-        <!-- Guest cards -->
-        <div class="col-md-4" v-for="(guest, index) in guests" :key="guest.id">
-          <div class="card border-0 mb-4 shadow-blue">
-            <span class="text-heading font-semibold">
-                {{ (currentPage - 1) * itemsPerPage + index + 1 }}
-              </span>
-            <div class="card-body">
-              <h5 class="card-title">{{ guest.name }}</h5>
-              <p class="card-text"><strong>Email:</strong> {{ guest.email }}</p>
-              <p class="card-text"><strong>Phone:</strong> {{ guest.phone_number }}</p>
-              <p class="card-text"><strong>Status:</strong> {{ guest.status }}</p>
+
+
+      <!-- Card 2 - Bootstrap Brain Component -->
+<section class="py-3 py-md-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <span class="h3"> {{eventName}} </span> <QrCode></QrCode>
+        <div class="col-12 col-sm-10 col-md-7 col-lg-6 col-xl-5 col-xxl-4" >
+          <div class="card widget-card border-light shadow-sm" >
+            <div class="card-body p-4">
+              <h5 class="card-title widget-card-title mb-4">Guests Overview</h5>
+              <div class="row gy-4" >
+                <div class="col-12" v-for="(guest, index) in guests" :key="guest.id">
+                  <div class="row align-items-center">
+                    <div class="col-8">
+                      <div class="d-flex align-items-center">
+                        <div>
+                          <div class="fs-5 bsb-w-50 bsb-h-50 bg-primary-subtle text-primary rounded-pill d-flex align-items-center justify-content-center me-4 p-2">
+                            <!-- <i class="bi bi-paypal"></i> -->
+                            <span class="text-heading font-semibold ">
+                                {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+                              </span>
+                          </div>
+                        </div>
+                        <div>
+                          <h6 class="m-0">{{ guest.name }}</h6>
+                          <p class="text-secondary m-0 fs-7">contacts: {{ guest.phone_number }}</p>
+                          <p class="text-secondary m-0 fs-7">date and time</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <h6 class="text-end">{{ guest.status }}</h6>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
             </div>
           </div>
         </div>
+
       </div>
-  
+    </div>
+  </section>
       <!-- Pagination controls -->
       <div class="mt-3">
         <ul class="pagination justify-content-center">
@@ -44,7 +69,7 @@
       </div>
   
       <!-- Items showing -->
-      <div class="card-footer border-0 py-5">
+      <div class=" pagination justify-content-center card-footer border-0 py-5">
         <span class="text-muted text-sm">
           Showing {{ currentItems }} items out of {{ total }} results found
         </span>
