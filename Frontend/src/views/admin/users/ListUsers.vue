@@ -51,6 +51,8 @@
                       </tr>
                     </tbody>
                   </table>
+                  <!-- Loader Component -->
+                  <Loader v-if="isLoading" />
                 </div>
               </div>
 
@@ -146,11 +148,13 @@ import Swal from 'sweetalert2'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState, mapActions } from 'pinia'
+   import Loader from '@/components/CssLoader.vue'
 
 export default {
   components: {
     Sidebar,
-    TopBar
+    TopBar,
+    Loader
   },
   data() {
     return {
@@ -166,7 +170,8 @@ export default {
       searchQuery: '',
       searchedData: '',
       total: 0,
-      currentItems: 0
+      currentItems: 0,
+      isLoading: false
     }
   },
   created() {
@@ -185,6 +190,7 @@ export default {
   methods: {
     ...mapActions(useUserStore, ['storeLoggedInUser']),
     searchData() {
+      this.isLoading = true
       console.log(this.searchQuery)
 
       axios
@@ -206,8 +212,14 @@ export default {
           this.message = error.response.statusText
           // this.handelErrorToast()
         })
+        .then(() => {
+          // _this.submitting = false
+          this.isLoading = false
+        })
+        
     },
     async fetchUserInfo(page) {
+      this.isLoading = true
       this.currentPage = page
       try {
         const response = await axios.get(`${this.API_URL}users?page=${this.currentPage}`, {
@@ -230,6 +242,9 @@ export default {
         this.message = error.response.statusText
         this.handelErrorToast()
       }
+      finally {
+          this.isLoading = false
+        }
     },
     handlePreviousPage() {
       if (this.currentPage > 1) {

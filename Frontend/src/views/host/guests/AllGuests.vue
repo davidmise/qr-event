@@ -44,6 +44,8 @@
                   </tr>
                 </tbody>
               </table>
+                <!-- Loader Component -->
+                <Loader v-if="isLoading" />
             </div>
           </div>
 
@@ -102,11 +104,14 @@ import axios from 'axios'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState } from 'pinia'
+import Loader from '@/components/CssLoader.vue'
+
 
 export default {
   components: {
     Sidebar,
-    TopBar
+    TopBar,
+    Loader 
   },
   data() {
     return {
@@ -120,7 +125,9 @@ export default {
       total: 0,
       lastPage: null,
       earchQuery: '',
-      searchedData: ''
+      searchedData: '',
+      isLoading: false
+
     }
   },
   created() {
@@ -140,6 +147,7 @@ export default {
   },
   methods: {
     searchData() {
+      this.isLoading = false
       console.log(this.searchQuery)
 
       axios
@@ -160,9 +168,12 @@ export default {
           this.isLoading = false
           this.message = error.response.statusText
           this.handelErrorToast()
+        }).then(()=>{
+          this.isLoading = false
         })
     },
     async fetchGuestListInfo(index) {
+      this.isLoading = true
       this.currentPage = index
       try {
         const response = await axios.get(`${this.API_URL}guest-list?page=` + this.currentPage, {
@@ -183,9 +194,13 @@ export default {
       } catch (error) {
         console.error('Error fetching Guest Info:', error)
       }
+      finally{
+        this.isLoading = false
+      }
     },
 
     async googleSheet() {
+      this.isLoading = true
       try {
         const response = await axios.get(`${this.API_URL}google-sheets`, {
           headers: {
@@ -197,6 +212,9 @@ export default {
         //   console.log(this.googleSheets)
       } catch (error) {
         console.error('Error fetching Guest Info:', error)
+      }
+      finally{
+        this.isLoading = false
       }
     },
 

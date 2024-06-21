@@ -56,6 +56,8 @@
                       </tr>
                     </tbody>
                   </table>
+                  <!-- Loader Component -->
+           <Loader v-if="isLoading" />
                 </div>
               </div>
 
@@ -149,16 +151,18 @@ import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState, mapActions } from 'pinia'
+ import Loader from '@/components/CssLoader.vue'
 
 export default {
   components: {
     Sidebar,
-    TopBar
+    TopBar,
+    Loader
   },
   data() {
     return {
       sidebarWidth,
-      isLoading: true,
+      isLoading: false,
       data: {},
       clients: [],
       client: null,
@@ -169,6 +173,7 @@ export default {
       searchQuery: '',
       searchedData: ''
     }
+
   },
   created() {
     this.fetchClientInfo(1)
@@ -193,6 +198,7 @@ export default {
     ...mapActions(useEventStore, ['storeEvent']),
 
     searchData() {
+      this.isLoading = true // Set loading state to true
       console.log(this.searchQuery)
 
       axios
@@ -213,6 +219,8 @@ export default {
           this.isLoading = false
           this.message = error.message
           this.handelErrorToast()
+        }).then(()=> {
+          this.isLoading=false
         })
     },
 
@@ -237,6 +245,9 @@ export default {
         this.message = error.response.statusText
 
         this.handelErrorToast()
+      }
+      finally{
+        this.isLoading=false
       }
     },
 

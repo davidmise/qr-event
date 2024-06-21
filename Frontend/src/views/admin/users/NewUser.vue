@@ -127,7 +127,10 @@
                 </div>
               </div>
             </form>
+          <!-- Loader Component -->
+          <Loader v-if="isLoading" />
           </main>
+           
         </div>
       </main>
     </div>
@@ -143,6 +146,7 @@ import Swal from 'sweetalert2'
 import router from '@/router'
 import useGeneralStore from '@/stores/general.js'
 import { ref } from 'vue'
+  import Loader from '@/components/CssLoader.vue'
 
 const name = ref('')
 const email = ref('')
@@ -152,6 +156,7 @@ const password = ref('')
 const confirmPassword = ref('')
 const role = ref('host')
 const submitting = ref(false)
+const isLoading = ref(false)
 const passwordFieldType = ref('password')
 const passwordToggleIcon = ref('bi bi-eye-slash')
 const confirmPasswordFieldType = ref('password')
@@ -160,7 +165,7 @@ const API_URL = useGeneralStore().API_URL
 
 const registerUser = () => {
   submitting.value = true
-
+  isLoading.value = true
   if (password.value !== confirmPassword.value) {
     handleError('Passwords do not match')
     return
@@ -187,6 +192,7 @@ const registerUser = () => {
     })
     .finally(() => {
       submitting.value = false
+      isLoading.value = false
     })
 }
 

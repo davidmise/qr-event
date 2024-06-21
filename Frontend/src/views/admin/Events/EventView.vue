@@ -19,6 +19,8 @@
           </main>
         </div>
       </main>
+           <!-- Loader Component -->
+           <Loader v-if="isLoading" />
     </div>
   </div>
 </template>
@@ -30,6 +32,7 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import EventsNav from '@/components/Events/EventsNav.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import Loader from '@/components/CssLoader.vue'
 
 // import { ref, onMounted, watch } from 'vue';
 // import { useRoute } from 'vue-router';
@@ -42,7 +45,8 @@ export default {
   components: {
     Sidebar,
     TopBar,
-    EventsNav
+    EventsNav,
+    Loader
   },
 
   data() {
@@ -50,7 +54,8 @@ export default {
       sidebarWidth,
       eventInfo: null,
       eventId: null,
-      message: null
+      message: null,
+      isLoading: false
     }
   },
 
@@ -65,6 +70,7 @@ export default {
   },
   methods: {
     getEventInfo() {
+      this.isLoading = true
       axios
         .get(`${this.API_URL}pull-event-info${this.eventId}`, {
           headers: {
@@ -81,6 +87,9 @@ export default {
           this.message = error.response.statusText
 
           this.handelErrorToast()
+        }) .then(() => {
+          // _this.submitting = false
+          this.isLoading = false
         })
     },
     handelErrorToast() {

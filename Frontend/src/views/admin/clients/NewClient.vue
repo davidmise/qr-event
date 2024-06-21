@@ -7,6 +7,7 @@ import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/users'
 import Swal from 'sweetalert2'
+  import Loader from '@/components/CssLoader.vue'
 // import { useRouter } from "vue-router";
 </script>
 
@@ -145,6 +146,8 @@ import Swal from 'sweetalert2'
                 </div>
               </form>
             </div>
+              <!-- Loader Component -->
+          <Loader v-if="isLoading" />
           </main>
         </div>
       </main>
@@ -165,7 +168,8 @@ export default {
         event_capacity: '',
         cost: ''
       },
-      message: null
+      message: null,
+     isLoading: false
     }
   },
 
@@ -177,6 +181,7 @@ export default {
 
   methods: {
     async createClient() {
+      this.isLoading = true
       try {
         const response = await axios.post(`${this.API_URL}client`, this.client, {
           headers: {
@@ -202,6 +207,9 @@ export default {
           this.handelErrorToast()
         }
       }
+      finally {
+          this.isLoading = false
+        }
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)
     },
 

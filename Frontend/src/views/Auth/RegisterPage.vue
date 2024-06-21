@@ -171,6 +171,7 @@
                       </span>
                     </div>
                   </div>
+                    <!-- Confirm Password -->
                   <div class="col-12">
                     <div class="form-floating mb-3 position-relative">
                       <input
@@ -267,6 +268,8 @@
               </div>
             </div>
           </div>
+           <!-- Loader Component -->
+           <Loader v-if="isLoading" />
         </div>
       </div>
     </div>
@@ -282,6 +285,7 @@ import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import router from '@/router'
 import logo from '@/assets/Images/creativehublogo.png'
+   import Loader from '@/components/CssLoader.vue'
 export default {
   data() {
     return {
@@ -292,6 +296,7 @@ export default {
       password: '',
       confirmPassword: '',
       submitting: false,
+      isLoading: false,
       message: null,
       passwordFieldType: 'password',
       passwordToggleIcon: 'bi bi-eye-slash',
@@ -310,14 +315,18 @@ export default {
     //     'userIsAuth'
     // ])
   },
+  components:{
+    Loader
+  },
 
   methods: {
     registerUser() {
       const _this = this
       _this.submitting = true
+      _this.isLoading=true
 
       if (_this.password !== _this.confirmPassword) {
-        _this.handleError('Passwords do not match')
+        _this.handelErrorToast('Passwords do not match')
         return
       }
 
@@ -334,7 +343,9 @@ export default {
           // const user =response.data.user;
           // _this.storeLoggedInUser(user);
           this.message = response.data.message
+          this.resetForm() 
           this.handelSuccessToast()
+
           router.push({ name: 'login' })
         })
         .catch((error) => {
@@ -344,6 +355,7 @@ export default {
         })
         .then(() => {
           _this.submitting = false
+          this.isLoading = false
         })
     },
     handelSuccessToast() {
@@ -363,6 +375,13 @@ export default {
         text: this.message
         // footer: '<a href="#">Why do I have this issue?</a>'
       })
+    },
+    resetForm() {
+      this.email = ''
+      this.password = ''
+      this.confirmPassword = ''
+      this.name = ''
+      this.username = ''
     },
     togglePasswordVisibility() {
       if (this.passwordFieldType === 'password') {

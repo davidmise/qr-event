@@ -73,6 +73,7 @@
             />
             <i
               :class="confirmPasswordToggleIcon"
+               @click="toggleConfirmPasswordVisibility"
               style="
                 position: absolute;
                 right: 10px;
@@ -92,6 +93,8 @@
         </div>
       </div>
     </div>
+    <!-- Loader Component -->
+    <Loader v-if="isLoading" />
   </div>
 </template>
 
@@ -145,19 +148,21 @@ import { mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { useRoute, useRouter } from 'vue-router'
+import Loader from '@/components/CssLoader.vue'
 
 export default {
   data() {
     const userIsLoggedIn = computed(() => useUserStore.userIsLoggedIn)
     return {
+      isLoading: false,
       token: '',
       email: '',
       password: '',
-      password_confirmation: '',
+      confirmPassword: '',
       userIsLoggedIn,
       message: null,
-      validationErrors: null, // Add validationErrors to data
-      passwordFieldType: 'password', // Add password field type
+      validationErrors: null,
+      passwordFieldType: 'password',
       passwordToggleIcon: 'bi bi-eye-slash',
       confirmPasswordFieldType: 'password',
       confirmPasswordToggleIcon: 'bi bi-eye-slash'
@@ -172,8 +177,12 @@ export default {
     ...mapState(useGeneralStore, ['API_URL']),
     ...mapState(useUserStore, ['storedUser', 'token'])
   },
+  components: {
+    Loader
+  },
   methods: {
     async submit() {
+      this.isLoading = true
       try {
         const response = await axios.post(
           `${this.API_URL}reset`,
@@ -181,7 +190,7 @@ export default {
             token: this.token,
             email: this.email,
             password: this.password,
-            password_confirmation: this.password_confirmation
+            password_confirmation: this.confirmPassword // Match the backend's expected field
           },
           {
             headers: {
@@ -191,16 +200,17 @@ export default {
         )
         this.handleSuccessToast(response.data.message)
         this.message = response.data.message
-        this.validationErrors = null // Clear validation errors on success
+        this.validationErrors = null
       } catch (error) {
         if (error.response && error.response.status === 422) {
-          // Handle validation errors
           this.validationErrors = error.response.data.errors
           this.handleValidationErrors(this.validationErrors)
         } else {
           this.handleErrorToast(error.response.data.message)
           this.message = error.response.statusText
         }
+      } finally {
+        this.isLoading = false
       }
     },
     handleErrorToast(message) {
@@ -216,12 +226,10 @@ export default {
         title: 'Success',
         text: message
       }).then(() => {
-        // Clear form fields
         this.token = ''
         this.email = ''
         this.password = ''
-        this.password_confirmation = ''
-        // Redirect to login page
+        this.confirmPassword = ''
         this.router.push({ name: 'login' })
       })
     },
@@ -238,7 +246,6 @@ export default {
         text: errorMessages.trim()
       })
     },
-
     togglePasswordVisibility() {
       if (this.passwordFieldType === 'password') {
         this.passwordFieldType = 'text'

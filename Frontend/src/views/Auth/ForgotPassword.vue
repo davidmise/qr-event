@@ -24,6 +24,8 @@
 
           <button class="btn btn-primary w-100" type="submit">Send Reset Link</button>
         </form>
+          <!-- Loader Component -->
+     <Loader v-if="isLoading" />
         <!-- <a href="#" data-mdb-ripple-init class="btn btn-primary ">Reset password</a> -->
         <div class="d-flex justify-content-between mt-4">
           <router-link class="text-decoration-non" :to="{ name: 'login' }">Login</router-link>
@@ -31,6 +33,7 @@
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -47,7 +50,8 @@
 import { computed } from 'vue' // Import computed from Vue
 
 import axios from 'axios'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2'   
+import Loader from '@/components/CssLoader.vue'
 
 import { mapActions, mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
@@ -60,6 +64,7 @@ export default {
       email: '',
       message: null,
       userIsLoggedIn,
+      isLoading: false,
       validationErrors: null // Add validationErrors to data
     }
   },
@@ -67,9 +72,14 @@ export default {
     ...mapState(useGeneralStore, ['API_URL']),
     ...mapState(useUserStore, ['storedUser', 'token'])
   },
+  components: {
+      // TopNav,
+      Loader
+    },
   methods: {
     ...mapActions(useUserStore, ['storeLoggedInUser']),
     async submit() {
+      this.isLoading = true
       try {
         const response = await axios.post(`${this.API_URL}forgot`, {
           email: this.email
@@ -89,6 +99,9 @@ export default {
           this.handleErrorToast(this.message, error.response)
         }
       }
+      finally {
+          this.isLoading = false
+        }
     },
     handleErrorToast(message) {
       Swal.fire({

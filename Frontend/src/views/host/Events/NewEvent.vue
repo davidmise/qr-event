@@ -281,6 +281,8 @@ import useUserStore from '@/stores/users'
                 </div>
               </div>
             </form>
+             <!-- Loader Component -->
+           <Loader v-if="isLoading" />
           </main>
         </div>
       </main>
@@ -322,7 +324,8 @@ export default {
           facebook: ''
         }
       },
-      message: null
+      message: null,
+      isLoading: false
     }
   },
 
@@ -334,6 +337,7 @@ export default {
 
   methods: {
     async createEvent() {
+      this.isLoading = true
       try {
         const response = await axios.post(`${this.API_URL}create-event`, this.event_info, {
           headers: {
@@ -362,6 +366,11 @@ export default {
 
           this.handelErrorToast()
         }
+
+      }
+      
+      finally {
+        this.isLoading = false
       }
 
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)

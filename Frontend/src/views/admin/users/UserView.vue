@@ -8,6 +8,7 @@ import { mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import EdditUserModal from '@/components/admin/user/modal/EdditUserModal.vue'
+import Loader from '@/components/CssLoader.vue'
 </script>
 
 <template>
@@ -107,6 +108,8 @@ import EdditUserModal from '@/components/admin/user/modal/EdditUserModal.vue'
                       </div>
                     </div>
                   </div>
+                     <!-- Loader Component -->
+                <Loader v-if="isLoading" />
                 </div>
               </div>
             </div>
@@ -132,6 +135,7 @@ export default {
     ...mapState(useUserStore, ['token', 'user'])
   },
   created() {
+    
     this.userId = this.$route.params.userId
     this.getUserInfo()
   },

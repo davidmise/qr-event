@@ -50,6 +50,8 @@
                       </tr>
                     </tbody>
                   </table>
+                   <!-- Loader Component -->
+                   <Loader v-if="isLoading" />
                 </div>
               </div>
 
@@ -86,7 +88,7 @@
                   </div>
                 </div>
               </div>
-
+<!-- Pagination -->
               <div class="mt-3">
                 <ul class="pagination justify-content-center">
                   <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -142,7 +144,7 @@ import { sidebarWidth } from '@/components/Bars/Sidebar/state'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-
+   import Loader from '@/components/CssLoader.vue'
 import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
@@ -151,7 +153,8 @@ import { mapState, mapActions } from 'pinia'
 export default {
   components: {
     Sidebar,
-    TopBar
+    TopBar,
+    Loader
   },
   data() {
     return {
@@ -189,6 +192,7 @@ export default {
   methods: {
     ...mapActions(useEventStore, ['storeEvent']),
     searchData() {
+      this.isLoading = true
       console.log(this.searchQuery)
 
       axios
@@ -210,8 +214,13 @@ export default {
           // this.handelErrorToast()
           console.log(this.response.data)
         })
+        .then(() => {
+          // _this.submitting = false
+          this.isLoading = false
+        })
     },
     async fetchEventInfo(page) {
+      this.isLoading = false
       this.currentPage = page
       try {
         const response = await axios.get(`${this.API_URL}all-events?page=${this.currentPage}`, {
@@ -230,6 +239,9 @@ export default {
         this.message = error.response.statusText
         this.handelErrorToast()
       }
+      finally {
+          this.isLoading = false
+        }
     },
 
     handlePreviousPage() {

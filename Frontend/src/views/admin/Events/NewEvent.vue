@@ -7,6 +7,7 @@ import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/users'
 import Swal from 'sweetalert2'
+ import Loader from '@/components/CssLoader.vue'
 // import { useRouter } from "vue-router";
 </script>
 
@@ -263,6 +264,8 @@ import Swal from 'sweetalert2'
                 </div>
               </div>
             </form>
+             <!-- Loader Component -->
+           <Loader v-if="isLoading" />
           </main>
         </div>
       </main>
@@ -275,6 +278,7 @@ export default {
   name: 'CreateEvent',
   data() {
     return {
+      // isLoading: false,
       event_info: {
         event_name: '',
         event_subtitle: '',
@@ -309,7 +313,9 @@ export default {
       isLoading: false
     }
   },
-
+components:{
+  Loader
+},
   computed: {
     ...mapState(useGeneralStore, ['API_URL']),
 

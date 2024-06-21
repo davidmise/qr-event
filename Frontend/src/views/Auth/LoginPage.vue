@@ -195,6 +195,8 @@
               </div>
             </div>
           </div>
+           <!-- Loader Component -->
+           <Loader v-if="isLoading" />
         </div>
       </div>
     </div>
@@ -208,11 +210,13 @@ import { mapActions, mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import logo from '@/assets/Images/creativehublogo.png'
+   import Loader from '@/components/CssLoader.vue'
 
 export default {
   data() {
     const userIsLoggedIn = computed(() => useUserStore.userIsLoggedIn)
     return {
+      isLoading: false,
       img: logo,
       email: '',
       password: '',
@@ -228,11 +232,15 @@ export default {
     ...mapState(useGeneralStore, ['API_URL']),
     ...mapState(useUserStore, ['storedUser', 'token'])
   },
+  components:{
+    Loader,
+  },
   methods: {
     ...mapActions(useUserStore, ['storeLoggedInUser']),
     loginUser() {
       const _this = this
       _this.submitting = true
+      _this.isLoading = true
 
       axios
         .post(
@@ -267,6 +275,7 @@ export default {
         })
         .then(() => {
           _this.submitting = false
+          this.isLoading = false
         })
     },
     resetForm() {

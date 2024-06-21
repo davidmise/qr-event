@@ -60,9 +60,11 @@
                       </tr>
                     </tbody>
                   </table>
+                   <!-- Loader Component -->
+                   <Loader v-if="isLoading" />
                 </div>
               </div>
-
+<!-- Pagination -->
               <div class="mt-3">
                 <ul class="pagination justify-content-center">
                   <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -98,6 +100,7 @@
                 </ul>
               </div>
             </div>
+
           </main>
         </div>
       </main>
@@ -110,7 +113,7 @@ import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
-
+   import Loader from '@/components/CssLoader.vue'
 import Swal from 'sweetalert2'
 import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
@@ -120,7 +123,8 @@ import { mapState, mapActions } from 'pinia'
 export default {
   components: {
     Sidebar,
-    TopBar
+    TopBar,
+    Loader,
   },
   data() {
     return {
@@ -133,7 +137,8 @@ export default {
       lastPage: null,
       message: null,
       searchQuery: '',
-      searchedData: ''
+      searchedData: '',
+      isLoading: false
     }
   },
   created() {
@@ -156,6 +161,7 @@ export default {
     ...mapActions(useEventStore, ['storeEvent']),
 
     searchData() {
+      this.isLoading = true
       console.log(this.searchQuery)
 
       axios
@@ -177,9 +183,13 @@ export default {
           this.handelErrorToast()
           console.log(this.response.data)
         })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
 
     async fetchEventInfo(index) {
+      this.isLoading = false
       this.currentPage = index
       try {
         const response = await axios.get(`${this.API_URL}all-events?page=` + this.currentPage, {
@@ -196,6 +206,9 @@ export default {
         this.message = error.response.statusText
 
         this.handelErrorToast()
+      }
+      finally{
+        this.isLoading = false // Set loading state to false after failed fetch
       }
     },
 
