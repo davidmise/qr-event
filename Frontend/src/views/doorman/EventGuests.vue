@@ -37,15 +37,17 @@
                         </div>
                       </div>
                       <div class="col-4">
-                        <h6 class="text-end" :class="statusBadgeClass(guest.status)" >{{ guest.status }}</h6>
+                        <h6 class="text-end" :class="statusBadgeClass(guest.status)">
+                          {{ guest.status }}
+                        </h6>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-             <!-- Loader Component -->
-             <Loader v-if="isLoading" />
+            <!-- Loader Component -->
+            <Loader v-if="isLoading" />
           </div>
         </div>
       </div>
@@ -100,7 +102,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import QrCode from '@/components/doorman/QrScanner.vue'
 import TopNav from '@/components/doorman/TopNav.vue'
-   import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 import useUserStore from '@/stores/users' // Ensure this path is correct
 import useGuestStore from '@/stores/guests' // Ensure this path is correct
 import useGeneralStore from '@/stores/general'
@@ -151,7 +153,7 @@ export default {
     ...mapActions(useGuestStore, ['fetchGuests']),
 
     async fetchGuestListInfo(page) {
-        this.isLoading = true
+      this.isLoading = true
       this.currentPage = page
       try {
         const response = await axios.get(
@@ -176,10 +178,9 @@ export default {
           title: 'An error has occurred',
           text: error.message
         })
+      } finally {
+        this.isLoading = false
       }
-      finally {
-          this.isLoading = false
-        }
     },
     handlePreviousPage() {
       if (this.currentPage > 1) {
@@ -193,13 +194,12 @@ export default {
         this.fetchGuestListInfo(this.currentPage)
       }
     },
-    statusBadgeClass(status){
-        return {
-            'badge bg-success': status === 'present',  // Green badge for 'Present'
-            'badge bg-danger': status === 'absent',  // Red badge for 'Absent'
-            'badge bg-warning': status === 'pending',  // Red badge for 'Absent'
-        }
-
+    statusBadgeClass(status) {
+      return {
+        'badge bg-success': status === 'present', // Green badge for 'Present'
+        'badge bg-danger': status === 'absent', // Red badge for 'Absent'
+        'badge bg-warning': status === 'pending' // Red badge for 'Absent'
+      }
     }
     //   route(guestId) {
     //     this.$router.push({ name: 'guestView', params: { guestId } })

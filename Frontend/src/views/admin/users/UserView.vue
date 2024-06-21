@@ -108,8 +108,8 @@ import Loader from '@/components/CssLoader.vue'
                       </div>
                     </div>
                   </div>
-                     <!-- Loader Component -->
-                <Loader v-if="isLoading" />
+                  <!-- Loader Component -->
+                  <Loader v-if="isLoading" />
                 </div>
               </div>
             </div>
@@ -135,7 +135,6 @@ export default {
     ...mapState(useUserStore, ['token', 'user'])
   },
   created() {
-    
     this.userId = this.$route.params.userId
     this.getUserInfo()
   },

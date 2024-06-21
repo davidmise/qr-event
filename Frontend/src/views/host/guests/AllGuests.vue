@@ -44,8 +44,8 @@
                   </tr>
                 </tbody>
               </table>
-                <!-- Loader Component -->
-                <Loader v-if="isLoading" />
+              <!-- Loader Component -->
+              <Loader v-if="isLoading" />
             </div>
           </div>
 
@@ -85,10 +85,11 @@
             </ul>
           </div>
 
-          <div class="card-footer border-0 py-5">
-            <span class="text-muted text-sm"
-              >Showing {{ currentItems }} items out of {{ total }} results found</span
-            >
+          <!-- Items showing -->
+          <div class="pagination justify-content-center card-footer border-0 py-5">
+            <span class="text-muted text-sm">
+              Showing {{ currentItems }} items out of {{ total }} results found
+            </span>
           </div>
         </div>
       </main>
@@ -106,12 +107,11 @@ import useUserStore from '@/stores/users'
 import { mapState } from 'pinia'
 import Loader from '@/components/CssLoader.vue'
 
-
 export default {
   components: {
     Sidebar,
     TopBar,
-    Loader 
+    Loader
   },
   data() {
     return {
@@ -127,7 +127,6 @@ export default {
       earchQuery: '',
       searchedData: '',
       isLoading: false
-
     }
   },
   created() {
@@ -168,7 +167,8 @@ export default {
           this.isLoading = false
           this.message = error.response.statusText
           this.handelErrorToast()
-        }).then(()=>{
+        })
+        .then(() => {
           this.isLoading = false
         })
     },
@@ -193,8 +193,7 @@ export default {
         this.lastPage = response.data.last_page
       } catch (error) {
         console.error('Error fetching Guest Info:', error)
-      }
-      finally{
+      } finally {
         this.isLoading = false
       }
     },
@@ -212,8 +211,7 @@ export default {
         //   console.log(this.googleSheets)
       } catch (error) {
         console.error('Error fetching Guest Info:', error)
-      }
-      finally{
+      } finally {
         this.isLoading = false
       }
     },

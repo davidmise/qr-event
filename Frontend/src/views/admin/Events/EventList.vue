@@ -50,8 +50,8 @@
                       </tr>
                     </tbody>
                   </table>
-                   <!-- Loader Component -->
-                   <Loader v-if="isLoading" />
+                  <!-- Loader Component -->
+                  <Loader v-if="isLoading" />
                 </div>
               </div>
 
@@ -88,7 +88,7 @@
                   </div>
                 </div>
               </div>
-<!-- Pagination -->
+              <!-- Pagination -->
               <div class="mt-3">
                 <ul class="pagination justify-content-center">
                   <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -123,11 +123,11 @@
                   </li>
                 </ul>
               </div>
-              <!-- shown items -->
-              <div class="card-footer border-0 py-5">
-                <span class="text-muted text-sm"
-                  >Showing {{ currentItems }} items out of {{ total }} results found</span
-                >
+              <!-- Items showing -->
+              <div class="pagination justify-content-center card-footer border-0 py-5">
+                <span class="text-muted text-sm">
+                  Showing {{ currentItems }} items out of {{ total }} results found
+                </span>
               </div>
             </div>
           </main>
@@ -144,7 +144,7 @@ import { sidebarWidth } from '@/components/Bars/Sidebar/state'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-   import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
@@ -238,10 +238,9 @@ export default {
         this.isLoading = false
         this.message = error.response.statusText
         this.handelErrorToast()
+      } finally {
+        this.isLoading = false
       }
-      finally {
-          this.isLoading = false
-        }
     },
 
     handlePreviousPage() {

@@ -127,10 +127,9 @@
                 </div>
               </div>
             </form>
-          <!-- Loader Component -->
-          <Loader v-if="isLoading" />
+            <!-- Loader Component -->
+            <Loader v-if="isLoading" />
           </main>
-           
         </div>
       </main>
     </div>
@@ -146,7 +145,7 @@ import Swal from 'sweetalert2'
 import router from '@/router'
 import useGeneralStore from '@/stores/general.js'
 import { ref } from 'vue'
-  import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 
 const name = ref('')
 const email = ref('')

@@ -24,8 +24,8 @@
 
           <button class="btn btn-primary w-100" type="submit">Send Reset Link</button>
         </form>
-          <!-- Loader Component -->
-     <Loader v-if="isLoading" />
+        <!-- Loader Component -->
+        <Loader v-if="isLoading" />
         <!-- <a href="#" data-mdb-ripple-init class="btn btn-primary ">Reset password</a> -->
         <div class="d-flex justify-content-between mt-4">
           <router-link class="text-decoration-non" :to="{ name: 'login' }">Login</router-link>
@@ -33,7 +33,6 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -50,7 +49,7 @@
 import { computed } from 'vue' // Import computed from Vue
 
 import axios from 'axios'
-import Swal from 'sweetalert2'   
+import Swal from 'sweetalert2'
 import Loader from '@/components/CssLoader.vue'
 
 import { mapActions, mapState } from 'pinia'
@@ -73,9 +72,9 @@ export default {
     ...mapState(useUserStore, ['storedUser', 'token'])
   },
   components: {
-      // TopNav,
-      Loader
-    },
+    // TopNav,
+    Loader
+  },
   methods: {
     ...mapActions(useUserStore, ['storeLoggedInUser']),
     async submit() {
@@ -98,10 +97,9 @@ export default {
           this.message = error.response
           this.handleErrorToast(this.message, error.response)
         }
+      } finally {
+        this.isLoading = false
       }
-      finally {
-          this.isLoading = false
-        }
     },
     handleErrorToast(message) {
       Swal.fire({

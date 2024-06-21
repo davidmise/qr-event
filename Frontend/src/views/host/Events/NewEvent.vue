@@ -281,8 +281,8 @@ import useUserStore from '@/stores/users'
                 </div>
               </div>
             </form>
-             <!-- Loader Component -->
-           <Loader v-if="isLoading" />
+            <!-- Loader Component -->
+            <Loader v-if="isLoading" />
           </main>
         </div>
       </main>
@@ -366,10 +366,7 @@ export default {
 
           this.handelErrorToast()
         }
-
-      }
-      
-      finally {
+      } finally {
         this.isLoading = false
       }
 

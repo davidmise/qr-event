@@ -171,7 +171,7 @@
                       </span>
                     </div>
                   </div>
-                    <!-- Confirm Password -->
+                  <!-- Confirm Password -->
                   <div class="col-12">
                     <div class="form-floating mb-3 position-relative">
                       <input
@@ -205,16 +205,7 @@
                   </div>
                 </div>
               </form>
-              <div class="row">
-                <div class="col-12">
-                  <div
-                    class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4"
-                  >
-                    <a href="#!">Forgot password</a>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-12">
                   <p class="mt-4 mb-4">Or continue with</p>
                   <div class="d-flex gap-2 gap-sm-3 justify-content-centerX">
@@ -265,11 +256,11 @@
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
-           <!-- Loader Component -->
-           <Loader v-if="isLoading" />
+          <!-- Loader Component -->
+          <Loader v-if="isLoading" />
         </div>
       </div>
     </div>
@@ -285,7 +276,7 @@ import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import router from '@/router'
 import logo from '@/assets/Images/creativehublogo.png'
-   import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 export default {
   data() {
     return {
@@ -315,7 +306,7 @@ export default {
     //     'userIsAuth'
     // ])
   },
-  components:{
+  components: {
     Loader
   },
 
@@ -323,7 +314,7 @@ export default {
     registerUser() {
       const _this = this
       _this.submitting = true
-      _this.isLoading=true
+      _this.isLoading = true
 
       if (_this.password !== _this.confirmPassword) {
         _this.handelErrorToast('Passwords do not match')
@@ -343,7 +334,7 @@ export default {
           // const user =response.data.user;
           // _this.storeLoggedInUser(user);
           this.message = response.data.message
-          this.resetForm() 
+          this.resetForm()
           this.handelSuccessToast()
 
           router.push({ name: 'login' })

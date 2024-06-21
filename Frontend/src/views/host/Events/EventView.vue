@@ -19,8 +19,8 @@
           </main>
         </div>
       </main>
-        <!-- Loader Component -->
-        <Loader v-if="isLoading" />
+      <!-- Loader Component -->
+      <Loader v-if="isLoading" />
     </div>
   </div>
 </template>
@@ -87,7 +87,8 @@ export default {
           this.message = error.response.statusText
 
           this.handelErrorToast()
-        }).then(()=> {
+        })
+        .then(() => {
           this.isLoading = false // Set loading state to false after failed fetch
         })
     },

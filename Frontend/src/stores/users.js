@@ -47,7 +47,7 @@ const useUserStore = defineStore('user', {
           router.push({ name: 'adminDashboard' })
           break
         case 'doorman':
-          router.push({ name: 'doorman' })
+          router.push({ name: 'doormanHome' })
           break
         case 'host':
           router.push({ name: 'hostDashboard' })

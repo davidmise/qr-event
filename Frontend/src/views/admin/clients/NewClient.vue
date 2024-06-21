@@ -7,7 +7,7 @@ import useGeneralStore from '@/stores/general'
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/users'
 import Swal from 'sweetalert2'
-  import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 // import { useRouter } from "vue-router";
 </script>
 
@@ -146,8 +146,8 @@ import Swal from 'sweetalert2'
                 </div>
               </form>
             </div>
-              <!-- Loader Component -->
-          <Loader v-if="isLoading" />
+            <!-- Loader Component -->
+            <Loader v-if="isLoading" />
           </main>
         </div>
       </main>
@@ -169,7 +169,7 @@ export default {
         cost: ''
       },
       message: null,
-     isLoading: false
+      isLoading: false
     }
   },
 
@@ -206,10 +206,9 @@ export default {
 
           this.handelErrorToast()
         }
+      } finally {
+        this.isLoading = false
       }
-      finally {
-          this.isLoading = false
-        }
       // console.log(this.name, this.description, this.date, this.time, this.city, this.state, this.country, this.postalCode, this.googleMapUrl)
     },
 

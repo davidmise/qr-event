@@ -60,11 +60,11 @@
                       </tr>
                     </tbody>
                   </table>
-                   <!-- Loader Component -->
-                   <Loader v-if="isLoading" />
+                  <!-- Loader Component -->
+                  <Loader v-if="isLoading" />
                 </div>
               </div>
-<!-- Pagination -->
+              <!-- Pagination -->
               <div class="mt-3">
                 <ul class="pagination justify-content-center">
                   <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -99,8 +99,13 @@
                   </li>
                 </ul>
               </div>
+              <!-- Items showing -->
+              <div class="pagination justify-content-center card-footer border-0 py-5">
+                <span class="text-muted text-sm">
+                  Showing {{ currentItems }} items out of {{ total }} results found
+                </span>
+              </div>
             </div>
-
           </main>
         </div>
       </main>
@@ -113,7 +118,7 @@ import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
 import axios from 'axios'
-   import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 import Swal from 'sweetalert2'
 import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
@@ -124,7 +129,7 @@ export default {
   components: {
     Sidebar,
     TopBar,
-    Loader,
+    Loader
   },
   data() {
     return {
@@ -138,7 +143,9 @@ export default {
       message: null,
       searchQuery: '',
       searchedData: '',
-      isLoading: false
+      isLoading: false,
+      currentItems: 0,
+      total: 0
     }
   },
   created() {
@@ -200,14 +207,15 @@ export default {
         this.data = response.data
         this.events = this.data.data
         this.lastPage = response.data.last_page
+        this.currentItems = response.data.to - response.data.from + 1
+        this.total = response.data.total
       } catch (error) {
         console.error('Error fetching Event Info:', error)
         this.isLoading = false // Set loading state to false after failed fetch
         this.message = error.response.statusText
 
         this.handelErrorToast()
-      }
-      finally{
+      } finally {
         this.isLoading = false // Set loading state to false after failed fetch
       }
     },

@@ -96,8 +96,8 @@
               </div>
             </div>
           </div>
-         <!-- Loader Component -->
-         <Loader v-if="isLoading" />
+          <!-- Loader Component -->
+          <Loader v-if="isLoading" />
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@
 <script>
 import useGeneralStore from '@/stores/general'
 import Swal from 'sweetalert2'
-  import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 // import useEventStore from '@/stores/event';
 import { mapState } from 'pinia'
 import axios from 'axios'
@@ -140,7 +140,7 @@ export default {
       }
     }
   },
-  components:{
+  components: {
     Loader
   },
   created() {
@@ -154,8 +154,8 @@ export default {
   },
   methods: {
     async fetchEventInfo(eventId) {
-        this.isLoading = true
-    //   console.log(eventId)
+      this.isLoading = true
+      //   console.log(eventId)
       try {
         const response = await axios.get(
           `${this.API_URL}pull-event-info${eventId}`
@@ -175,13 +175,12 @@ export default {
       } catch (error) {
         this.handelErrorToast(error)
         console.error('Error fetching event info data:', error)
-      }
-      finally{
+      } finally {
         this.isLoading = false
       }
     },
     async fetchQrCodeData() {
-        this.isLoading = true
+      this.isLoading = true
       //   console.log(this.qrData)
       console.log('cliked')
       // this.$store.dispatch('fetchQrCodeData', this.qrData.value)
@@ -212,8 +211,7 @@ export default {
       } catch (error) {
         console.error('Error fetching QR code:', error)
         this.handelErrorToast(error)
-      }
-      finally{
+      } finally {
         this.isLoading = false
       }
     },

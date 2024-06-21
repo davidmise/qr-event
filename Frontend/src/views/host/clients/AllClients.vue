@@ -57,7 +57,7 @@
                     </tbody>
                   </table>
                   <!-- Loader Component -->
-           <Loader v-if="isLoading" />
+                  <Loader v-if="isLoading" />
                 </div>
               </div>
 
@@ -131,6 +131,12 @@
                   </li>
                 </ul>
               </div>
+              <!-- Items showing -->
+              <div class="pagination justify-content-center card-footer border-0 py-5">
+                <span class="text-muted text-sm">
+                  Showing {{ currentItems }} items out of {{ total }} results found
+                </span>
+              </div>
             </div>
           </main>
         </div>
@@ -151,7 +157,7 @@ import useEventStore from '@/stores/eventinfo'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState, mapActions } from 'pinia'
- import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 
 export default {
   components: {
@@ -171,9 +177,10 @@ export default {
       lastPage: null,
       message: null,
       searchQuery: '',
-      searchedData: ''
+      searchedData: '',
+      currentItems: 0,
+      total: 0
     }
-
   },
   created() {
     this.fetchClientInfo(1)
@@ -219,8 +226,9 @@ export default {
           this.isLoading = false
           this.message = error.message
           this.handelErrorToast()
-        }).then(()=> {
-          this.isLoading=false
+        })
+        .then(() => {
+          this.isLoading = false
         })
     },
 
@@ -237,6 +245,8 @@ export default {
         this.clients = this.data.data
         this.updateClients() // Call updateClients after data is received
         this.lastPage = response.data.last_page
+        this.currentItems = response.data.to - response.data.from + 1
+        this.total = response.data.total
         this.isLoading = false // Set loading state to false after successful fetch
         console.log(this.data)
       } catch (error) {
@@ -245,9 +255,8 @@ export default {
         this.message = error.response.statusText
 
         this.handelErrorToast()
-      }
-      finally{
-        this.isLoading=false
+      } finally {
+        this.isLoading = false
       }
     },
 

@@ -124,11 +124,11 @@
                   </li>
                 </ul>
               </div>
-              <!-- doisplay show items -->
-              <div class="card-footer border-0 py-5">
-                <span class="text-muted text-sm"
-                  >Showing {{ currentItems }} items out of {{ total }} results found</span
-                >
+              <!-- Items showing -->
+              <div class="pagination justify-content-center card-footer border-0 py-5">
+                <span class="text-muted text-sm">
+                  Showing {{ currentItems }} items out of {{ total }} results found
+                </span>
               </div>
             </div>
           </main>
@@ -148,7 +148,7 @@ import Swal from 'sweetalert2'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState, mapActions } from 'pinia'
-   import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 
 export default {
   components: {
@@ -216,7 +216,6 @@ export default {
           // _this.submitting = false
           this.isLoading = false
         })
-        
     },
     async fetchUserInfo(page) {
       this.isLoading = true
@@ -241,10 +240,9 @@ export default {
         this.isLoading = false
         this.message = error.response.statusText
         this.handelErrorToast()
+      } finally {
+        this.isLoading = false
       }
-      finally {
-          this.isLoading = false
-        }
     },
     handlePreviousPage() {
       if (this.currentPage > 1) {

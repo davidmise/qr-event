@@ -73,7 +73,7 @@
             />
             <i
               :class="confirmPasswordToggleIcon"
-               @click="toggleConfirmPasswordVisibility"
+              @click="toggleConfirmPasswordVisibility"
               style="
                 position: absolute;
                 right: 10px;

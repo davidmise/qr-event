@@ -44,8 +44,8 @@
                   </tr>
                 </tbody>
               </table>
-                   <!-- Loader Component -->
-                   <Loader v-if="isLoading" />
+              <!-- Loader Component -->
+              <Loader v-if="isLoading" />
             </div>
           </div>
           <!-- not found message -->
@@ -117,11 +117,11 @@
               </li>
             </ul>
           </div>
-          <!-- items showing -->
-          <div class="card-footer border-0 py-5">
-            <span class="text-muted text-sm"
-              >Showing {{ currentItems }} items out of {{ total }} results found</span
-            >
+          <!-- Items showing -->
+          <div class="pagination justify-content-center card-footer border-0 py-5">
+            <span class="text-muted text-sm">
+              Showing {{ currentItems }} items out of {{ total }} results found
+            </span>
           </div>
         </div>
       </main>
@@ -137,7 +137,7 @@ import axios from 'axios'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 import { mapState } from 'pinia'
-  import Loader from '@/components/CssLoader.vue'
+import Loader from '@/components/CssLoader.vue'
 
 export default {
   components: {
@@ -227,10 +227,9 @@ export default {
       } catch (error) {
         this.isLoading = false
         console.error('Error fetching Guest Info:', error)
+      } finally {
+        this.isLoading = false
       }
-      finally {
-          this.isLoading = false
-        }
     },
 
     async googleSheet() {
@@ -247,10 +246,9 @@ export default {
       } catch (error) {
         this.isLoading = false
         console.error('Error fetching Guest Info:', error)
+      } finally {
+        this.isLoading = false
       }
-      finally {
-          this.isLoading = false
-        }
     },
 
     handlePreviousPage() {
