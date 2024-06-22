@@ -216,7 +216,7 @@ import SideBarLink from './SideBarLink.vue'
 import { collapsed, toggleSidebar, sidebarWidth } from './state'
 import useUserStore from '@/stores/users' // Adjust the path as necessary
 import { computed } from 'vue'
-import logo from '@/assets/Images/creativehublogo.png'
+import logo from '@/assets/Images/crhl.png'
 
 export default {
   components: { SideBarLink },

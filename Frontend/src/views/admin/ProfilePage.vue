@@ -2,6 +2,11 @@
 import Sidebar from '@/components/Bars/Sidebar/SideBar.vue'
 import { sidebarWidth } from '@/components/Bars/Sidebar/state.js'
 import TopBar from '@/components/Bars/TopBar/TopBar.vue'
+import axios from 'axios'
+import { mapState } from 'pinia'
+import useGeneralStore from '@/stores/general'
+import useUserStore from '@/stores/users'
+import Loader from '@/components/CssLoader.vue'
 </script>
 <template>
   <div>
@@ -32,15 +37,15 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                           type="button"
                           data-mdb-button-init
                           data-mdb-ripple-init
-                          class="btn btn-danger"
+                          class="btn btn-outline-success"
                         >
-                          Delete
+                          Edit
                         </button>
                         <button
                           type="button"
                           data-mdb-button-init
                           data-mdb-ripple-init
-                          class="btn btn-outline-primary ms-1"
+                          class="btn btn-outline-primary ms-2"
                         >
                           Logout
                         </button>
@@ -49,14 +54,14 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                   </div>
                 </div>
                 <div class="col-lg-8">
-                  <div class="card mb-4">
+                  <div class="card mb-4" v-if="userInfo">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-sm-3">
                           <p class="mb-0">Full Name</p>
                         </div>
                         <div class="col-sm-9">
-                          <p class="text-muted mb-0">Johnatan Smith</p>
+                          <p class="text-muted mb-0">{{ userInfo.name }}</p>
                         </div>
                       </div>
                       <hr />
@@ -65,38 +70,40 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
                           <p class="mb-0">Email</p>
                         </div>
                         <div class="col-sm-9">
-                          <p class="text-muted mb-0">example@example.com</p>
+                          <p class="text-muted mb-0">{{ userInfo.email }}</p>
                         </div>
                       </div>
                       <hr />
                       <div class="row">
                         <div class="col-sm-3">
-                          <p class="mb-0">Phone</p>
+                          <p class="mb-0">Username</p>
                         </div>
                         <div class="col-sm-9">
-                          <p class="text-muted mb-0">(+255) 234-5678</p>
+                          <p class="text-muted mb-0">{{ userInfo.username }}</p>
+                        </div>
+                      </div>
+                      <!-- <hr /> -->
+                      <div class="row">
+                        <!-- <div class="col-sm-3">
+                            <p class="mb-0">Phone</p>
+                          </div> -->
+                        <div class="col-sm-9">
+                          <p class="text-muted mb-0">{{ userInfo.phone }}</p>
                         </div>
                       </div>
                       <hr />
                       <div class="row">
                         <div class="col-sm-3">
-                          <p class="mb-0">Mobile</p>
+                          <p class="mb-0">Role</p>
                         </div>
                         <div class="col-sm-9">
-                          <p class="text-muted mb-0">(+255) 765-4321</p>
-                        </div>
-                      </div>
-                      <hr />
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <p class="mb-0">Address</p>
-                        </div>
-                        <div class="col-sm-9">
-                          <p class="text-muted mb-0">Dar es Salaam, Bunju, A</p>
+                          <p class="text-muted mb-0">{{ userInfo.role }}</p>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <!-- Loader Component -->
+                  <Loader v-if="isLoading" />
                 </div>
               </div>
             </div>
@@ -106,3 +113,48 @@ import TopBar from '@/components/Bars/TopBar/TopBar.vue'
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      userInfo: {}, // Initialize as an empty object
+      userId: null,
+      message: null,
+      isLoading: false
+    }
+  },
+
+  computed: {
+    ...mapState(useGeneralStore, ['API_URL']),
+    ...mapState(useUserStore, ['token', 'user'])
+  },
+  components: {
+    // TopNav,
+    Loader
+  },
+  created() {
+    this.userId = localStorage.getItem('userId')
+    this.getUserInfo()
+  },
+  methods: {
+    async getUserInfo() {
+      this.isLoading = true
+      try {
+        const response = await axios.get(`${this.API_URL}user${this.userId}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        })
+        this.userInfo = response.data.user
+        console.log(this.userInfo)
+      } catch (error) {
+        console.error('Error fetching user info:', error)
+        this.message = 'An error occurred while fetching user information. Please try again.'
+      } finally {
+        this.isLoading = false
+      }
+    }
+  }
+}
+</script>

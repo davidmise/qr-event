@@ -67,11 +67,11 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" aria-disabled="true">
               <i class="material-icons">notifications</i></a
             >
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>

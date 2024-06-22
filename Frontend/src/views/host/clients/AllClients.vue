@@ -42,7 +42,6 @@
                       <tr
                         v-for="(client, index) in clients"
                         :key="client.id"
-                        @click="route(client.id)"
                       >
                         <td class="text-heading font-semibold">
                           {{ (currentPage - 1) * itemsPerPage + index + 1 }}
