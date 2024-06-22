@@ -14,6 +14,10 @@ use App\Http\Controllers\GuestAttendanceController;
 use App\Http\Controllers\GoogleSheetsController;
 use App\Http\Controllers\GuestListController;
 
+use App\Http\Controllers\SmsController;
+
+Route::post('/send-sms', [SmsController::class, 'sendSms']);
+
 // Public routes (no authentication required)
 Route::post('/register', 'App\Http\Controllers\UserController@create');
 
