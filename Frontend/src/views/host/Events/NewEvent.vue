@@ -350,7 +350,7 @@ export default {
         localStorage.setItem('event_id', event_id)
         console.log('this event id is: ' + event_id)
         this.resetForm()
-        this.$router.push({ name: 'adminEventsAll' })
+        this.$router.push({ name: 'hostAllEvents' })
       } catch (error) {
         if (error.response && error.response.status === 500) {
           console.error('Internal server error:', error.response.data)
