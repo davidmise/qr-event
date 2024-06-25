@@ -1,6 +1,6 @@
 <script setup>
 import Ticketing from '@/components/Events/Ticketing.vue'
-import Payments from '@/components/Events/Payments.vue'
+// import Payments from '@/components/Events/Payments.vue'
 import Attendance from '@/components/Events/Attendance.vue'
 import BookingSettings from '@/components/Events/BookingSettings.vue'
 </script>
@@ -17,15 +17,7 @@ import BookingSettings from '@/components/Events/BookingSettings.vue'
             Ticketing
           </a>
         </li>
-        <li class="nav-item">
-          <a
-            :class="{ 'nav-link': true, active: currentService === 'Payments' }"
-            aria-current="page"
-            @click="showService('Payments')"
-          >
-            Payments
-          </a>
-        </li>
+  
         <li class="nav-item">
           <a
             :class="{ 'nav-link': true, active: currentService === 'Attendance' }"
@@ -51,9 +43,7 @@ import BookingSettings from '@/components/Events/BookingSettings.vue'
       <div v-if="currentService === 'Ticketing' || currentService === null">
         <Ticketing class="slide-left" :eventId="eventId" />
       </div>
-      <div v-else-if="currentService === 'Payments'">
-        <Payments class="slide-left" :eventId="eventId" />
-      </div>
+      
       <div v-else-if="currentService === 'Attendance'">
         <Attendance class="slide-left" :eventId="eventId" />
       </div>

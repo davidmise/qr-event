@@ -49,6 +49,12 @@ const router = createRouter({
       component: () => import('../views/host/Events/EventView.vue')
     },
     {
+      path: '/host/events/preview:eventId',
+      name: 'hostPreviewEvent',
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
+      component: () => import('../views/host/Events/dummyTicket.vue')
+    },
+    {
       path: '/host/events/all',
       name: 'hostAllEvents',
       meta: { requiresAuth: true, role: 'host' }, // Added role meta

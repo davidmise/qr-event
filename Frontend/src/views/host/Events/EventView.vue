@@ -10,9 +10,9 @@
               <h1>{{ eventInfo.event_name }}</h1>
               <h6 class="text-secondary">{{ eventInfo.event_subtitle }}</h6>
               <p>
-                Created at <span class="text-primary">{{ eventInfo.start_date }}</span>
+                Event date <span class="text-primary">{{ eventInfo.start_date }}</span>
               </p>
-              <button class="btn btn-outline-primary rounded rounded-5">Valid/Expired</button>
+              <button :class="eventStatusClass">{{ eventStatus }}</button>
             </div>
             <!-- <hr> -->
             <EventsNav :eventId="eventId" />
@@ -33,13 +33,10 @@ import EventsNav from '@/components/Events/EventsNav.vue'
 import axios from 'axios'
 import Loader from '@/components/CssLoader.vue'
 import Swal from 'sweetalert2'
-// import { ref, onMounted, watch } from 'vue';
-// import { useRoute } from 'vue-router';
 import { mapState } from 'pinia'
 import useGeneralStore from '@/stores/general'
 import useUserStore from '@/stores/users'
 
-// const route = useRoute();
 export default {
   components: {
     Sidebar,
@@ -60,13 +57,22 @@ export default {
 
   computed: {
     ...mapState(useGeneralStore, ['API_URL']),
-    ...mapState(useUserStore, ['token'])
+    ...mapState(useUserStore, ['token']),
+    eventStatus() {
+      const eventDate = new Date(this.eventInfo.start_date)
+      const currentDate = new Date()
+      return eventDate > currentDate ? 'Valid' : 'Expired'
+    },
+    eventStatusClass() {
+      return this.eventStatus === 'Valid' ? 'btn btn-outline-primary rounded rounded-5' : 'btn btn-outline-danger rounded rounded-5'
+    }
   },
 
   created() {
     this.eventId = this.$route.params.eventId
     this.getEventInfo()
   },
+
   methods: {
     getEventInfo() {
       this.isLoading = true
@@ -83,13 +89,13 @@ export default {
         })
         .catch((error) => {
           console.log(error)
-          this.isLoading = false // Set loading state to false after failed fetch
+          this.isLoading = false
           this.message = error.response.statusText
 
           this.handelErrorToast()
         })
         .then(() => {
-          this.isLoading = false // Set loading state to false after failed fetch
+          this.isLoading = false
         })
     },
     handelErrorToast() {
@@ -102,3 +108,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+</style>
