@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EventInfo;
 use Illuminate\Support\Facades\Validator;
+use App\Services\BeemSMSService;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Guest;
 use App\Models\Organizer;
@@ -31,7 +33,7 @@ class EventInfoController extends Controller
         ->paginate(10);
 
     return $events;
-   
+
 }
     /**
      * Show the form for creating a new resource.
@@ -306,7 +308,7 @@ class EventInfoController extends Controller
 
         // Retrieve the event and its guests with pagination
         $event = EventInfo::with('guests')->findOrFail($eventId);
-        
+
         // Paginate guests related to this event
         $perPage = $request->input('per_page', 10); // Items per page, default to 10
         $guests = $event->guests()->paginate($perPage);
@@ -318,4 +320,35 @@ class EventInfoController extends Controller
         ], 200);
     }
 
+    protected $beemSMSService;
+
+    public function __construct(BeemSMSService $beemSMSService)
+    {
+        $this->beemSMSService = $beemSMSService;
+    }
+
+    public function sendReminders($eventId)
+    {
+        $event = EventInfo::with(['location', 'guests'])->findOrFail($eventId);
+
+        $eventDetails = [
+            'name' => $event->event_name,
+            'date' => $event->start_date,
+            'time' => $event->start_time,
+            'location' => "{$event->location->street}, {$event->location->city}, {$event->location->country}"
+        ];
+
+        $guests = $event->guests->toArray(); // Convert to array
+
+        // Log the event details for debugging
+        Log::info('Event Details', $eventDetails);
+        Log::info('Guests', $guests);
+
+        $this->beemSMSService->sendReminderSMS($guests, $eventDetails);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Reminder SMS sent successfully to all guests.'
+        ], 200);
+    }
 }

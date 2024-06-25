@@ -36,7 +36,9 @@ class BeemSMSService
             $response = Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode("{$this->apiKey}:{$this->secretKey}"),
                 'Content-Type' => 'application/json',
-            ])->post("{$this->baseUrl}/send", $postData);
+            ])
+            ->timeout(60) // Increase the timeout to 60 seconds
+            ->post("{$this->baseUrl}/send", $postData);
 
             Log::info('Beem SMS Response Status', ['status' => $response->status()]);
             Log::info('Beem SMS Response Body', ['response' => $response->json()]);
@@ -51,6 +53,22 @@ class BeemSMSService
         } catch (\Exception $e) {
             Log::error('Error sending bulk SMS', ['error' => $e->getMessage()]);
             throw $e;
+        }
+    }
+
+    public function sendReminderSMS(array $guests, array $eventDetails)
+    {
+        foreach ($guests as $guest) {
+            // Log the guest data for debugging
+            Log::info('Guest Data', $guest);
+
+            if (!isset($guest['phone_number'])) {
+                Log::error('Missing phone number for guest', ['guest' => $guest]);
+                continue; // Skip this guest if phone number is missing
+            }
+
+            $message = "Dear {$guest['name']}, this is a reminder for the event {$eventDetails['name']} happening on {$eventDetails['date']} at {$eventDetails['time']} in {$eventDetails['location']}. We look forward to seeing you!";
+            $this->sendBulkSMS([$guest['phone_number']], $message);
         }
     }
 }

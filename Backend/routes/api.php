@@ -17,7 +17,7 @@ use App\Http\Controllers\GuestListController;
 use App\Http\Controllers\SMSController;
 
 Route::post('/send-sms', [SMSController::class, 'sendBulkSMS']);
-
+Route::post('/events/{eventId}/send-reminders', [EventInfoController::class, 'sendReminders']);
 // Public routes (no authentication required)
 Route::post('/register', 'App\Http\Controllers\UserController@create');
 
