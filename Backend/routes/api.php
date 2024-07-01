@@ -15,6 +15,35 @@ use App\Http\Controllers\GoogleSheetsController;
 use App\Http\Controllers\GuestListController;
 
 use App\Http\Controllers\SMSController;
+// routes/api.php
+
+// use App\Http\Controllers\TemplateController;
+
+use App\Http\Controllers\TextOverlayController;
+
+use App\Http\Controllers\CardImageController;
+
+// use App\Http\Controllers\TemplateController;
+
+// Route::post('/templates', [TemplateController::class, 'store']);
+// Route::get('/templates/{identifier}', [TemplateController::class, 'show']);
+
+
+Route::post('/upload', [CardImageController::class, 'upload']);
+
+
+Route::get('/overlays/{id}', [TextOverlayController::class, 'show']);
+Route::post('/overlays', [TextOverlayController::class, 'store']);
+
+// Route::get('/templates', [TemplateController::class, 'index']);
+// Route::post('/templates', [TemplateController::class, 'store']);
+// Route::get('/templates/{id}', [TemplateController::class, 'show']);
+// Route::delete('/templates/{id}', [TemplateController::class, 'destroy']);
+
+
+    // routes/api.php
+    Route::get('/guest{id}', [GuestController::class, 'show']);
+
 
 Route::post('/send-sms', [SMSController::class, 'sendBulkSMS']);
 Route::post('/events/{eventId}/send-reminders', [EventInfoController::class, 'sendReminders']);
@@ -77,6 +106,7 @@ Route::get('/events/{eventId}/guests', [EventInfoController::class, 'guests']);
 
     // Guest
     Route::post('/guest', [GuestController::class, 'store']);
+
     Route::get('/all-guests', [GuestController::class, 'index']);
     Route::get('/search-guest', [GuestController::class, 'search']);
 

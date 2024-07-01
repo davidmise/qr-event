@@ -97,7 +97,23 @@ class GuestController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Find the guest by ID
+        $guest = Guest::find($id);
+
+        // If guest is not found, return a 404 response
+        if (!$guest) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Guest not found.'
+            ], 404);
+        }
+
+        // Return guest data with QR code
+        return response()->json([
+            'status' => true,
+            'message' => 'Guest retrieved successfully.',
+            'data' => $guest
+        ], 200);
     }
 
     /**

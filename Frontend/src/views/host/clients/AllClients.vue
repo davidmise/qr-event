@@ -39,10 +39,7 @@
                       </tr>
                     </thead>
                     <tbody v-if="hasData">
-                      <tr
-                        v-for="(client, index) in clients"
-                        :key="client.id"
-                      >
+                      <tr v-for="(client, index) in clients" :key="client.id">
                         <td class="text-heading font-semibold">
                           {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                         </td>

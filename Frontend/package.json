@@ -13,22 +13,27 @@
     "test": "jest"
   },
   "dependencies": {
+    "@cloudinary/url-gen": "^1.19.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "buffer": "^6.0.3",
+    "fabric": "^5.3.0",
     "html2canvas": "^1.4.1",
+    "jimp": "^0.3.11",
     "jspdf": "^2.5.1",
     "material-icons": "^1.13.12",
     "pinia": "^2.1.7",
     "qrcode": "^1.5.3",
     "qrcode.vue": "^3.4.1",
-    "quagga": "^0.12.1",
+    "quagga": "^0.6.16",
     "sweetalert2": "^11.6.13",
     "vue": "^3.4.15",
     "vue-barcode-reader": "^1.0.3",
     "vue-qr-reader": "^1.6.2",
     "vue-qrcode-reader": "^5.5.6",
     "vue-router": "^4.2.5",
+    "vue-svg-loader": "^0.10.0",
     "vue3-qr-reader": "^1.0.0"
   },
   "devDependencies": {

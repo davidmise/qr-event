@@ -64,7 +64,9 @@ export default {
       return eventDate > currentDate ? 'Valid' : 'Expired'
     },
     eventStatusClass() {
-      return this.eventStatus === 'Valid' ? 'btn btn-outline-primary rounded rounded-5' : 'btn btn-outline-danger rounded rounded-5'
+      return this.eventStatus === 'Valid'
+        ? 'btn btn-outline-primary rounded rounded-5'
+        : 'btn btn-outline-danger rounded rounded-5'
     }
   },
 

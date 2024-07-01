@@ -1,6 +1,7 @@
 <script setup>
 import Ticketing from '@/components/Events/Ticketing.vue'
 // import Payments from '@/components/Events/Payments.vue'
+import CardTemplate from '@/components/Cardtemplates/MainCardTemplate.vue'
 import Attendance from '@/components/Events/Attendance.vue'
 import BookingSettings from '@/components/Events/BookingSettings.vue'
 </script>
@@ -17,7 +18,7 @@ import BookingSettings from '@/components/Events/BookingSettings.vue'
             Ticketing
           </a>
         </li>
-  
+
         <li class="nav-item">
           <a
             :class="{ 'nav-link': true, active: currentService === 'Attendance' }"
@@ -25,6 +26,16 @@ import BookingSettings from '@/components/Events/BookingSettings.vue'
             @click="showService('Attendance')"
           >
             Attendance
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            :class="{ 'nav-link': true, active: currentService === 'CardTemplates' }"
+            aria-current="page"
+            @click="showService('CardTemplates')"
+          >
+            Templates
           </a>
         </li>
         <li class="nav-item">
@@ -43,10 +54,15 @@ import BookingSettings from '@/components/Events/BookingSettings.vue'
       <div v-if="currentService === 'Ticketing' || currentService === null">
         <Ticketing class="slide-left" :eventId="eventId" />
       </div>
-      
+
       <div v-else-if="currentService === 'Attendance'">
         <Attendance class="slide-left" :eventId="eventId" />
       </div>
+
+      <div v-else-if="currentService === 'CardTemplates'">
+        <CardTemplate class="slide-left" :eventId="eventId" />
+      </div>
+
       <div v-else>
         <BookingSettings class="slide-left" :eventId="eventId" />
       </div>

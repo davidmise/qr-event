@@ -14,23 +14,30 @@
                 alt="BootstrapBrain Logo"
               />
               <hr class="border-primary-subtle mb-4" />
-              <h2 class="h1 mb-4" style="color: #f3b41b">
-                Printing and Media Solutions
-               </h2>
-                <div class="row">
-               <div class="col-12">
-                 <p class="mt-4 mb-4 text-white">Our Social Links</p>
-                 <div class="d-flex gap-2 gap-sm-3 justify-content-centerX">
-                   <a href="https://wa.me/255744648052" target="_blank" class="btn btn-outline-success bsb-btn-circle bsb-btn-circle-2xl">
-                       <i class="bi bi-whatsapp"></i>
-                   </a>
-                   <a href="https://www.instagram.com/creative.hub.tz?igsh=MXA3NWcwa2pvMW10dQ==" class="btn btn-outline-primary bsb-btn-circle bsb-btn-circle-2xl">
-                       <i class="bi bi-instagram"></i>
-                   </a>
-                   <a href="#!" class="btn btn-outline-primary bsb-btn-circle bsb-btn-circle-2xl">
-                       <i class="bi bi-facebook"></i>
-                   </a>
-                 </div></div></div>
+              <h2 class="h1 mb-4" style="color: #f3b41b">Printing and Media Solutions</h2>
+              <div class="row">
+                <div class="col-12">
+                  <p class="mt-4 mb-4 text-white">Our Social Links</p>
+                  <div class="d-flex gap-2 gap-sm-3 justify-content-centerX">
+                    <a
+                      href="https://wa.me/255744648052"
+                      target="_blank"
+                      class="btn btn-outline-success bsb-btn-circle bsb-btn-circle-2xl"
+                    >
+                      <i class="bi bi-whatsapp"></i>
+                    </a>
+                    <a
+                      href="https://www.instagram.com/creative.hub.tz?igsh=MXA3NWcwa2pvMW10dQ=="
+                      class="btn btn-outline-primary bsb-btn-circle bsb-btn-circle-2xl"
+                    >
+                      <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#!" class="btn btn-outline-primary bsb-btn-circle bsb-btn-circle-2xl">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
               <div class="text-endx">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -293,7 +300,7 @@ export default {
       hsl(218, 41%, 19%) 80%,
       transparent 100%
     );
-     /* Make the cover section full-screen */
+  /* Make the cover section full-screen */
   height: 100vh; /* Use viewport height */
   display: flex;
   justify-content: center;

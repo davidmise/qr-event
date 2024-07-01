@@ -48,12 +48,28 @@ const router = createRouter({
       meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/Events/EventView.vue')
     },
+
     {
       path: '/host/events/preview:eventId',
       name: 'hostPreviewEvent',
       meta: { requiresAuth: true, role: 'host' }, // Added role meta
       component: () => import('../views/host/Events/dummyTicket.vue')
     },
+
+    {
+      path: '/host/events/template-upload:eventId',
+      name: 'UploadTemplate',
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
+      component: () => import('../views/host/Events/UploadTemplate.vue')
+    },
+
+    {
+      path: '/host/events/overlay-upload:eventId',
+      name: 'UploadOverlay',
+      meta: { requiresAuth: true, role: 'host' }, // Added role meta
+      component: () => import('../views/host/Events/UploadOverlay.vue')
+    },
+
     {
       path: '/host/events/all',
       name: 'hostAllEvents',

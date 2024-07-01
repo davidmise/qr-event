@@ -43,7 +43,7 @@ class EventInfo extends Model
     {
         return $this->hasOne(Ticket::class);
     }
-  
+
     public function attendance()
     {
         return $this->hasOne(GuestAttendance::class);
@@ -52,6 +52,15 @@ class EventInfo extends Model
     public function guests(){
         return $this->hasMany(Guest::class);
     }
-    
+
+    public function UploadTemplate()
+    {
+        return $this->hasOne(CardImageTemplate::class);
+    }
+
+    public function TextOverlay()
+    {
+        return $this->hasOne(TextOverlay::class);
+    }
 
 }
