@@ -7,6 +7,11 @@ use App\Models\TextOverlay;
 
 class TextOverlayController extends Controller
 {
+    public function index()
+    {
+        $overlays = TextOverlay::get();
+        return response()->json($overlays);
+    }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -38,7 +43,10 @@ class TextOverlayController extends Controller
 
     public function show($identifier)
     {
-        $overlays = TextOverlay::where('identifier', $identifier)->get();
+        $overlays = TextOverlay::find($identifier);
+        if (!$overlays) {
+            return response()->json(['message' => 'Overlays not found'], 404);
+        }
         return response()->json($overlays);
     }
 }

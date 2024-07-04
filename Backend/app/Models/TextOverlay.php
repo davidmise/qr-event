@@ -17,4 +17,8 @@ class TextOverlay extends Model
         'font_color',
         'event_info_id'
     ];
+    
+    public function event(){
+        return $this->belongsTo(EventInfo::class);
+    }
 }

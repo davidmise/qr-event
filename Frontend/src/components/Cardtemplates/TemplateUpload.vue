@@ -19,6 +19,8 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'pinia'
+import useGeneralStore from '@/stores/general'
 
 export default {
   props: ['eventId'],
@@ -28,10 +30,12 @@ export default {
       name: ''
     }
   },
-  created(){
-    this.stringToInt();
-},
-
+  created() {
+    this.stringToInt()
+  },
+  computed: {
+    ...mapState(useGeneralStore, ['API_URL'])
+  },
   methods: {
     stringToInt() {
       const eventId = parseInt(this.$route.params.eventId)
@@ -42,15 +46,15 @@ export default {
       this.image = event.target.files[0]
     },
     async uploadImage() {
-        const eventId = this.stringToInt();
-        console.log(eventId)
+      const eventId = this.stringToInt()
+      console.log(eventId)
       const formData = new FormData()
       formData.append('image', this.image)
       formData.append('name', this.name)
       formData.append('event_info_id', eventId)
 
       try {
-        const response = await axios.post('http://localhost:8000/api/upload', formData, {
+        const response = await axios.post(`${this.API_URL}template/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

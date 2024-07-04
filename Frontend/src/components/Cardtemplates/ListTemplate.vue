@@ -1,24 +1,31 @@
 <template>
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col">
-        <div class="position-relative" v-if="imageSrc">
-          <img :src="imageSrc" alt="Template Image" class="img-fluid" />
-          <div
-            v-for="(text, index) in texts"
-            :key="index"
-            class="position-absolute"
-            :style="getTextStyle(text)"
-          >
-            {{ guestName }}
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-8 col-xxl-7">
+      <div class="row gy-4">
+        <div class="col-12 col-sm-6" v-for="cardTemplate in cardTemplates" :key="cardTemplate.id">
+          <div class="card widget-card border-light shadow-sm" style="cursor: pointer">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-8">
+                  <h5 class="card-title widget-card-title mb-3">
+                    {{ cardTemplate.name }}
+                  </h5>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-end">
+                    <img
+                      :src="serverPath + cardTemplate.path"
+                      class="img img-thumbnail"
+                      alt=""
+                      width="200px"
+                      height="200px"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <input
-          type="text"
-          v-model="guestName"
-          class="form-control mt-3"
-          placeholder="Enter your name"
-        />
       </div>
     </div>
   </div>
@@ -26,56 +33,38 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'pinia'
+import useGeneralStore from '@/stores/general'
 
 export default {
   data() {
     return {
-      imageSrc: null,
-      texts: [],
-      guestName: '',
-      identifier: 'unique-template-id' // Change this as needed
+      cardTemplates: [],
+      serverPath: 'http://127.0.0.1:8000/storage/',
+      
     }
   },
+  computed: {
+    ...mapState(useGeneralStore, ['API_URL'])
+  },
   created() {
-    this.fetchTemplateAndOverlays()
+    this.getCardTemplates()
   },
   methods: {
-    fetchTemplateAndOverlays() {
+    getCardTemplates() {
       axios
-        .get(`http://127.0.0.1:8000/api/overlays/${this.identifier}`)
+        .get(`${this.API_URL}templates`)
         .then((response) => {
-          const overlays = response.data
-          if (overlays.length > 0) {
-            this.imageSrc = `/storage/${overlays[0].template}`
-            this.texts = overlays.map((overlay) => ({
-              x: overlay.x,
-              y: overlay.y,
-              fontSize: overlay.font_size,
-              fontFamily: overlay.font_family,
-              fontColor: overlay.font_color
-            }))
-          }
+          this.cardTemplates = response.data
         })
         .catch((error) => {
-          console.error('There was an error fetching the template and overlays!', error)
+          console.log(error)
         })
-    },
-    getTextStyle(text) {
-      return {
-        top: `${text.y}px`,
-        left: `${text.x}px`,
-        color: text.fontColor,
-        fontSize: `${text.fontSize}px`,
-        fontFamily: text.fontFamily,
-        fontWeight: 'bold'
-      }
     }
   }
 }
 </script>
 
 <style scoped>
-.position-absolute {
-  pointer-events: none;
-}
+/* Add your styles here */
 </style>

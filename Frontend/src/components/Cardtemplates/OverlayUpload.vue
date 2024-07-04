@@ -1,3 +1,7 @@
+<script setup>
+import ListCardTemplates from '@/components/Cardtemplates/ListTemplate.vue'
+</script>
+
 <template>
   <div class="container mt-5">
     <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
@@ -8,6 +12,8 @@
         <li class="breadcrumb-item active" aria-current="page">Add Overlay</li>
       </ol>
     </nav>
+    <p><span class="h2">Uploaded Template</span></p>
+    <ListCardTemplates />
     <p><span class="h2">Set Overlays</span></p>
     <div class="row">
       <div class="col">
@@ -74,6 +80,9 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'pinia'
+import useGeneralStore from '@/stores/general'
+
 export default {
   props: ['eventId'],
   data() {
@@ -83,9 +92,12 @@ export default {
       identifier: 'unique-image-id' // Change this as needed
     }
   },
-created(){
-    this.stringToInt();
-},
+  created() {
+    this.stringToInt()
+  },
+  computed: {
+    ...mapState(useGeneralStore, ['API_URL'])
+  },
   methods: {
     onFileChange(e) {
       const file = e.target.files[0]
@@ -122,9 +134,9 @@ created(){
         fontWeight: 'bold'
       }
     },
-    saveOverlays() {
 
-      const eventId = this.stringToInt();
+    saveOverlays() {
+      const eventId = this.stringToInt()
       const overlays = this.texts.map((text) => ({
         x: text.x,
         y: text.y,
@@ -134,7 +146,7 @@ created(){
       }))
 
       axios
-        .post('http://127.0.0.1:8000/api/overlays', {
+        .post(`${this.API_URL}overlays`, {
           identifier: this.identifier,
           event_info_id: eventId,
           overlays
@@ -146,7 +158,7 @@ created(){
         })
         .catch((error) => {
           console.error('There was an error saving the overlays!', error)
-        //   console.log(eventId)
+          //   console.log(eventId)
         })
     },
     downloadImage() {

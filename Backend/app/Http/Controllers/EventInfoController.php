@@ -29,7 +29,7 @@ class EventInfoController extends Controller
     // $page = $request->input('page', 1);
 
     // Query events with relationships
-    $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'ticket','guests', 'attendance.guest')
+    $events = EventInfo::with('Location', 'Organizer', 'SocialLink', 'ticket','guests', 'attendance.guest','TextOverlay','UploadTemplate')
         ->paginate(10);
 
     return $events;
@@ -200,7 +200,9 @@ class EventInfoController extends Controller
             'Ticket',
             // 'media',
             'guests',
-            'attendance.guests'
+            'attendance.guests',
+            'UploadTemplate',
+            'TextOverlay'
         ])->find($id);
 
         if (!$event_info) {
